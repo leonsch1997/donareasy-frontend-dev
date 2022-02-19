@@ -3,23 +3,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-//import { store } from './providers';
 
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import { userAuth } from './providers/redux/reducers';
-
-const store = configureStore({
-  reducer: {
-    userAuth: userAuth.reducer,
-  },
-});
+import { ReduxProvider } from './redux';
+import { ChakraProvider } from '@chakra-ui/react';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <ReduxProvider>
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
+    </ReduxProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
