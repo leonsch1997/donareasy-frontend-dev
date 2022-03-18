@@ -1,17 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import './index.css';
 
 import { ReduxProvider } from './redux';
 import { ChakraProvider } from '@chakra-ui/react';
+import { PageWrapper } from './layout';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
     <ReduxProvider>
       <ChakraProvider>
-        <App />
+        <Router>
+          <PageWrapper>
+            <App />
+          </PageWrapper>
+        </Router>
       </ChakraProvider>
     </ReduxProvider>
   </React.StrictMode>,

@@ -1,7 +1,16 @@
-import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-import { LoginForm } from './components/loginForm';
+import { LoginForm } from './components/LoginForm';
+import { Lander } from './components/Lander';
 
-function App() { return <LoginForm />}
+// Todo: encapsular rutas y mover a ./routes
+const App = () => {
+  return(
+    <Routes>
+      <Route path='/home' element={<Lander />} /> 
+      <Route path='/login' element={<LoginForm />} />          
+    </Routes>
+  )
+}
 
 export default App;
