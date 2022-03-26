@@ -1,10 +1,21 @@
 import { FC } from 'react';
 import { Flex, Box, Heading, Spacer, Button } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
+import { routes } from '../routes';
+import { useDispatch, useSelector } from 'react-redux';
+import { authSelector, removeUserToken } from '../redux/reducers';
 
 export const PageWrapper: FC = ({ children }) => {
   const navigate = useNavigate();
-  const redirectToLogin = () => navigate('/login');
+  const dispatch = useDispatch();
+  const authToken = useSelector(authSelector);
+  const handleSessionButton = () => {
+    if (authToken) {
+      dispatch(removeUserToken())
+    }
+
+    navigate(routes.login);
+  }
 
   return(
     <>
@@ -18,8 +29,8 @@ export const PageWrapper: FC = ({ children }) => {
         </Box>
         <Spacer />
         <Box>
-          <Button onClick={redirectToLogin} colorScheme='pink' mr='4'>
-            Iniciar sesión
+          <Button onClick={handleSessionButton} colorScheme='pink' mr='4'>
+            {authToken ? 'Cerrar sesión' : 'Iniciar sesión'}
           </Button>
         </Box>
       </Flex>

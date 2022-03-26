@@ -1,39 +1,49 @@
-//import axios from 'axios';
+import axios from 'axios';
 import { Formik, Field, Form, FormikHelpers } from 'formik';
 import { FormControl, FormLabel, FormErrorMessage, Button, Input, Box, Container, Center, Link } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
-//import { useDispatch, useSelector } from 'react-redux';
-//import { setUserToken, removeUserToken } from '../../redux/reducers';
-
-interface LoginFormValues {
-  username: string | null;
-  password: string | null;
-}
+import { endpoints } from '../../api';
+import { routes } from '../../routes'
+import { setUserToken, removeUserToken } from '../../redux/reducers';
 
 const initialValues: LoginFormValues = {
-  username: null,
-  password: null,
+  username: '',
+  password: '',
 }
-
-//const authToken = useSelector((store: any) => store.userAuth.authToken);
-//<button onClick={() => dispatch(setUserToken('1235raxcfqerf319vb'))}>Loggear usuario</button>
-//<button onClick={() => dispatch(removeUserToken())}>Desloggear usuario</button>
+export interface LoginFormValues {
+  username: string;
+  password: string;
+}
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleSubmit = (formValues: LoginFormValues, actions: FormikHelpers<LoginFormValues>) => {
-//  await axios.get('http://localhost:8000/login/donantes/').then((res) => {
-//    dispatch(setUserToken(...));
-//  }).catch((err) => {
-//    console.log('Error', err)
-//  })
-    console.log(formValues, actions, dispatch);
-    setTimeout(() => { actions.setSubmitting(false); navigate('/home') }, 1000)
+
+  const handleSubmit = async (formValues: LoginFormValues, actions: FormikHelpers<LoginFormValues>) => {
+    try {
+      const authToken = await axios.post(endpoints['login'], formValues).then((res) => res.data.token);
+      dispatch(setUserToken(authToken));
+      navigate(routes.home);
+    } catch {
+      dispatch(removeUserToken())
+    }
   }
+
+  // FALTA DEBUG
+  // await axios.post('http://localhost:8000/login/logout/', { token: 'ab2b10de395d707b13b2e550f3256edd7c4e9920' }).then((res) => {
+  //   console.log('Response', res)
+  // }).catch((err) => {
+  //   console.log('Error', err)
+  // })
+
+  // await axios.post('http://localhost:8000/login/logup', formValues).then((res) => {
+  //     console.log('Response', res)
+  //   }).catch((err) => {
+  //     console.log('Error', err)
+  //   })
+  // }
 
   return (
     <Container mt={50}>
@@ -41,11 +51,11 @@ export const LoginForm = () => {
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
           {({ isSubmitting }) => (
             <Form>
-              <Field name='email'>
+              <Field name='username'>
                 {({ field, form }: any) => (
-                  <FormControl isInvalid={form.errors.email && form.touched.email}>
-                    <FormLabel htmlFor='email'>Correo</FormLabel>
-                    <Input type={'email'} {...field} id='email' placeholder='Correo' />
+                  <FormControl isInvalid={form.errors.username && form.touched.username}>
+                    <FormLabel htmlFor='username'>Usuario</FormLabel>
+                    <Input {...field} id='username' placeholder='Usuario' />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}

@@ -1,9 +1,10 @@
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { userAuth } from './reducers';
-import React from 'react';
 
-const store = configureStore({
+export type RootState = ReturnType<typeof store.getState>
+
+export const store = configureStore({
     reducer: {
       userAuth: userAuth.reducer,
     },
