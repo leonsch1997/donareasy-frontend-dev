@@ -6,9 +6,10 @@ export interface FieldData {
   label: string;
   placeholder?: string;
   dataType?: string;
+  isRequired?: boolean;
 }
 
-export const createField = ({ name, label, placeholder, dataType }: FieldData) => {
+export const createField = ({ name, label, placeholder, dataType, isRequired }: FieldData & { isRequired?: boolean }) => {
   if (dataType === 'checkbox') return (
     <HStack mb={'8'}>
       <Field name={name}>
@@ -28,7 +29,7 @@ export const createField = ({ name, label, placeholder, dataType }: FieldData) =
       <Field name={name}>
         {({ field, form }: any) => (
           <FormControl isInvalid={form.errors.username && form.touched.username}>
-            <FormLabel htmlFor={name}>{label}</FormLabel>
+            <FormLabel htmlFor={name}>{label}{isRequired && <span style={{ color: 'red' }}>{' *'}</span>}</FormLabel>
             <Input type={dataType} {...field} id={name} placeholder={placeholder} />
             <FormErrorMessage>{form.errors.name}</FormErrorMessage>
           </FormControl>

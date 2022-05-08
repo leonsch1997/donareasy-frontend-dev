@@ -34,10 +34,10 @@ export const PageWrapper: FC = ({ children }) => {
           </Button>
         </Box>
       </Flex>
-      <Flex height={'88vh'}>
+      <Flex height={'700px'}>
         {children}
       </Flex>
-      <Flex justifyContent={'flex-end'} height={'40px'} bg={'teal.300'} />
+      {/* <Flex justifyContent={'flex-end'} height={'40px'} bg={'teal.300'} /> */}
     </>
   );
 };

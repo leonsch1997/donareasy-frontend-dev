@@ -11,7 +11,7 @@ interface FormValues {
 }
 
 const fields: FieldData[] = [
-  { name: 'username', label: 'Usuario', placeholder: 'Usuario'},
+  { name: 'username', label: 'Usuario', placeholder: 'Usuario' },
   { name: 'password', label: 'Contraseña', placeholder: 'Contraseña', dataType: 'password' },
   { name: 'email', label: 'Correo', placeholder: 'correo', dataType: 'email' },
   { name: 'isIisIns', label: 'Es institución?', dataType: 'checkbox' }
@@ -26,6 +26,37 @@ export const LogupForm = () => {
     console.log('submitting');
   }
 
+  const addUserTypeFields = () => {
+    setRegisterFeidls([...fields,
+
+    // if (userType == ...)
+    
+    // "nombre": "",
+    // "director": "",
+    // "fecha_fundacion": null, (fecha)
+    // "domicilio": "",
+    // "localidad": "",
+    // "provincia": "",
+    // "pais": "",
+    // "telefono": "",
+    // "cant_empleados": null, (numero)
+    // "descripcion": "",
+    // "cbu": null, (numero)
+    // "cuenta_bancaria": ""
+      { name: 'instName', label: 'Nombre de Institucion' },
+      { name: 'director', label: 'Director' },
+      { name: 'foundDate', label: 'Fecha de fundación', dataType: 'date' },
+      { name: 'address', label: 'Dirección' },
+      { name: 'state', label: 'Localidad' },
+      { name: 'province', label: 'Provincia' },
+      { name: 'country', label: 'País' },
+      { name: 'phone', label: 'Teléfono', dataType: 'tel' },
+      { name: 'empAmount', label: 'Cantidad de empleados' },
+      { name: 'cbu', label: 'CBU' },
+      { name: 'bankAccount', label: 'Cuenta bancaria' },
+    ])
+  }
+
   const initialValues: any = {
     username: '',
     password: '',
@@ -36,21 +67,21 @@ export const LogupForm = () => {
   return (
     <Container mt={50}>
       <Heading as='h3' size='xl'>
-        Registrar usuario
+        Registrarse
       </Heading>
 
         <Box borderRadius={5} shadow={'lg'} p={5}>
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
           {({ isSubmitting }) => (
             <Form>
-              {registerFields.map((fieldData) => createField({...fieldData}))}
+              {registerFields.map((fieldData) => createField({...fieldData, isRequired: true }))}
               <Center>
                 <Button
                   mt={4}
                   colorScheme='pink'
                   isLoading={isSubmitting}
                   type='submit'
-                  onClick={() => setRegisterFeidls([...fields, { name: 'newField', label: 'some' }])}
+                  onClick={addUserTypeFields}
                 >
                   Continuar
                 </Button>
