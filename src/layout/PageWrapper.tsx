@@ -19,7 +19,7 @@ export const PageWrapper: FC = ({ children }) => {
 
   return(
     <>
-      <Flex height={'6vh'} p={2} bg={'teal.300'}>
+      <Flex height={'55px'} p={2} bg={'teal.300'}>
         <Box p='2'>
           <Heading size='md'>
             <Link to={'/home'}>
@@ -37,7 +37,7 @@ export const PageWrapper: FC = ({ children }) => {
       <Flex height={'88vh'}>
         {children}
       </Flex>
-      <Flex justifyContent={'flex-end'} height={'6vh'} bg={'teal.300'} />
+      <Flex justifyContent={'flex-end'} height={'40px'} bg={'teal.300'} />
     </>
   );
 };
