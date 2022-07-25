@@ -10,10 +10,7 @@ export const PageWrapper: FC = ({ children }) => {
   const dispatch = useDispatch();
   const authToken = useSelector(authSelector);
   const handleSessionButton = () => {
-    if (authToken) {
-      dispatch(removeUserToken())
-    }
-
+    if (authToken) dispatch(removeUserToken())
     navigate(routes.login);
   }
 

@@ -1,32 +1,36 @@
+import { useState, useRef } from 'react';
 import axios from 'axios';
 import { Formik, Field, Form, FormikHelpers } from 'formik';
-import { FormControl, FormLabel, FormErrorMessage, Button, Input, Box, Container, Center, Link } from '@chakra-ui/react';
+import { FormControl, FormLabel, FormErrorMessage, Button, Input, Box, Container, Center, Link, Alert, AlertIcon } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { endpoints } from '../../api';
 import { routes } from '../../routes'
 import { setUserToken, removeUserToken } from '../../redux/reducers';
+import { LoginFormValues } from './types';
 
 const initialValues: LoginFormValues = {
   username: '',
   password: '',
 }
-export interface LoginFormValues {
-  username: string;
-  password: string;
-}
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [reqError, setReqError] = useState('');
 
   const handleSubmit = async (formValues: LoginFormValues, actions: FormikHelpers<LoginFormValues>) => {
     try {
+      actions.setSubmitting(true);
       const authToken = await axios.post(endpoints['login'], formValues).then((res) => res.data.token);
+      
+      actions.setSubmitting(false)
       dispatch(setUserToken(authToken));
       navigate(routes.home);
     } catch {
+      actions.setSubmitting(false);
+      setReqError('Usuario o contraseña incorrectos, por favor revise las credenciales');
       dispatch(removeUserToken())
     }
   }
@@ -56,7 +60,7 @@ export const LoginForm = () => {
                   <FormControl isInvalid={form.errors.username && form.touched.username}>
                     <FormLabel htmlFor='username'>Usuario</FormLabel>
                     <Input {...field} id='username' placeholder='Usuario' />
-                    <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                    <FormErrorMessage mb={3}>{form.errors?.[field.name] ?? ''}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
@@ -65,11 +69,15 @@ export const LoginForm = () => {
                 {({ field, form }: any) => (
                   <FormControl isInvalid={form.errors.password && form.touched.password}>
                     <FormLabel htmlFor='password'>Contraseña</FormLabel>
-                    <Input type={'password'} {...field} id='password' placeholder='password' />
-                    <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                    <Input type={'password'} {...field} id='password' placeholder='password' mb={reqError ? 3 : 0} />
+                    <FormErrorMessage mb={3}>{form.errors?.[field.name] ?? ''}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
+
+              {reqError && (
+                <Alert status='error'><AlertIcon />{reqError}</Alert>
+              )}
 
               <Center>
                 <Button

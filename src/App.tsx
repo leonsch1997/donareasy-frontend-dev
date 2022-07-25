@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 
-import { LoginForm } from './components/LoginForm';
+import { LoginForm } from './components/LoginFormCopy';
 import { Lander } from './components/Lander';
 import { RecoverSteps } from './components/ForgotPassword';
 import { Logup } from './components/Logup';
