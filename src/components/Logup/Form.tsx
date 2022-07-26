@@ -4,21 +4,70 @@ import { Formik, Form, FormikHelpers } from 'formik';
 // import { useDispatch } from 'react-redux';
 // import { useNavigate } from 'react-router-dom';
 
-import { FieldData, createField } from './utils';
-
+import { createField } from './utils';
+import { FieldData } from './types';
+import {
+  username,
+  password,
+  email,
+  institution,
+  name,
+  lastname,
+  fecha_nacimiento,
+  dni,
+  domicilio,
+  localidad,
+  provincia,
+  pais,
+  telefono,
+  estado_civil,
+  genero,
+  ocupacion,
+  l_name,
+  l_lastname,
+  l_fecha_nacimiento,
+  l_dni,
+  l_domicilio,
+  l_localidad,
+  l_provincia,
+  l_pais,
+  l_telefono,
+  l_estado_civil,
+  l_genero,
+  l_ocupacion,
+  l_username,
+  l_password,
+  l_email,
+  l_institution,
+  p_username,
+  p_email,
+  p_institution,
+} from '../constants';
 interface FormValues {
   username: string;
 }
 
 const fields: FieldData[] = [
-  { name: 'username', label: 'Usuario', placeholder: 'Usuario' },
-  { name: 'password', label: 'Contraseña', placeholder: 'Contraseña', dataType: 'password' },
-  { name: 'email', label: 'Correo', placeholder: 'correo', dataType: 'email' },
-  { name: 'isIisIns', label: 'Es institución?', dataType: 'checkbox' }
+  { name: username, label: l_username, placeholder: p_username },
+  { name: password, label: l_password, dataType: 'password' },
+  { name: email, label: l_email, placeholder: p_email, dataType: 'email' },
+  // { name: institution, label: l_institution, placeholder: p_institution, dataType: 'checkbox' },
+  { name: name, label: l_name },
+  { name: lastname, label: l_lastname },
+  { name: fecha_nacimiento, label: l_fecha_nacimiento },
+  { name: dni, label: l_dni },
+  { name: domicilio, label: l_domicilio },
+  { name: pais, label: l_pais },
+  { name: provincia, label: l_provincia },
+  { name: localidad, label: l_localidad },
+  { name: telefono, label: l_telefono },
+  { name: estado_civil, label: l_estado_civil },
+  { name: genero, label: l_genero },
+  { name: ocupacion, label: l_ocupacion },
 ];
 
 export const LogupForm = () => {
-  const [registerFields, setRegisterFeidls] = useState(fields)
+  const [registerFields, setRegisterFields] = useState(fields)
   // const dispatch = useDispatch();
   // const navigate = useNavigate();
 
@@ -27,7 +76,7 @@ export const LogupForm = () => {
   }
 
   const addUserTypeFields = () => {
-    setRegisterFeidls([...fields,
+    setRegisterFields([...fields,
 
     // if (userType == ...)
     
@@ -61,14 +110,16 @@ export const LogupForm = () => {
     username: '',
     password: '',
     email: '',
-    isIns: false,
+    institution: false,
   }
 
   return (
     <Container mt={50}>
-      <Heading as='h3' size='xl'>
-        Registrarse
-      </Heading>
+      <Center>
+        <Heading as='h3' size='xl'>
+          Registrarse
+        </Heading>
+      </Center>
 
         <Box borderRadius={5} shadow={'lg'} p={5}>
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>

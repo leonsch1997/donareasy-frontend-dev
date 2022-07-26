@@ -1,13 +1,6 @@
 import { FormControl, FormLabel, FormErrorMessage, Input, Checkbox, VStack, HStack } from '@chakra-ui/react';
 import { Field } from 'formik';
-
-export interface FieldData {
-  name: string;
-  label: string;
-  placeholder?: string;
-  dataType?: string;
-  isRequired?: boolean;
-}
+import { FieldData } from './types';
 
 export const createField = ({ name, label, placeholder, dataType, isRequired }: FieldData & { isRequired?: boolean }) => {
   if (dataType === 'checkbox') return (

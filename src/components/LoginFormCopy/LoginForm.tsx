@@ -1,14 +1,16 @@
-import { useState, useRef } from 'react';
 import axios from 'axios';
-import { Formik, Field, Form, FormikHelpers } from 'formik';
-import { FormControl, FormLabel, FormErrorMessage, Button, Input, Box, Container, Center, Link, Alert, AlertIcon } from '@chakra-ui/react';
+import { useState } from 'react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Formik, Field, Form, FormikHelpers } from 'formik';
+import { FormControl, FormLabel, FormErrorMessage, Button, Input, Box, Container, Center, Link, Alert, AlertIcon, Heading } from '@chakra-ui/react';
+
+import { wrongCredentialsError } from '../constants';
 import { endpoints } from '../../api';
 import { routes } from '../../routes'
-import { setUserToken, removeUserToken } from '../../redux/reducers';
 import { LoginFormValues } from './types';
+import { setUserToken, removeUserToken } from '../../redux/reducers';
 
 const initialValues: LoginFormValues = {
   username: '',
@@ -20,27 +22,20 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const [reqError, setReqError] = useState('');
 
-  const handleSubmit = async (formValues: LoginFormValues, actions: FormikHelpers<LoginFormValues>) => {
+  const handleSubmit = async (formValues: LoginFormValues, { setSubmitting }: FormikHelpers<LoginFormValues>) => {
     try {
-      actions.setSubmitting(true);
+      setSubmitting(true);
       const authToken = await axios.post(endpoints['login'], formValues).then((res) => res.data.token);
       
-      actions.setSubmitting(false)
+      setSubmitting(false)
       dispatch(setUserToken(authToken));
       navigate(routes.home);
     } catch {
-      actions.setSubmitting(false);
-      setReqError('Usuario o contraseña incorrectos, por favor revise las credenciales');
+      setSubmitting(false);
+      setReqError(wrongCredentialsError);
       dispatch(removeUserToken())
     }
   }
-
-  // FALTA DEBUG
-  // await axios.post('http://localhost:8000/login/logout/', { token: 'ab2b10de395d707b13b2e550f3256edd7c4e9920' }).then((res) => {
-  //   console.log('Response', res)
-  // }).catch((err) => {
-  //   console.log('Error', err)
-  // })
 
   // await axios.post('http://localhost:8000/login/logup', formValues).then((res) => {
   //     console.log('Response', res)
@@ -51,6 +46,12 @@ export const LoginForm = () => {
 
   return (
     <Container mt={50}>
+      <Center>
+        <Heading as='h3' size='xl'>
+          Iniciar sesión
+        </Heading>
+      </Center>
+
       <Box borderRadius={5} shadow={'lg'} p={5}>
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
           {({ isSubmitting }) => (
@@ -95,6 +96,7 @@ export const LoginForm = () => {
       </Box>
       <Box borderRadius={5} shadow={'md'} p={5}>
         Ingrese sus credenciales para acceder al sistema. <br/>
+        Si no tienes cuenta puedes <Link color={'blue'} href="/logup">crear una aquí<ExternalLinkIcon mb={1} ml={1} /></Link><br />
         Puede recuperar sus credenciales en caso de olvido <Link color={'blue'} href="/forgot-password">aquí<ExternalLinkIcon mb={1} ml={1} /></Link>
       </Box>
     </Container>
