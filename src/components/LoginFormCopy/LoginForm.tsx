@@ -37,13 +37,6 @@ export const LoginForm = () => {
     }
   }
 
-  // await axios.post('http://localhost:8000/login/logup', formValues).then((res) => {
-  //     console.log('Response', res)
-  //   }).catch((err) => {
-  //     console.log('Error', err)
-  //   })
-  // }
-
   return (
     <Container mt={50}>
       <Center>

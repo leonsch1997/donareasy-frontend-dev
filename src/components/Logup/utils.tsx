@@ -31,3 +31,5 @@ export const createField = ({ name, label, placeholder, dataType, isRequired }: 
     </VStack>
   );
 };
+
+export const validateUserFields = () => true; // Hacer
