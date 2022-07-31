@@ -6,18 +6,20 @@ import { Formik, Form, FormikHelpers } from 'formik';
 import { endpoints } from '../../api';
 import { formFields } from '../constants';
 import { DonorFormValues } from './types';
-import { createField, validateUserFields } from './utils';
+import { createField, formatLogupFormData, validateUserFields } from './utils';
 
 export const LogupForm = () => {
   const [logupFields, setLogupFields] = useState(formFields['user']);
   const [showUserTypeFields, setShowUserTypeFields] = useState(false);
   // const ref = useRef(null); // Scroll to type user fields when added
+  const userType = 'donante' // Pull from somewhere else
 
-  const userType = 'donor' // Pull from somewhere else
-  const initialValues: DonorFormValues = {
+  const initialValues = {
+    usuario: '',
     username: '',
     password: '',
     email: '',
+    correo: '',
     nombre: '',
     apellido: '',
     fecha_nacimiento: '',
@@ -33,21 +35,15 @@ export const LogupForm = () => {
   }
 
   // Reemplazar DonorFormValues por LogupFormValues
+  // const handleSubmit = async ({ usuario, nombre, apellido, correo, email, username, ...rest }: DonorFormValues, actions: FormikHelpers<DonorFormValues>) => {
   const handleSubmit = async (formValues: DonorFormValues, actions: FormikHelpers<DonorFormValues>) => {
     try {
-      console.log('formvalues', formValues);
-      const res = await axios.post(endpoints['logup'], formValues).then((res) => res.data);
-      console.log(res);
+      const formattedData = formatLogupFormData(userType, formValues);
+      // const res = await axios.post(`${endpoints['logup']}${userType}/`, formatLogupFormData(userType, formValues)).then((res) => res.data);
+      console.log(formattedData);
     } catch {
       console.log('Errrrrrrr')
     }
-      // await axios.post('http://localhost:8000/login/logup', formValues).then((res) => {
-  //     console.log('Response', res)
-  //   }).catch((err) => {
-  //     console.log('Error', err)
-  //   })
-  // }
-    console.log('submitting', formValues);
   }
 
   const addUserTypeFields = (e: any) => {
@@ -59,12 +55,23 @@ export const LogupForm = () => {
     }
   }
 
+  const checkUsers = async () => {
+    try {
+      await axios.get(`${endpoints['donantes']}`).then((res) => console.log(res.data.results));
+    } catch {
+      console.log('Error get donantes');
+    }
+  }
+
   return (
     <Container mt={50}>
       <Center>
         <Heading as='h3' size='xl'>
           Registrarse
         </Heading>
+        <Button onClick={checkUsers}>
+          Lookup
+        </Button>
       </Center>
 
       <Box borderRadius={5} shadow={'lg'} p={5}>

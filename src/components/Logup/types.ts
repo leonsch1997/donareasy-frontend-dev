@@ -5,14 +5,18 @@ export interface FieldData {
   dataType?: string;
   isRequired?: boolean;
 }
-
-export interface UserFormValues {
+export type UserType = 'donante' | 'admin' | 'cadete' | 'institucion' | 'user';
+export interface UserFormValues { // should not be filled on forms. Only for nested objects
   username: string;
   password: string;
   email: string;
+  first_name?: string;
+  last_name?: string;
 }
 export interface DonorFormValues extends UserFormValues {
+  usuario: string;
   nombre: string;
+  correo: string;
   apellido: string;
   fecha_nacimiento: string;
   dni: string;
@@ -24,6 +28,10 @@ export interface DonorFormValues extends UserFormValues {
   estado_civil: string;
   genero: string;
   ocupacion: string;
+}
+
+export interface DonorAndUserMergedTypes extends Omit<DonorFormValues, 'usuario' | 'correo'> {
+  usuario: UserFormValues;
 }
 
 export interface InstitutionFormValues extends UserFormValues {

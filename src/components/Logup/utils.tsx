@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, FormErrorMessage, Input, Checkbox, VStack, HStack } from '@chakra-ui/react';
 import { Field } from 'formik';
-import { FieldData } from './types';
+import { DonorAndUserMergedTypes, DonorFormValues, FieldData, LogupFormValues, UserType } from './types';
 
 export const createField = ({ name, label, placeholder, dataType, isRequired }: FieldData & { isRequired?: boolean }) => {
   if (dataType === 'checkbox') return (
@@ -33,3 +33,28 @@ export const createField = ({ name, label, placeholder, dataType, isRequired }: 
 };
 
 export const validateUserFields = () => true; // Hacer
+
+export const formatLogupFormData = (userType: UserType, data: LogupFormValues) => {
+  if (userType === 'donante') {
+    const { usuario, nombre, apellido, correo, email, username, ...rest } = data as DonorFormValues;
+
+    const formattedValues: DonorAndUserMergedTypes = {
+      usuario: {
+        username: usuario,
+        first_name: nombre,
+        last_name: apellido,
+        email: correo,
+        password: rest.password,
+      },
+      email: correo,
+      username: usuario,
+      nombre,
+      apellido,
+      ...rest,
+    };
+
+    return formattedValues;
+  } else {
+    return {};
+  }
+};
