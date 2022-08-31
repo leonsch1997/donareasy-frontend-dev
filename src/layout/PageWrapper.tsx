@@ -31,10 +31,9 @@ export const PageWrapper: FC = ({ children }) => {
           </Button>
         </Box>
       </Flex>
-      <Flex height={'700px'}>
+      <Flex minHeight={'70vh'} height={'auto'}>
         {children}
       </Flex>
-      {/* <Flex justifyContent={'flex-end'} height={'40px'} bg={'teal.300'} /> */}
     </>
   );
 };

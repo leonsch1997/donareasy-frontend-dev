@@ -1,8 +1,11 @@
 import { FormControl, FormLabel, FormErrorMessage, Input, Checkbox, VStack, HStack } from '@chakra-ui/react';
 import { Field } from 'formik';
-import { DonorAndUserMergedTypes, DonorFormValues, FieldData, LogupFormValues, UserType } from './types';
+import { FieldData, LogupFormValues, UserType } from './types';
+import { DonanteFormattedValues, DonanteFormSubmitFields } from './Forms/Donante/types';
+import { InstitucionFormSubmitFields, institucionFormattedValues } from './Forms/Institucion/types';
+import { CadeteFormSubmitFields, CadeteFormattedValues } from './Forms/Cadete/types';
 
-export const createField = ({ name, label, placeholder, dataType, isRequired }: FieldData & { isRequired?: boolean }) => {
+export const createField = ({ name, label, placeholder, dataType, isRequired, idx }: FieldData & { isRequired?: boolean }) => {
   if (dataType === 'checkbox') return (
     <HStack mb={'8'}>
       <Field name={name}>
@@ -18,7 +21,7 @@ export const createField = ({ name, label, placeholder, dataType, isRequired }: 
   )
 
   return (
-    <VStack mb={'8'}>
+    <VStack key={`${name}-${idx}`} mb={'8'}>
       <Field name={name}>
         {({ field, form }: any) => (
           <FormControl isInvalid={form.errors.username && form.touched.username}>
@@ -32,29 +35,63 @@ export const createField = ({ name, label, placeholder, dataType, isRequired }: 
   );
 };
 
-export const validateUserFields = () => true; // Hacer
+export const validateUserFields = (formValues: any) => {
+  return [];
+};
 
 export const formatLogupFormData = (userType: UserType, data: LogupFormValues) => {
-  if (userType === 'donante') {
-    const { usuario, nombre, apellido, correo, email, username, ...rest } = data as DonorFormValues;
+  if (userType === 'institucion') {
+    const { username, first_name, last_name, email, password, ...rest } = data as InstitucionFormSubmitFields;
 
-    const formattedValues: DonorAndUserMergedTypes = {
+    const formattedValues: institucionFormattedValues = {
       usuario: {
-        username: usuario,
-        first_name: nombre,
-        last_name: apellido,
-        email: correo,
-        password: rest.password,
+        username,
+        first_name,
+        last_name,
+        email,
+        password,
       },
-      email: correo,
-      username: usuario,
-      nombre,
-      apellido,
       ...rest,
     };
 
     return formattedValues;
-  } else {
+  }
+
+  if (userType === 'donante') {
+    const { username, first_name, last_name, email, password, ...rest } = data as DonanteFormSubmitFields;
+    const formattedValues: DonanteFormattedValues = {
+      usuario: {
+        username,
+        first_name: rest.nombre,
+        last_name: rest.apellido,
+        email,
+        password,
+      },
+      ...rest,
+    };
+
+    return formattedValues;
+  }
+  
+  if (userType === 'cadete') {
+    const { username, first_name, last_name, email, password, ...rest } = data as CadeteFormSubmitFields;
+    const formattedValues: CadeteFormattedValues = {
+      usuario: {
+        username,
+        first_name,
+        last_name,
+        email,
+        password,
+      },
+      nombre: first_name,
+      apellido: last_name,
+      ...rest,
+    };
+
+    return formattedValues;
+  }
+
+  else {
     return {};
   }
 };

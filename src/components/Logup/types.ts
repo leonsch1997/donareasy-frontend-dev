@@ -4,42 +4,16 @@ export interface FieldData {
   placeholder?: string;
   dataType?: string;
   isRequired?: boolean;
+  idx?: string | number;
 }
-export type UserType = 'donante' | 'admin' | 'cadete' | 'institucion' | 'user';
-export interface UserFormValues { // should not be filled on forms. Only for nested objects
+export interface UserFields {
   username: string;
-  password: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  first_name?: string;
-  last_name?: string;
-}
-export interface DonorFormValues extends UserFormValues {
-  usuario: string;
-  nombre: string;
-  correo: string;
-  apellido: string;
-  fecha_nacimiento: string;
-  dni: string;
-  domicilio: string;
-  pais: string;
-  provincia: string;
-  localidad: string;
-  telefono: string;
-  estado_civil: string;
-  genero: string;
-  ocupacion: string;
+  password: string;
 }
 
-export interface DonorAndUserMergedTypes extends Omit<DonorFormValues, 'usuario' | 'correo'> {
-  usuario: UserFormValues;
-}
+export type UserType = 'donante' | 'cadete' | 'institucion' | 'user';
 
-export interface InstitutionFormValues extends UserFormValues {
-  iv: string;
-}
-
-export interface AdminFormValues extends UserFormValues {
-  av: string;
-}
-
-export type LogupFormValues = DonorFormValues | InstitutionFormValues | AdminFormValues;
+export type LogupFormValues = any;
