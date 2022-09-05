@@ -25,7 +25,7 @@ export const Routes = () => {
   return (
     <RouterDomRoutes>
       <Route element={<PrivateRoutes />}>
-        <Route path='/' element={<Lander />} /> 
+        <Route path={routes.home} element={<Lander />} /> 
       </Route>
 
       <Route path={routes.login} element={<LoginForm />}/>
