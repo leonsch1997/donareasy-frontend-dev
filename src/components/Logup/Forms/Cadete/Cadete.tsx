@@ -1,8 +1,8 @@
-// import axios from 'axios';
+import axios from 'axios';
 import { Button,Center, Heading } from '@chakra-ui/react';
 import { Formik, Form, FormikHelpers } from 'formik';
 
-// import { endpoints } from '../../../../api';
+import { endpoints } from '../../../../api';
 import { UserFields } from '../../types';
 import { CadeteEntFields } from './types';
 import { cadeteFields, userFields, initialValues } from './constants';
@@ -13,15 +13,12 @@ export const CadeteForm = () => {
 
   const handleSubmit = async (formValues: CadeteEntFields & UserFields, actions: FormikHelpers<CadeteEntFields & UserFields>) => {
     const erroredFields = validateUserFields(formValues);
-
     if (erroredFields.length <= 0) {
       try {
         const formattedData = formatLogupFormData('cadete', formValues);
-        // const res = await axios.post(`${endpoints['logup']}/donante/`, formattedData).then((res) => res.data);
-        // console.log('Registro existoso' , res)
-        console.log(formattedData);
-      } catch {
-        console.log('Errrrrrrr')
+        await axios.post(`${endpoints['logup']}/cadete/`, formattedData).then((res) => res.data);
+      } catch (e) {
+        console.log(e)
       }
     } else {
       erroredFields.forEach(({ name }) => {

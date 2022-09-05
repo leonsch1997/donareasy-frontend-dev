@@ -1,8 +1,8 @@
-// import axios from 'axios';
+import axios from 'axios';
 import { Button,Center, Heading } from '@chakra-ui/react';
 import { Formik, Form, FormikHelpers } from 'formik';
 
-// import { endpoints } from '../../../../api';
+import { endpoints } from '../../../../api';
 import { UserFields } from '../../types';
 import { InstitucionEntFields } from './types';
 import { institucionFields, userFields, initialValues } from './constants';
@@ -13,15 +13,14 @@ export const InstitucionForm = () => {
 
   const handleSubmit = async (formValues: InstitucionEntFields & UserFields, actions: FormikHelpers<InstitucionEntFields & UserFields>) => {
     const erroredFields = validateUserFields(formValues);
-
     if (erroredFields.length <= 0) {
       try {
         const formattedData = formatLogupFormData('institucion', formValues);
-        // const res = await axios.post(`${endpoints['logup']}/donante/`, formattedData).then((res) => res.data);
-        // console.log('Registro existoso' , res)
+        const res = await axios.post(`${endpoints['logup']}/institucion/`, formattedData).then((res) => res.data);
+        console.log('Registro existoso' , res)
         console.log(formattedData);
-      } catch {
-        console.log('Errrrrrrr')
+      } catch (e) {
+        console.log(e)
       }
     } else {
       erroredFields.forEach(({ name }) => {

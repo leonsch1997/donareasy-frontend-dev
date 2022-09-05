@@ -1,20 +1,11 @@
-import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
-import { Button, Box, Container, Center, Heading, Select, HStack, FormLabel } from '@chakra-ui/react';
-import { endpoints } from '../../api';
+import { Box, Container, Center, Heading, Select, HStack, FormLabel } from '@chakra-ui/react';
 import { userTypeOptions } from '../constants';
 import { UserType } from './types';
 import { CadeteForm, DonanteForm, InstitucionForm } from './Forms';
 
 export const LogupForm = () => {
   const [userType, setUserType] = useState<UserType>('donante');
-  const checkUsers = async () => {
-    try {
-      await axios.get(`${endpoints['donantes']}`).then((res) => console.log(res.data.results));
-    } catch {
-      console.log('Error get donantes');
-    }
-  }
 
   const selectUserType = (event: ChangeEvent<HTMLSelectElement>) => {
     if (event.target.value) setUserType(event.target.value as UserType);
@@ -37,9 +28,6 @@ export const LogupForm = () => {
         <Heading as='h3' size='xl'>
           Registrarse
         </Heading>
-        {/* <Button onClick={checkUsers}>
-          Lookup
-        </Button> */}
       </Center>
 
       <Box borderRadius={5} shadow={'lg'} p={5}>

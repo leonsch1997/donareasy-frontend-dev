@@ -25,10 +25,9 @@ export const LoginForm = () => {
   const handleSubmit = async (formValues: LoginFormValues, { setSubmitting }: FormikHelpers<LoginFormValues>) => {
     try {
       setSubmitting(true);
-      const authToken = await axios.post(endpoints['login'], formValues).then((res) => res.data.token);
-      
+      await axios.post(endpoints['login'], formValues)
       setSubmitting(false)
-      dispatch(setUserToken(authToken));
+      dispatch(setUserToken(true));
       navigate(routes.home);
     } catch {
       setSubmitting(false);

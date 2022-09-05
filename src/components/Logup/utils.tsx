@@ -6,30 +6,20 @@ import { InstitucionFormSubmitFields, institucionFormattedValues } from './Forms
 import { CadeteFormSubmitFields, CadeteFormattedValues } from './Forms/Cadete/types';
 
 export const createField = ({ name, label, placeholder, dataType, isRequired, idx }: FieldData & { isRequired?: boolean }) => {
-  if (dataType === 'checkbox') return (
-    <HStack mb={'8'}>
-      <Field name={name}>
-        {({ form }: any) => (
-          <FormControl isInvalid={form.errors.username && form.touched.username}>
-            <FormLabel htmlFor={name}>{label}</FormLabel>
-            Si <Checkbox size={'lg'} width={'100%'}/>
-            No <Checkbox size={'lg'} width={'100%'} defaultChecked={true} />
-          </FormControl>
-        )}
-      </Field>
-    </HStack>
-  )
-
   return (
     <VStack key={`${name}-${idx}`} mb={'8'}>
       <Field name={name}>
-        {({ field, form }: any) => (
-          <FormControl isInvalid={form.errors.username && form.touched.username}>
-            <FormLabel htmlFor={name}>{label}{isRequired && <span style={{ color: 'red' }}>{' *'}</span>}</FormLabel>
-            <Input type={dataType} {...field} id={name} placeholder={placeholder} />
-            <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-          </FormControl>
-        )}
+        {({ field, form }: any) => {
+          return (
+            <FormControl isInvalid={form.errors[`${name}`] && form.touched[`${name}`]}>
+              <FormLabel htmlFor={name}>{label}{isRequired && <span style={{ color: 'red' }}>{' *'}</span>}</FormLabel>
+
+              <Input isRequired={isRequired} type={dataType} {...field} id={name} placeholder={placeholder} />
+
+              <FormErrorMessage>{form.errors[`${name}`]}</FormErrorMessage>
+            </FormControl>
+          )}
+        }
       </Field>
     </VStack>
   );

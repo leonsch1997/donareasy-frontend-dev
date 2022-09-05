@@ -12,17 +12,17 @@ export const userFields: FieldData[] = [
 export const cadeteFields: FieldData[] = [
   { name: 'first_name', label: c.l_nombre, isRequired: true },
   { name: 'last_name', label: c.l_apellido, isRequired: true },
-  { name: c.pais, label: c.l_pais },
-  { name: c.provincia, label: c.l_provincia },
-  { name: c.localidad, label: c.l_localidad },
-  { name: c.domicilio, label: c.l_domicilio },
-  { name: c.telefono, label: c.l_telefono },
+  { name: c.pais, label: c.l_pais, isRequired: true },
+  { name: c.provincia, label: c.l_provincia, isRequired: true },
+  { name: c.localidad, label: c.l_localidad, isRequired: true },
+  { name: c.domicilio, label: c.l_domicilio, isRequired: true },
+  { name: c.telefono, label: c.l_telefono, isRequired: true },
   { name: c.dni, label: c.l_dni, isRequired: true },
-  { name: c.fecha_nacimiento, label: c.l_fecha_nacimiento, isRequired: true },
+  { name: c.fecha_nacimiento, label: c.l_fecha_nacimiento, isRequired: true, dataType: 'date' },
   { name: c.estado_civil, label: c.l_estado_civil },
   { name: c.genero, label: c.l_genero },
   { name: c.ocupacion, label: c.l_ocupacion },
-  { name: c.medio_transporte, label: c.l_medio_transporte },
+  { name: c.medio_transporte, label: c.l_medio_transporte, isRequired: true },
 ];
 
 export const initialValues: CadeteEntFields & UserFields = {

@@ -84,12 +84,6 @@ export const institucionFields: FieldData[] = [
 export const cadeteFields: FieldData[] = [
   { name: medio_transporte, label: l_medio_transporte },
 ];
-interface FormFields {
-  user: FieldData[];
-  institucion: FieldData[];
-  donante: FieldData[];
-  cadete: FieldData[];
-}
 
 export const formFields: any = {
   user: userFields,
