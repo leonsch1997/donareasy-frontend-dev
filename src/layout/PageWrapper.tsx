@@ -20,7 +20,7 @@ export const PageWrapper: FC = ({ children }) => {
 
   const VerticalSpacer = () => {
     return (
-      <div style={{ minHeight: '55px', background: 'white', width: '3px', margin: '0 15px 0 0', color: 'white', fontWeight: 'bold', borderRadius: '10px', height: '100%' }} />
+      <div style={{ minHeight: '40px', background: 'white', width: '1px', margin: '0 15px 0 0', color: 'white', fontWeight: 'bold', borderRadius: '10px', height: '100%' }} />
     )
   };
   
@@ -29,13 +29,13 @@ export const PageWrapper: FC = ({ children }) => {
       <Flex p={2} bg={'teal.300'}>
         <Box as="button" maxWidth="75px" width="100%">
           <Link to={routes.home}>
-            <img style={{ height: "55px", margin:0 }} alt="logo" src={logo} />
+            <img style={{ height: "40px", margin:0 }} alt="logo" src={logo} />
           </Link>
         </Box>
         <VerticalSpacer />
         <Flex alignItems='center'>
           <Link to={routes.home}>
-            <Text fontSize='2xl' as='b' color="white">Donareasy</Text>
+            <Text letterSpacing="1px" as="b" fontSize='xl' color="white">Donareasy</Text>
           </Link>
         </Flex>
 
