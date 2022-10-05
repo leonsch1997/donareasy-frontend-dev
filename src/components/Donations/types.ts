@@ -42,3 +42,11 @@ export interface Donante {
   ocupacion?: string; // NN
   usuario: number;
 }
+
+export interface DonationsListProps {
+  list: Donacion[];
+}
+
+export interface DonationItemProps {
+  item: Donacion;
+} 
