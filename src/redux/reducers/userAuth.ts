@@ -7,13 +7,16 @@ export const userAuth = createSlice({
   reducers: {
     setUserToken: (state, { payload }) => {
       state.authToken = payload;
+      state.username = 'admin';
     },
     removeUserToken: (state) => {
       state.authToken = null;
+      state.username = '';
     }
   },
   initialState: {
     authToken: null,
+    username: '',
   }
 })
 
@@ -21,4 +24,4 @@ export const userAuth = createSlice({
 export const { setUserToken, removeUserToken } = userAuth.actions;
 
 // Selectors
-export const authSelector = (state: RootState) => state.userAuth.authToken;
+export const authSelector = (state: RootState) => state.userAuth;
