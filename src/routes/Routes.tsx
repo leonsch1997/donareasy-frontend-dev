@@ -3,12 +3,14 @@ import { Navigate, Outlet, Route, Routes as RouterDomRoutes } from "react-router
 
 import { Logup } from "../components/Logup";
 import { Lander } from "../components/Lander";
+import { HomeView } from "../components/Home";
 import { LoginForm } from "../components/LoginFormCopy";
 import { Donations } from '../components/Donations';
 import { RecoverSteps } from "../components/ForgotPassword";
 import { authSelector } from "../redux/reducers";
 
 export const routes = {
+  lander: '/lander',
   home: '/home',
   login: '/login',
   logup: '/logup',
@@ -27,9 +29,10 @@ export const Routes = () => {
   return (
     <RouterDomRoutes>
       <Route element={<PrivateRoutes />}>
-        <Route path={routes.home} element={<Lander />} />
+        <Route path={routes.home} element={<HomeView />} />
       </Route>
 
+      <Route path={routes.lander} element={<Lander />}/>
       <Route path={routes.donaciones} element={<Donations />} />
       <Route path={routes.login} element={<LoginForm />}/>
       <Route path={routes.forgotPassword} element={<RecoverSteps />}/>
