@@ -14,6 +14,9 @@ import {
   Stack,
   Button,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
+
+import { routes } from "../../../routes";
 
 const LatestDonations = () => {
   const mockDonations: string[] = [
@@ -110,7 +113,7 @@ const LatestDonations = () => {
             Completa el formulario para una nueva donación
           </Text>
           <Flex justifyContent={"center"} pt={4}>
-            <Button>Completar Formulario</Button>
+            <Button><Link to={routes.donar}>Completar Formulario</Link></Button>
           </Flex>
         </GridItem>
       </Grid>

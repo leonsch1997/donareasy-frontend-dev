@@ -8,6 +8,7 @@ import { LoginForm } from "../components/LoginFormCopy";
 import { Donations } from '../components/Donations';
 import { RecoverSteps } from "../components/ForgotPassword";
 import { authSelector } from "../redux/reducers";
+import { CrearDonacion } from "../components/Donations/CrearDonacion";
 
 export const routes = {
   lander: '/lander',
@@ -15,6 +16,7 @@ export const routes = {
   login: '/login',
   logup: '/logup',
   donaciones: '/donaciones',
+  donar: '/donate',
   forgotPassword: '/forgot-password'
 }
 
@@ -35,6 +37,7 @@ export const Routes = () => {
       <Route path={routes.lander} element={<Lander />}/>
       <Route path={routes.donaciones} element={<Donations />} />
       <Route path={routes.login} element={<LoginForm />}/>
+      <Route path={routes.donar} element={<CrearDonacion />}/>
       <Route path={routes.forgotPassword} element={<RecoverSteps />}/>
       <Route path={routes.logup} element={<Logup />}/>
     </RouterDomRoutes>
