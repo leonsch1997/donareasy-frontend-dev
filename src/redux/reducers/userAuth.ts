@@ -10,11 +10,12 @@ export const userAuth = createSlice({
     group: "",
     id: 1,
     nombre: "",
-    username: "jafonso",
+    username: "",
   },
   reducers: {
     setUserToken: (state, { payload }) => {
-      state.authToken = payload.authToken;
+      state.authToken = payload.username;
+      state.id = payload.id;
       state.nombre = payload.nombre;
       state.username = payload.username;
       state.group = payload.group;
