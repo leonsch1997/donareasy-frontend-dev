@@ -50,7 +50,7 @@ export const PageWrapper: FC = ({ children }) => {
         </Box>
       </Flex>
 
-      <Flex minHeight={'70vh'} height={'auto'}>
+      <Flex justifyContent={'center'} minHeight={'70vh'} height={'auto'}>
         {children}
       </Flex>
     </>
