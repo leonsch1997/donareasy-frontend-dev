@@ -7,7 +7,6 @@ import { authSelector } from '../../redux/reducers';
 export const Donations = () => {
   const donaciones = generateDonations(10);
   const { username, authToken } = useSelector(authSelector);
-  console.log({ username, authToken })
   
   return (
     <Flex flexDir='column' alignItems='center' w={'100%'}>

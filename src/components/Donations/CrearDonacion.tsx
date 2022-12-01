@@ -15,8 +15,7 @@ import { useSelector } from "react-redux";
 import { authSelector } from "../../redux/reducers";
 
 export const CrearDonacion = () => {
-  //   const { username, authToken } = useSelector(authSelector);
-  //   console.log({ username, authToken })
+    // const { username, authToken } = useSelector(authSelector);
   const [value, setValue] = useState("bienes");
 
   return (

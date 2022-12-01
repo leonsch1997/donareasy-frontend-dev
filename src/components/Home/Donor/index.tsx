@@ -73,6 +73,7 @@ const LatestDonations = () => {
             >
               {mockDonations.map((donation) => (
                 <Box
+                  key={Math.random()}
                   maxW="lg"
                   w="auto"
                   h="45px"
@@ -154,6 +155,7 @@ const News = () => {
             >
               {mockNoticias.map((noticia) => (
                 <Box
+                  key={Math.random()}
                   maxW="lg"
                   w="auto"
                   bg="white"

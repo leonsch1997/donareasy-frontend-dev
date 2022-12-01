@@ -10,7 +10,7 @@ import { authSelector, removeUserToken } from '../redux/reducers';
 export const PageWrapper: FC = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const authToken = useSelector(authSelector);
+  const {authToken, group, username, nombre} = useSelector(authSelector);
   const location = useLocation();
 
   const handleSessionButton = () => {

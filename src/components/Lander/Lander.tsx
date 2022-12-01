@@ -6,7 +6,6 @@ import { routes } from '../../routes';
 
 export const Lander = () => {
   const { username, authToken } = useSelector(authSelector);
-  console.log({ username, authToken })
   const navigate = useNavigate();
 
   return(
