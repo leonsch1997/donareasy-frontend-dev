@@ -15,15 +15,22 @@ import { useSelector } from "react-redux";
 import { authSelector } from "../../redux/reducers";
 import axios from "axios";
 import { endpoints } from "../../api";
+import { getAllJSDocTags } from "typescript";
 
 export const CrearDonacion = () => {
   const { username, authToken } = useSelector(authSelector);
   const [value, setValue] = useState("bienes");
   const [instituciones, setInstituciones] = useState([]);
 
+  const fetchInstituciones = async () => {
+    const response = await axios.get(endpoints.institucionesCBU, {
+      withCredentials: true,
+    });
+    setInstituciones(response.data.results);
+  };
+
   useEffect(() => {
-     const response = axios.get(endpoints.institucionesCBU).then(response => response);
-     console.log(response);
+    fetchInstituciones();
   }, []);
 
   return (
@@ -57,9 +64,10 @@ export const CrearDonacion = () => {
           <Text fontSize={"3xl"}>Paso 2</Text>
           <Text p={"20px"}>Elige la institución que recibirá la donación</Text>
           <Select p={"10px"} placeholder="Elige institución">
-            <option value="option1">Institucion 1 - San Juan 1928</option>
-            <option value="option2">Institucion 1 - Pte. Roca 1234</option>
-            <option value="option3">Institucion 1 - Pte. Roca 1234</option>
+            {instituciones.length > 0 &&
+              instituciones.map((i) => (
+                <option key={i.nombre} value={i.nombre}>{i.nombre}</option>
+              ))}
           </Select>
         </Box>
 
