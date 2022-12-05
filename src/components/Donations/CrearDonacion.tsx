@@ -10,13 +10,21 @@ import {
   Button,
   Box,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { authSelector } from "../../redux/reducers";
+import axios from "axios";
+import { endpoints } from "../../api";
 
 export const CrearDonacion = () => {
-    // const { username, authToken } = useSelector(authSelector);
+  const { username, authToken } = useSelector(authSelector);
   const [value, setValue] = useState("bienes");
+  const [instituciones, setInstituciones] = useState([]);
+
+  useEffect(() => {
+     const response = axios.get(endpoints.institucionesCBU).then(response => response);
+     console.log(response);
+  }, []);
 
   return (
     <Flex flexDir={"column"}>
@@ -71,7 +79,14 @@ export const CrearDonacion = () => {
         </Box>
       </Flex>
       <Flex>
-        <Box color={'red'} backgroundColor={'red'} width={'600px'} height={'300px'}>Resumen</Box>
+        <Box
+          color={"red"}
+          backgroundColor={"red"}
+          width={"600px"}
+          height={"300px"}
+        >
+          Resumen
+        </Box>
         <Button colorScheme={"linkedin"}>Enviar Donación</Button>
       </Flex>
     </Flex>

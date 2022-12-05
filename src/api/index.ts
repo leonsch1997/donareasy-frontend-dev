@@ -5,5 +5,6 @@ export const endpoints = {
   logup: `${baseURL}/home/logup`,
   donantes: `${baseURL}/home/models/donantes/`,
   cadetes: `${baseURL}/home/models/cadetes/`,
-  instituciones: `${baseURL}/home/models/instituciones/`,
+  institucionesCBU: `${baseURL}/donaciones/eligeInstitucionConCBU/`,
+  instituciones: `${baseURL}/donaciones/eligeInstitucion/`,
 }
