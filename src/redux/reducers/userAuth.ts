@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { stat } from "fs";
 import { RootState } from "../store";
 
 // Reducers
 export const userAuth = createSlice({
   name: "authUser",
   initialState: {
-    authToken: null,
+    authToken: document.cookie || '', // solo probando
     group: "",
     id: 1,
     nombre: "",
@@ -21,7 +20,7 @@ export const userAuth = createSlice({
       state.group = payload.group;
     },
     removeUserToken: (state) => {
-      state.authToken = null;
+      state.authToken = '';
       state.username = "";
     },
   },

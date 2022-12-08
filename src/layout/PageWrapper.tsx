@@ -6,15 +6,21 @@ import logo from '../assets/LOGO_BLANCO.png';
 
 import { routes } from '../routes';
 import { authSelector, removeUserToken } from '../redux/reducers';
+import { useCookies } from 'react-cookie';
 
 export const PageWrapper: FC = ({ children }) => {
+  const [cookies, _, removeCookie] = useCookies();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {authToken, group, username, nombre} = useSelector(authSelector);
+  const {authToken} = useSelector(authSelector);
   const location = useLocation();
 
   const handleSessionButton = () => {
-    if (authToken) dispatch(removeUserToken())
+    if (authToken) {
+      dispatch(removeUserToken());
+      console.log(cookies);
+      // removeCookie("sessionid");
+    }
     navigate(routes.login);
   }
 
