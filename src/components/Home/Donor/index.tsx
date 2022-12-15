@@ -116,6 +116,9 @@ const LatestDonations = () => {
           <Flex justifyContent={"center"} pt={4}>
             <Button><Link to={routes.donar}>Completar Formulario</Link></Button>
           </Flex>
+          <Flex justifyContent={"center"} pt={4}>
+            <Button><Link to={routes.apadrinar}>Apadrinar!</Link></Button>
+          </Flex>
         </GridItem>
       </Grid>
     </Container>
@@ -180,7 +183,10 @@ const News = () => {
             Completa el formulario para una nueva donación
           </Text>
           <Flex justifyContent={"center"} pt={4}>
-            <Button>Completar Formulario</Button>
+            <Button><Link to={routes.donar}>Completar Formulario</Link></Button>
+          </Flex>
+          <Flex justifyContent={"center"} pt={4}>
+            <Button><Link to={routes.apadrinar}>Apadrinar!</Link></Button>
           </Flex>
         </GridItem>
       </Grid>

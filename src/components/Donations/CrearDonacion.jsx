@@ -86,15 +86,10 @@ export const CrearDonacion = () => {
           </Button>
         </Box>
       </Flex>
-      <Flex>
-        <Box
-          color={"red"}
-          backgroundColor={"red"}
-          width={"600px"}
-          height={"300px"}
-        >
-          Resumen
-        </Box>
+      <Flex paddingTop={"10"}>
+        <Box color={'red'} backgroundColor={'yellow'} width={'800px'} height={'300px'}>Resumen</Box>
+      </Flex>
+      <Flex paddingTop={"12"}>
         <Button colorScheme={"linkedin"}>Enviar Donación</Button>
       </Flex>
     </Flex>
