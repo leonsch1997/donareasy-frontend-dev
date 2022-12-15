@@ -15,6 +15,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { FaHeart } from "react-icons/fa";
 
 import { routes } from "../../../routes";
 
@@ -114,10 +115,17 @@ const LatestDonations = () => {
             Completa el formulario para una nueva donación
           </Text>
           <Flex justifyContent={"center"} pt={4}>
-            <Button><Link to={routes.donar}>Completar Formulario</Link></Button>
+            <Button>
+              <Link to={routes.donar}>Completar Formulario</Link>
+            </Button>
           </Flex>
           <Flex justifyContent={"center"} pt={4}>
-            <Button><Link to={routes.apadrinar}>Apadrinar!</Link></Button>
+            <Button>
+              <Link to={routes.apadrinar}>Apadrinar!</Link>
+              <Flex paddingLeft={2}>
+                <FaHeart />
+              </Flex>
+            </Button>
           </Flex>
         </GridItem>
       </Grid>
@@ -183,10 +191,14 @@ const News = () => {
             Completa el formulario para una nueva donación
           </Text>
           <Flex justifyContent={"center"} pt={4}>
-            <Button><Link to={routes.donar}>Completar Formulario</Link></Button>
+            <Button>
+              <Link to={routes.donar}>Completar Formulario</Link>
+            </Button>
           </Flex>
           <Flex justifyContent={"center"} pt={4}>
-            <Button><Link to={routes.apadrinar}>Apadrinar!</Link></Button>
+            <Button>
+              <Link to={routes.apadrinar}>Apadrinar!</Link>
+            </Button>
           </Flex>
         </GridItem>
       </Grid>
