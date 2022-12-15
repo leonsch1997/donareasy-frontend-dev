@@ -14,6 +14,7 @@ import { Donations } from "../components/Donations";
 import { RecoverSteps } from "../components/ForgotPassword";
 import { authSelector } from "../redux/reducers";
 import { CrearDonacion } from "../components/Donations/CrearDonacion";
+import { CrearApadrinamiento } from "../components/Apadrination/CrearApadrinamiento";
 
 export const routes = {
   lander: "/lander",
@@ -22,6 +23,7 @@ export const routes = {
   logup: "/logup",
   donaciones: "/donaciones",
   donar: "/donate",
+  apadrinar: "/apadrinamiento",
   forgotPassword: "/forgot-password",
 };
 
@@ -49,6 +51,14 @@ export const Routes = () => {
         element={
           <PrivateRoutes>
             <CrearDonacion />
+          </PrivateRoutes>
+        }
+      />
+      <Route
+        path={routes.apadrinar}
+        element={
+          <PrivateRoutes>
+            <CrearApadrinamiento />
           </PrivateRoutes>
         }
       />
