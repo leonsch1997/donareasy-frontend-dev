@@ -2,8 +2,10 @@ export const baseURL = 'http://localhost:8000';
 
 export const endpoints = {
   login: `${baseURL}/home/login/`,
-  logup: `${baseURL}/home/logup`,
+  logup: `${baseURL}/home/logup/`,
+  logout: `${baseURL}/home/logout/`,
   donantes: `${baseURL}/home/models/donantes/`,
   cadetes: `${baseURL}/home/models/cadetes/`,
-  instituciones: `${baseURL}/home/models/instituciones/`,
+  institucionesCBU: `${baseURL}/donaciones/eligeInstitucionConCBU/`,
+  instituciones: `${baseURL}/donaciones/eligeInstitucion/`,
 }
