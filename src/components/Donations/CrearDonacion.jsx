@@ -13,21 +13,18 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Formik, Field, Form, FormikHelpers } from "formik";
+import { Formik, Field, Form } from "formik";
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
   Input,
-  Container,
   Center,
-  Link,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { endpoints } from "../../api";
@@ -35,6 +32,7 @@ import { endpoints } from "../../api";
 export const CrearDonacion = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [tipoDonacion, setTipoDonacion] = useState("bienes");
+  const [donaciones, setDonaciones] = useState([]);
   const [institucionesCBU, setInstitucionesCBU] = useState([]);
   const [instituciones, setInstituciones] = useState([]);
 
@@ -53,10 +51,15 @@ export const CrearDonacion = () => {
     fetchInstituciones();
   }, []);
 
-  const handleSubmit = (formValues, actions) => {
-    console.log();
+  const agregarDonacion = (values) => {
+    const data = {
+      tipo: tipoDonacion,
+      data: values,
+    };
+    setDonaciones([...donaciones, data]);
+    onClose();
   };
-
+  
   return (
     <Flex flexDir={"column"}>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -68,69 +71,103 @@ export const CrearDonacion = () => {
           <ModalCloseButton />
           <ModalBody>
             {tipoDonacion == "bienes" && (
-              <Formik onSubmit={handleSubmit}>
-                {({ isSubmitting }) => (
-                  <Form>
-                    <Field name="nombre">
-                      {({ field, form }) => (
-                        <FormControl>
-                          <FormLabel htmlFor="nombre">Nombre</FormLabel>
-                          <Input {...field} id="nombre" placeholder="nombre" />
-                        </FormControl>
-                      )}
-                    </Field>
-                    <Field name="descripcion">
-                      {({ field, form }) => (
-                        <FormControl>
-                          <FormLabel htmlFor="descripcion">
-                            Descripcion
-                          </FormLabel>
-                          <Input
-                            {...field}
-                            id="descripcion"
-                            placeholder="descripcion"
-                          />
-                        </FormControl>
-                      )}
-                    </Field>
-                    <Field name="cantidad">
-                      {({ field, form }) => (
-                        <FormControl>
-                          <FormLabel htmlFor="cantidad">Cantidad</FormLabel>
-                          <Input
-                            {...field}
-                            id="cantidad"
-                            placeholder="cantidad"
-                          />
-                        </FormControl>
-                      )}
-                    </Field>
-                    <Field name="tipo">
-                      {({ field, form }) => (
-                        <FormControl>
-                          <FormLabel htmlFor="tipo">Tipo</FormLabel>
-                          <Select {...field} id="tipo" placeholder="tipo">
-                            <option value={1} >Alimento</option>
-                            <option value={2} >Útil escolar</option>
-                            <option value={3} >Prendas</option>
-                            <option value={4} >Otros</option>
-                          </Select>
-                        </FormControl>
-                      )}
-                    </Field>
+              <Formik
+                initialValues={{
+                  nombre: "",
+                  descripcion: "",
+                  cantidad: "",
+                  tipo: "",
+                }}
+                onSubmit={agregarDonacion}
+              >
+                <Form>
+                  <Field name="nombre">
+                    {({ field, form }) => (
+                      <FormControl>
+                        <FormLabel htmlFor="nombre">Nombre</FormLabel>
+                        <Input {...field} id="nombre" placeholder="nombre" />
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field name="descripcion">
+                    {({ field, form }) => (
+                      <FormControl>
+                        <FormLabel htmlFor="descripcion">Descripcion</FormLabel>
+                        <Input
+                          {...field}
+                          id="descripcion"
+                          placeholder="descripcion"
+                        />
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field name="cantidad">
+                    {({ field, form }) => (
+                      <FormControl>
+                        <FormLabel htmlFor="cantidad">Cantidad</FormLabel>
+                        <Input
+                          {...field}
+                          id="cantidad"
+                          placeholder="cantidad"
+                        />
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field name="tipo">
+                    {({ field, form }) => (
+                      <FormControl>
+                        <FormLabel htmlFor="tipo">Tipo</FormLabel>
+                        <Select {...field} id="tipo" placeholder="tipo">
+                          <option value={1}>Alimento</option>
+                          <option value={2}>Útil escolar</option>
+                          <option value={3}>Prendas</option>
+                          <option value={4}>Otros</option>
+                        </Select>
+                      </FormControl>
+                    )}
+                  </Field>
 
-                    <Center>
-                      <Button
-                        mt={4}
-                        colorScheme="pink"
-                        isLoading={isSubmitting}
-                        type="submit"
-                      >
-                        Confirmar
-                      </Button>
-                    </Center>
-                  </Form>
-                )}
+                  <Center>
+                    <Button
+                      mt={4}
+                      colorScheme="pink"
+                      // isLoading={isSubmitting}
+                      type="submit"
+                    >
+                      Confirmar
+                    </Button>
+                  </Center>
+                </Form>
+              </Formik>
+            )}
+            {tipoDonacion == "monetaria" && (
+              <Formik
+                initialValues={{
+                  monto: "",
+                }}
+                onSubmit={agregarDonacion}
+              >
+                <Form>
+                  <Field name="monto">
+                    {({ field, form }) => (
+                      <FormControl>
+                        <FormLabel htmlFor="monto">Monto</FormLabel>
+                        <Input {...field} id="monto" placeholder="monto" />
+                      </FormControl>
+                    )}
+                  </Field>
+
+                  <Center>
+                    <Button
+                      mt={4}
+                      colorScheme="pink"
+                      // isLoading={isSubmitting}
+                      type="submit"
+                    >
+                      Confirmar
+                    </Button>
+                  </Center>
+                </Form>
               </Formik>
             )}
           </ModalBody>
@@ -202,14 +239,29 @@ export const CrearDonacion = () => {
           </Button>
         </Box>
       </Flex>
-      <Flex paddingTop={"10"}>
-        <Box
-          color={"red"}
-          backgroundColor={"yellow"}
-          width={"800px"}
-          height={"300px"}
-        >
-          Resumen
+      <Flex direction={"column"} paddingTop={"10"}>
+        <Box>Resumen</Box>
+        <Box color={"red"} backgroundColor={"yellow"} w="100%" height={"300px"}>
+          {donaciones.length == 0 && <>dona no seas trolo</>}
+          {donaciones.length > 0 && (
+            <div>
+              {donaciones.map((d) => {
+                return (
+                  <div>
+                    {d.tipo == "monetaria" && d.data.monto}
+                    {d.tipo == "bienes" && (
+                      <>
+                        <div>Nombre: {d.data.nombre}</div>
+                        <div>Descripcion: {d.data.descripcion}</div>
+                        <div>Cantidad: {d.data.cantidad}</div>
+                        <div>Tipo: {d.data.tipo}</div>
+                      </>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </Box>
       </Flex>
       <Flex paddingTop={"12"}>
