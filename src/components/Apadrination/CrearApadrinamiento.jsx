@@ -23,7 +23,7 @@ import {
     const [chicos, setChicos] = useState([]); 
 
     const fetchChicos = async () => {
-        const response = await axios.get(endpoints.institucionesCBU, {
+        const response = await axios.get(endpoints.chicos, {
           withCredentials: true,
         });
         setChicos(response.data.results);
@@ -85,6 +85,9 @@ import {
             Agregar
           </Button>
         </Box>
+        </Flex>
+        <Flex paddingTop={"12"}>
+        <Button colorScheme={"linkedin"}>Apadrinar</Button>
         </Flex>
         </Flex>
         )

@@ -8,4 +8,5 @@ export const endpoints = {
   cadetes: `${baseURL}/home/models/cadetes/`,
   institucionesCBU: `${baseURL}/donaciones/eligeInstitucionConCBU/`,
   instituciones: `${baseURL}/donaciones/eligeInstitucion/`,
+  chicos: `${baseURL}/apadrinamiento/solicitud/chicos/`,
 }
