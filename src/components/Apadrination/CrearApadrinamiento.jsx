@@ -21,6 +21,18 @@ import {
     const { username, authToken } = useSelector(authSelector);
     const [value, setValue] = useState("bienes");
     const [chicos, setChicos] = useState([]); 
+    const [instituciones, setInstituciones] = useState([]);
+
+    const fetchInstituciones = async () => {
+      const response = await axios.get(endpoints.instituciones, {
+        withCredentials: true,
+      });
+      setInstituciones(response.data.results);
+      };
+
+      useEffect(() => {
+        fetchInstituciones();
+      }, []);  
 
     const fetchChicos = async () => {
         const response = await axios.get(endpoints.chicos, {
@@ -33,61 +45,81 @@ import {
         fetchChicos();
       }, []);
 
+      const elegirInstitucion = (event) => {
+        setInstituciones(event.target.value);
+      };
+
     return (
         <Flex flexDir={"column"}>
-          <Heading m={10}>Crear Apadrinamiento</Heading>
+          <Heading m={10}>Solicitud de apadrinamiento</Heading>
           <Flex
             flexDir="row"
             justifyContent={"center"}
             alignItems="center"
             w={"100%"}
           >
-             <Box paddingRight={"10"}>
-          <Text fontSize={"3xl"}>Paso 1</Text>
-          <Text p={"20px"}>Dinos qué tipo de donación se va a realizar.</Text>
-          <RadioGroup p={"20px"} onChange={setValue} value={value}>
-            <Stack direction="row">
-              <Radio value="bienes">Bien</Radio>
-              <Radio value="monetaria">Monetaria</Radio>
-            </Stack>
-          </RadioGroup>
-        </Box>
 
-        <Divider
-          variant={"dashed"}
-          orientation={"vertical"}
-          paddingRight={"14"}
-          style={{ borderColor: "black" }}
-        />
-
-        <Box paddingRight={"10"}>
-          <Text fontSize={"3xl"}>Paso 2</Text>
-          <Text p={"20px"}>Elija el chico/a para apadrinar</Text>
-          <Select p={"10px"} placeholder="Elige Chico/a">
-            {chicos.length > 0 &&
-              chicos.map((i) => (
-                <option key={i.nombre} value={i.nombre}>{i.nombre}</option>
-              ))}
-          </Select>
-        </Box>
-
-        <Divider
-          variant={"dashed"}
-          orientation={"vertical"}
-          paddingRight={"14"}
-          style={{ borderColor: "black" }}
-        />
-
-        <Box>
-          <Text fontSize={"3xl"}>Paso 3</Text>
-          <Text p={"20px"}>Danos el detalle de lo que vas a donar</Text>
-          <Button colorScheme={"linkedin"} variant={"ghost"}>
-            Agregar
-          </Button>
+          <Box paddingRight={"20"}>
+          <Text p={"20px"} fontSize={"3xl"}>Elije la institución</Text>
+          <Text p={"20px"}>Podrás especificar de que hogarcito es el niño/a a apadrinar, 
+            ó en su defecto elegir todas las instituciones</Text>
+          <Flex p={"20px"}>
+            <Select
+              placeholder="Elige institución"
+            >
+              {instituciones.length > 0 &&
+                instituciones.map((i) => (
+                  <option key={i.nombre} value={i.nombre}>
+                    {i.nombre}
+                  </option>
+                ))}
+            </Select>
+          </Flex>
         </Box>
         </Flex>
-        <Flex paddingTop={"12"}>
-        <Button colorScheme={"linkedin"}>Apadrinar</Button>
+         <Divider
+          variant={"dashed"}
+          orientation={"horizontal"}
+          paddingRight={"14"}
+          style={{ borderColor: "black" }}
+                /> 
+        <Flex paddingTop={"20"} p={"20px"}>
+          <Box>
+            <Text fontSize={"3xl"}>Completar formulario</Text>
+            <Text p={"20px"}>Cargar documentos para enviar a la institución</Text>
+            <Button 
+            colorScheme={"linkedin"} 
+            variant={"ghost"}>
+            {/* onClick={onOpen}
+            disabled={!institucion}> */}
+              Completar
+            </Button>
+          </Box>
+        </Flex>
+
+        <Divider
+          variant={"dashed"}
+          orientation={"horizontal"}
+          paddingRight={"14"}
+          style={{ borderColor: "black" }}
+                />
+        
+
+        <Flex paddingTop={"20"} p={"20px"}>
+          <Box paddingRight={"10"}>
+            <Text fontSize={"3xl"}>Niño/a</Text>
+            <Text p={"20px"}>A continuación se mostrará el listado de todos los niños/as</Text>
+            <Select p={"10px"} placeholder="...">
+              {chicos.length > 0 &&
+                chicos.map((i) => (
+                  <option key={i.nombre} value={i.nombre}>{i.nombre}</option>
+                ))}
+            </Select>
+          </Box>
+        </Flex>
+
+        <Flex paddingTop={"12"} p={"20px"}>
+        <Button colorScheme={"linkedin"}>Enviar solicitud</Button>
         </Flex>
         </Flex>
         )
