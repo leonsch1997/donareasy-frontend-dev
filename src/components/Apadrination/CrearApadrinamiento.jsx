@@ -9,8 +9,23 @@ import {
     Text,
     Button,
     Box,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalCloseButton,
+  useDisclosure,
   } from "@chakra-ui/react";
   import { useEffect, useState } from "react";
+  import { Formik, Field, Form } from "formik";
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  Input,
+  Center,
+} from "@chakra-ui/react";
   import { useSelector } from "react-redux";
   import { authSelector } from "../../redux/reducers";
   import axios from "axios";
@@ -19,7 +34,10 @@ import {
   
   export const CrearApadrinamiento = () => {
     const { username, authToken } = useSelector(authSelector);
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const [value, setValue] = useState("bienes");
+    const [validForm, setValidForm] = useState(false);
+    const [institucion, setInstitucion] = useState("");
     const [chicos, setChicos] = useState([]); 
     const [instituciones, setInstituciones] = useState([]);
 
@@ -45,12 +63,121 @@ import {
         fetchChicos();
       }, []);
 
+
       const elegirInstitucion = (event) => {
-        setInstituciones(event.target.value);
+        setInstitucion(event.target.value);
       };
 
     return (
         <Flex flexDir={"column"}>
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>
+                Carga de documentos
+              </ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                
+                  <Formik
+                    initialValues={{
+                      motivo: "",
+                      dni_frente: "",
+                      dni_dorso: "",
+                      recibo_sueldo: "",
+                      acta_matrimonio: "",
+                      visita: "",
+                      fecha_visita: "",
+                    }}
+                    /*onSubmit={agregarDonacion}*/
+                  >
+                    <Form>
+                      <Field name="motivo">
+                        {({ field, form }) => (
+                          <FormControl>
+                            <FormLabel htmlFor="motivo">Motivo del apadrinamiento</FormLabel>
+                            <Input {...field} id="motivo" placeholder="Contanos porque querés apadrinar" />
+                          </FormControl>
+                        )}
+                      </Field>
+
+                      <Field name="dni_frente">
+                        {({ field, form }) => (
+                          <FormControl>
+                            <FormLabel htmlFor="dni_frente">DNI Frente</FormLabel>
+                            <Input {...field} id="motdni_frenteivo" placeholder="Frente" />
+                          </FormControl>
+                        )}
+                      </Field>
+
+                      <Field name="dni_dorso">
+                        {({ field, form }) => (
+                          <FormControl>
+                            <FormLabel htmlFor="dni_dorso">DNI Dorso</FormLabel>
+                            <Input {...field} id="dni_dorso" placeholder="Dorso" />
+                          </FormControl>
+                        )}
+                      </Field>
+
+                      <Field name="recibo_sueldo">
+                        {({ field, form }) => (
+                          <FormControl>
+                            <FormLabel htmlFor="recibo_sueldo">Recibo de Sueldo</FormLabel>
+                            <Input {...field} id="recibo_sueldo" placeholder="Cargar Recibo" />
+                          </FormControl>
+                        )}
+                      </Field>
+
+                      <Field name="acta_matrimonio">
+                        {({ field, form }) => (
+                          <FormControl>
+                            <FormLabel htmlFor="acta_matrimonio">Acta de matrimonio</FormLabel>
+                            <Input {...field} id="acta_matrimonio" placeholder="Cargar Acta" />
+                          </FormControl>
+                        )}
+                      </Field>
+
+                      <Field name="visita">
+                        {({ field, form }) => (
+                          <FormControl>
+                            <FormLabel htmlFor="visita">Pactar visita</FormLabel>
+                            <Select {...field} id="visita" placeholder="¿Desea pactar una visita?">
+                              <option value={1}>Si</option>
+                              <option value={2}>No</option>
+                        </Select>
+                          </FormControl>
+                        )}
+                      </Field>
+
+                      <Field name="fecha_visita">
+                        {({ field, form }) => (
+                          <FormControl>
+                            <FormLabel htmlFor="fecha_visita">Fecha de la visita</FormLabel>
+                            <Input {...field} id="fecha_visita" placeholder="Fecha" />
+                          </FormControl>
+                        )}
+                      </Field>
+
+                      {!validForm && (
+                        <Text color={"red"} fontSize={"sm"}>
+                          complete todos los campos
+                        </Text>
+                      )}
+                      <Center>
+                        <Button
+                          mt={4}
+                          colorScheme="pink"
+                          type="submit"
+                        >
+                          Confirmar
+                        </Button>
+                      </Center>
+                    </Form>
+                  </Formik>
+                
+              </ModalBody>
+            </ModalContent>
+          </Modal>
           <Heading m={10}>Solicitud de apadrinamiento</Heading>
           <Flex
             flexDir="row"
@@ -58,7 +185,7 @@ import {
             alignItems="center"
             w={"100%"}
           >
-
+          
           <Box paddingRight={"20"}>
           <Text p={"20px"} fontSize={"3xl"}>Elije la institución</Text>
           <Text p={"20px"}>Podrás especificar de que hogarcito es el niño/a a apadrinar, 
@@ -66,6 +193,7 @@ import {
           <Flex p={"20px"}>
             <Select
               placeholder="Elige institución"
+              onChange={elegirInstitucion}
             >
               {instituciones.length > 0 &&
                 instituciones.map((i) => (
@@ -89,9 +217,10 @@ import {
             <Text p={"20px"}>Cargar documentos para enviar a la institución</Text>
             <Button 
             colorScheme={"linkedin"} 
-            variant={"ghost"}>
-            {/* onClick={onOpen}
-            disabled={!institucion}> */}
+            variant={"ghost"}
+            onClick={onOpen}
+            disabled={!institucion}
+            > 
               Completar
             </Button>
           </Box>
