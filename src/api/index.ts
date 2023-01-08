@@ -9,4 +9,8 @@ export const endpoints = {
   institucionesCBU: `${baseURL}/donaciones/eligeInstitucionConCBU/`,
   instituciones: `${baseURL}/donaciones/eligeInstitucion/`,
   chicos: `${baseURL}/apadrinamiento/solicitud/chicos/`,
+  noticias: `${baseURL}/noticias/`,
+  donacionesPendientes: `${baseURL}/donaciones/donacionesPendientes/`,
+  transferenciasPendientes: `${baseURL}/donaciones/transferenciasPendientes/`,
+  solicitudApadrinamientoPendientes: `${baseURL}/apadrinamiento/solicitudes/`,
 }

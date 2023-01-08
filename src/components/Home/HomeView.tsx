@@ -3,7 +3,7 @@ import { DonorHomeView } from './Donor';
 import { HomeViewProps } from './types';
 import { InstitutionHomeView } from './Institution';
 
-const userType = 'donante';
+const userType = 'institucion';
 
 export const HomeView: React.FC = (props: HomeViewProps) => {
   const views = {
