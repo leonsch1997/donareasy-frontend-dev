@@ -13,13 +13,17 @@ import {
   GridItem,
   Stack,
   Button,
+  Link,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { endpoints } from "../../../api";
+import { routes } from "../../../routes";
+import { useNavigate } from 'react-router-dom';
 
 const DonacionesBienesPendientes = () => {
   const [donacionesPendientes, setDonacionesPendientes] = useState([]);
+  const navigate = useNavigate();
 
   const fetchDonacionesPendientes = async () => {
     const response = await axios.get(endpoints.donacionesPendientes, {
@@ -67,19 +71,23 @@ const DonacionesBienesPendientes = () => {
                   pb={2}
                   pl={2}
                 >
-                  <Text>
-                    {donacion['donante']['apellido'] + ', ' + donacion['donante']['nombre'] }
-                  </Text>
-                  <Text>Tipo de donación: {donacion['cod_estado']}</Text>
-                  {/* <Text>{donacion['bienes'] !== undefined ? 'Verdadero' : 'Falso'}</Text>
-                  <Text>{donacion['bienes'] !== null ? 'Verdadero' : 'Falso'}</Text>
-                  <Text>{typeof(donacion['bienes'])}</Text> */}
-                  <Text>Cantidad de bienes: </Text>
+                  <Stack spacing={8} direction='row' align='end'>
+                    <Box w='350px'>
+                      <Text>{donacion['id']}</Text>
+                      <Text>
+                        {donacion['donante']['apellido'] + ', ' + donacion['donante']['nombre'] }
+                      </Text>
+                      <Text>Tipo de donación: {donacion['cod_estado']}</Text>
+                      <Text>Cantidad de bienes: </Text>
+                    </Box>
+                    <Box>
+                      <Button colorScheme='blue' size='sm' onClick={() => navigate(`${routes.verDonacion}`)}>Ver Más</Button>
+                    </Box>
+                  </Stack>
                 </Box>
               ))}
             </Stack>
           )}
-
         </GridItem>
       </Grid>
     </Container>

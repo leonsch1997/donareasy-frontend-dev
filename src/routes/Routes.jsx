@@ -15,6 +15,7 @@ import { RecoverSteps } from "../components/ForgotPassword";
 import { authSelector } from "../redux/reducers";
 import { CrearDonacion } from "../components/Donations/CrearDonacion";
 import { CrearApadrinamiento } from "../components/Apadrination/CrearApadrinamiento";
+import { VisualizarDonacion } from "../components/Donations/VisualizarDonacion";
 
 export const routes = {
   lander: "/lander",
@@ -25,6 +26,7 @@ export const routes = {
   donar: "/donate",
   apadrinar: "/apadrinamiento",
   forgotPassword: "/forgot-password",
+  verDonacion: "/verDonacion",
 };
 
 export const PrivateRoutes = ({ children }) => {
@@ -62,7 +64,14 @@ export const Routes = () => {
           </PrivateRoutes>
         }
       />
-
+      <Route
+        path={routes.verDonacion}
+        element={
+          <PrivateRoutes>
+            <VisualizarDonacion />
+          </PrivateRoutes>
+        }
+      />
       <Route path={routes.lander} element={<Lander />} />
       <Route path={routes.login} element={<LoginForm />} />
       <Route path={routes.forgotPassword} element={<RecoverSteps />} />
