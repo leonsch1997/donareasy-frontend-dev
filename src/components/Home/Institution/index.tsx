@@ -13,24 +13,22 @@ import {
   GridItem,
   Stack,
   Button,
-  Link,
   useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { endpoints } from "../../../api";
-import { routes } from "../../../routes";
 import { useNavigate } from 'react-router-dom';
+import { DonationModal, DonationSelector, RejectDonation } from './components';
+import { bodyTypes } from './constants';
+
+// const ComponenteNormal: FC = ({ children }) => <div>Mis children son: {children}</div>
 
 const DonacionesBienesPendientes = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onOpen, onClose, isOpen } = useDisclosure();
   const [donacionesPendientes, setDonacionesPendientes] = useState([]);
+  const [modalBody, setModalBody] = useState(bodyTypes.select);
+
   const navigate = useNavigate();
   let idDonacion = 0;
 
@@ -45,23 +43,21 @@ const DonacionesBienesPendientes = () => {
     fetchDonacionesPendientes();
   }, []);
 
+  const openDonationDetails = () => {
+    setModalBody(bodyTypes.select);
+    onOpen();
+  }
+
+  const renderModalBody = () => {
+    if (modalBody === bodyTypes.select) return <DonationSelector />
+    if (modalBody === bodyTypes.reject) return <RejectDonation />
+  }
+
   return (
     <Flex flexDir={"column"} justifyContent={"center"} w="100%">
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            DETALLE DE LA DONACIÓN
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {idDonacion}
-            <Button colorScheme="pink" type="submit" onClick={onClose} >
-              Cerrar
-            </Button>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      <DonationModal idDonacion={idDonacion} onClose={onClose} isOpen={isOpen}>
+        {renderModalBody()}
+      </DonationModal>
 
       <Container
         ml={0}
@@ -107,14 +103,13 @@ const DonacionesBienesPendientes = () => {
                         <Text>Cantidad de bienes: </Text>
                       </Box>
                       <Box>
-                        {/* <Button colorScheme='blue' size='sm' onClick={onOpen}>Ver Más</Button> */}
-                        <Button colorScheme='blue' size='sm' onClick={idDonacion=donacion['id'] && onOpen}>Ver Más</Button>
+                        <Button colorScheme='blue' size='sm' onClick={openDonationDetails}>Ver Más</Button>
                       </Box>
                       <Box>
                         <Button colorScheme='green' size='sm'>Aceptar</Button>
                       </Box>
                       <Box>
-                        <Button colorScheme='red' size='sm'>Rechazar</Button>
+                        <Button colorScheme='red' size='sm' onClick={() => setModalBody('reject')}>Rechazar</Button>
                       </Box>
                     </Stack>
                   </Box>
