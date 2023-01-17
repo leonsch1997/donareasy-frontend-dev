@@ -14,6 +14,13 @@ import {
   Stack,
   Button,
   Link,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -22,8 +29,10 @@ import { routes } from "../../../routes";
 import { useNavigate } from 'react-router-dom';
 
 const DonacionesBienesPendientes = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [donacionesPendientes, setDonacionesPendientes] = useState([]);
   const navigate = useNavigate();
+  let idDonacion = 0;
 
   const fetchDonacionesPendientes = async () => {
     const response = await axios.get(endpoints.donacionesPendientes, {
@@ -37,60 +46,85 @@ const DonacionesBienesPendientes = () => {
   }, []);
 
   return (
-    <Container
-      ml={0}
-      pt={4}
-      pb={4}
-      maxW={{ md: "100%" }}
-      h={{ md: "100%" }}
-      bg="white"
-    >
-      <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-        <GridItem colSpan={1} height={{ md: "55vh" }}>
-          <Text fontSize={"4xl"} fontWeight={"bold"} align={"left"}>
-            Donaciones Pendientes
-          </Text>
-          {donacionesPendientes.length > 0 && (
-            <Stack
-              divider={<StackDivider borderColor="gray.200" />}
-              spacing={4}
-              align="stretch"
-              h={{ md: "90%" }}
-              overflowY={"auto"}
-            >
-              {donacionesPendientes.map((donacion) => (
-                <Box
-                  key={donacion['id']}
-                  maxW="lg"
-                  w="auto"
-                  bg="white"
-                  borderWidth="2px"
-                  borderRadius="lg"
-                  shadow={"lg"}
-                  pt={2}
-                  pb={2}
-                  pl={2}
-                >
-                  <Stack spacing={8} direction='row' align='end'>
-                    <Box w='350px'>
-                      <Text>{donacion['id']}</Text>
-                      <Text>
-                        {donacion['donante']['apellido'] + ', ' + donacion['donante']['nombre'] }
-                      </Text>
-                      <Text>Tipo de donación: {donacion['cod_estado']}</Text>
-                      <Text>Cantidad de bienes: </Text>
-                    </Box>
-                    <Box>
-                      <Button colorScheme='blue' size='sm' onClick={() => navigate(`${routes.verDonacion}`)}>Ver Más</Button>
-                    </Box>
-                  </Stack>
-                </Box>
-              ))}
-            </Stack>
-          )}
-        </GridItem>
-      </Grid>
-    </Container>
+    <Flex flexDir={"column"} justifyContent={"center"} w="100%">
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            DETALLE DE LA DONACIÓN
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {idDonacion}
+            <Button colorScheme="pink" type="submit" onClick={onClose} >
+              Cerrar
+            </Button>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      <Container
+        ml={0}
+        pt={4}
+        pb={4}
+        maxW={{ md: "100%" }}
+        h={{ md: "100%" }}
+        bg="white"
+      >
+        <Grid templateColumns="repeat(1, 1fr)" gap={4}>
+          <GridItem colSpan={1} height={{ md: "55vh" }}>
+            <Text fontSize={"4xl"} fontWeight={"bold"} align={"left"}>
+              Donaciones Pendientes
+            </Text>
+            {donacionesPendientes.length > 0 && (
+              <Stack
+                divider={<StackDivider borderColor="gray.200" />}
+                spacing={4}
+                align="stretch"
+                h={{ md: "90%" }}
+                overflowY={"auto"}
+              >
+                {donacionesPendientes.map((donacion) => (
+                  <Box
+                    key={donacion['id']}
+                    maxW="lg"
+                    w="auto"
+                    bg="white"
+                    borderWidth="2px"
+                    borderRadius="lg"
+                    shadow={"lg"}
+                    pt={2}
+                    pb={2}
+                    pl={2}
+                  >
+                    <Stack direction='row' align='end'>
+                      <Box w='900px'>
+                        <Text>{donacion['id']}</Text>
+                        <Text>
+                          {donacion['donante']['apellido'] + ', ' + donacion['donante']['nombre'] }
+                        </Text>
+                        <Text>Tipo de donación: {donacion['cod_estado']}</Text>
+                        <Text>Cantidad de bienes: </Text>
+                      </Box>
+                      <Box>
+                        {/* <Button colorScheme='blue' size='sm' onClick={onOpen}>Ver Más</Button> */}
+                        <Button colorScheme='blue' size='sm' onClick={idDonacion=donacion['id'] && onOpen}>Ver Más</Button>
+                      </Box>
+                      <Box>
+                        <Button colorScheme='green' size='sm'>Aceptar</Button>
+                      </Box>
+                      <Box>
+                        <Button colorScheme='red' size='sm'>Rechazar</Button>
+                      </Box>
+                    </Stack>
+                  </Box>
+                ))}
+              </Stack>
+            )}
+          </GridItem>
+        </Grid>
+      </Container>
+    </Flex>
   );
 };
 
@@ -233,6 +267,47 @@ const Apadrinamiento = () => {
           )}
         </GridItem>
       </Grid>
+      <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+        <GridItem colSpan={1} height={{ md: "55vh" }}>
+          <Text fontSize={"4xl"} fontWeight={"bold"} align={"left"}>
+            Solicitudes de Apadrinamiento Pendientes
+          </Text>
+          {solicitudesPendientes.length > 0 && (
+            <Stack
+              divider={<StackDivider borderColor="gray.200" />}
+              spacing={4}
+              align="stretch"
+              h={{ md: "90%" }}
+              overflowY={"auto"}
+            >
+              {solicitudesPendientes.map((solicitud) => (
+                <Box
+                  key={solicitud['id']}
+                  maxW="lg"
+                  w="auto"
+                  bg="white"
+                  borderWidth="2px"
+                  borderRadius="lg"
+                  shadow={"lg"}
+                  pt={2}
+                  pb={2}
+                  pl={2}
+                >
+                  <Text>
+                    Motivo: {solicitud['motivo_FS']}
+                  </Text>
+                  <Text>
+                    Acá tendría que ir el usuario que pidió la solicitud de apadrinamiento
+                    {/* {solicitud['donante']['apellido'] + ', ' + solicitud['donante']['nombre'] } */}
+                  </Text>
+                  <Text>{solicitud['visita'] ? 'Pidió una visita para el día '+solicitud['fecha_visita'] : 'No solicitó visita'}</Text>
+                  <Text>Chico: {solicitud['chico_apadrinado']['apellido']+', '+solicitud['chico_apadrinado']['nombre']}</Text>
+                </Box>
+              ))}
+            </Stack>
+          )}
+        </GridItem>
+      </Grid>
     </Container>
   );
 }
@@ -312,7 +387,7 @@ export const InstitutionHomeView = () => {
       justifyContent="center"
       alignItems="flex-start"
     >
-      <Tabs minHeight="500px" height={"100%"} width="100%">
+      <Tabs minHeight="600px" height={"100%"} width="100%">
         <TabList>
           <Tab>Donaciones Bienes</Tab>
           <Tab>Donaciones Monetarias</Tab>
