@@ -41,7 +41,7 @@ export const LoginForm = () => {
   ) => {
     try {
       setSubmitting(true);
-      const response = await axios.post(endpoints["login"], formValues, {
+      const response = await axios.post(endpoints.login, formValues, {
         withCredentials: true,
       });
       setSubmitting(false);

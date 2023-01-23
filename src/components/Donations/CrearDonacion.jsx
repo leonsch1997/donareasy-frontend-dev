@@ -56,6 +56,7 @@ export const CrearDonacion = () => {
 
   const agregarDonacion = (values) => {
     const data = {
+      institucionId: institucion,
       tipo: tipoDonacion,
       data: values,
     };
@@ -74,6 +75,34 @@ export const CrearDonacion = () => {
 
   const elegirInstitucion = (event) => {
     setInstitucion(event.target.value);
+  };
+
+  const submitDonations = async () => {
+    donaciones.map((d) => {
+      if (d.tipo == "bienes") {
+        axios.post(
+          endpoints.donacionBien,
+          { institucion: d.institucionId, bienes: [d.data] },
+          {
+            withCredentials: true,
+            headers: {
+              "X-CSRFToken": document.cookie.split("csrftoken=")[1], // esto es una negrada, quizas podemos usar una libreria como react-cookie
+            },
+          }
+        );
+      } else if (d.tipo == "monetaria") {
+        axios.post(
+          endpoints.donacionMonetaria,
+          { institucion: d.institucionId, monto: Number(d.monto) },
+          {
+            withCredentials: true,
+            headers: {
+              "X-CSRFToken": document.cookie.split("csrftoken=")[1], // esto es una negrada, quizas podemos usar una libreria como react-cookie
+            },
+          }
+        );
+      }
+    });
   };
 
   return (
@@ -152,11 +181,7 @@ export const CrearDonacion = () => {
                   )}
 
                   <Center>
-                    <Button
-                      mt={4}
-                      colorScheme="pink"
-                      type="submit"
-                    >
+                    <Button mt={4} colorScheme="pink" type="submit">
                       Confirmar
                     </Button>
                   </Center>
@@ -186,11 +211,7 @@ export const CrearDonacion = () => {
                     </Text>
                   )}
                   <Center>
-                    <Button
-                      mt={4}
-                      colorScheme="pink"
-                      type="submit"
-                    >
+                    <Button mt={4} colorScheme="pink" type="submit">
                       Confirmar
                     </Button>
                   </Center>
@@ -242,14 +263,14 @@ export const CrearDonacion = () => {
             {instituciones.length > 0 &&
               tipoDonacion == "bienes" &&
               instituciones.map((i) => (
-                <option key={i.nombre} value={i.nombre}>
+                <option key={i.nombre} value={i.id}>
                   {i.nombre}
                 </option>
               ))}
             {institucionesCBU.length > 0 &&
               tipoDonacion == "monetaria" &&
               institucionesCBU.map((i) => (
-                <option key={i.nombre} value={i.nombre}>
+                <option key={i.nombre} value={i.id}>
                   {i.nombre}
                 </option>
               ))}
@@ -302,6 +323,8 @@ export const CrearDonacion = () => {
                 <Donation
                   key={`donacion${index}`}
                   tipoDonacion={tipoDonacion}
+                  remover={setDonaciones}
+                  index={index}
                   {...d}
                 />
               ))}
@@ -310,7 +333,9 @@ export const CrearDonacion = () => {
         </Box>
       </Flex>
       <Flex margin={10}>
-        <Button colorScheme={"linkedin"}>Enviar Donación</Button>
+        <Button colorScheme={"linkedin"} onClick={submitDonations}>
+          Enviar Donación
+        </Button>
       </Flex>
     </Flex>
   );
