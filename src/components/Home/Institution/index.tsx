@@ -18,7 +18,6 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { endpoints } from "../../../api";
-import { useNavigate } from 'react-router-dom';
 import { DonationModal, DonationSelector, RejectDonation } from './components';
 import { bodyTypes } from './constants';
 
@@ -28,9 +27,7 @@ const DonacionesBienesPendientes = () => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const [donacionesPendientes, setDonacionesPendientes] = useState([]);
   const [modalBody, setModalBody] = useState(bodyTypes.select);
-
-  const navigate = useNavigate();
-  let idDonacion = 0;
+  const [idDonacion, setIdDonacion] = useState(0);
 
   const fetchDonacionesPendientes = async () => {
     const response = await axios.get(endpoints.donacionesPendientes, {
@@ -43,19 +40,26 @@ const DonacionesBienesPendientes = () => {
     fetchDonacionesPendientes();
   }, []);
 
-  const openDonationDetails = () => {
+  const openDonationDetails = (idDonacion: number) => {
+    setIdDonacion(idDonacion);
     setModalBody(bodyTypes.select);
     onOpen();
   }
 
+  const openDonationReject = (idDonacion: number) => {
+    setIdDonacion(idDonacion);
+    setModalBody(bodyTypes.reject);
+    onOpen();
+  }
+
   const renderModalBody = () => {
-    if (modalBody === bodyTypes.select) return <DonationSelector />
-    if (modalBody === bodyTypes.reject) return <RejectDonation />
+    if (modalBody === bodyTypes.select) return <DonationSelector idDonacion={idDonacion}/>
+    if (modalBody === bodyTypes.reject) return <RejectDonation idDonacion={idDonacion}/>
   }
 
   return (
     <Flex flexDir={"column"} justifyContent={"center"} w="100%">
-      <DonationModal idDonacion={idDonacion} onClose={onClose} isOpen={isOpen}>
+      <DonationModal onClose={onClose} isOpen={isOpen}>
         {renderModalBody()}
       </DonationModal>
 
@@ -103,13 +107,13 @@ const DonacionesBienesPendientes = () => {
                         <Text>Cantidad de bienes: </Text>
                       </Box>
                       <Box>
-                        <Button colorScheme='blue' size='sm' onClick={openDonationDetails}>Ver Más</Button>
+                        <Button colorScheme='blue' size='sm' onClick={() => openDonationDetails(donacion['id'])}>Ver Más</Button>
                       </Box>
                       <Box>
                         <Button colorScheme='green' size='sm'>Aceptar</Button>
                       </Box>
                       <Box>
-                        <Button colorScheme='red' size='sm' onClick={() => setModalBody('reject')}>Rechazar</Button>
+                        <Button colorScheme='red' size='sm' onClick={() => openDonationReject(donacion['id'])}>Rechazar</Button>
                       </Box>
                     </Stack>
                   </Box>
