@@ -1,26 +1,19 @@
 import { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Flex, Box, Text, Spacer, Button } from "@chakra-ui/react";
 import logo from "../assets/LOGO_BLANCO.png";
 
 import { routes } from "../routes";
-import { authSelector, removeUserToken } from "../redux/reducers";
-import axios from "axios";
-import { endpoints } from "../api";
+import { useCookies } from "react-cookie";
+import { tokenCookieKey } from "../components/constants";
 
 export const PageWrapper: FC = ({ children }) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { authToken } = useSelector(authSelector);
   const location = useLocation();
+  const [{ userToken },,removeCookie] = useCookies();
 
   const handleSessionButton = async () => {
-    if (authToken) {
-      dispatch(removeUserToken());
-      await axios.post(endpoints.logout, {}, { withCredentials: true });
-    }
-    navigate(routes.login);
+    if (userToken) removeCookie(tokenCookieKey)
+      // await axios.post(endpoints.logout, {}, { withCredentials: true });
   };
 
   const VerticalSpacer = () => {
@@ -61,7 +54,7 @@ export const PageWrapper: FC = ({ children }) => {
         <Box>
           {location.pathname !== routes.login && (
             <Button onClick={handleSessionButton} colorScheme="pink" mr="4">
-              {authToken ? "Cerrar sesión" : "Iniciar sesión"}
+              {userToken ? "Cerrar sesión" : "Iniciar sesión"}
             </Button>
           )}
         </Box>

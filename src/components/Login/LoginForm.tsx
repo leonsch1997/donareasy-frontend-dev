@@ -1,5 +1,6 @@
-import axios from "axios";
+// import axios from "axios";
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -19,8 +20,8 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-import { wrongCredentialsError } from "../constants";
-import { endpoints } from "../../api";
+import { wrongCredentialsError, tokenCookieKey } from "../constants";
+// import { endpoints } from "../../api";
 import { routes } from "../../routes";
 import { LoginFormValues } from "./types";
 import { setUserToken, removeUserToken } from "../../redux/reducers";
@@ -30,7 +31,8 @@ const initialValues: LoginFormValues = {
   password: "",
 };
 
-export const LoginForm = () => {
+export const LoginForm: React.FC = () => {
+  const [, setCookie, removeCookie] = useCookies();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [reqError, setReqError] = useState("");
@@ -41,18 +43,22 @@ export const LoginForm = () => {
   ) => {
     try {
       setSubmitting(true);
-      const response = await axios.post(endpoints["login"], formValues, {
-        withCredentials: true,
-      });
-
-      console.log(response)
+      // const response = await axios.post(endpoints["login"], formValues, {
+      //   withCredentials: true,
+      // });
+  
+      const response = { data: { authToken: 'someAuthToken' } };
+      const { authToken } = response.data;
+  
       setSubmitting(false);
-      dispatch(setUserToken(response.data));
+      dispatch(setUserToken(authToken));
+      setCookie(tokenCookieKey, authToken) // Pasar un valor seguro
       navigate(routes.home);
     } catch {
       setSubmitting(false);
       setReqError(wrongCredentialsError);
       dispatch(removeUserToken());
+      removeCookie(tokenCookieKey)
     }
   };
 
@@ -70,11 +76,9 @@ export const LoginForm = () => {
             <Form>
               <Field name="username">
                 {({ field, form }: any) => (
-                  <FormControl
-                    isInvalid={form.errors.username && form.touched.username}
-                  >
+                  <FormControl isInvalid={form.errors.username && form.touched.username}>
                     <FormLabel htmlFor="username">Usuario</FormLabel>
-                    <Input {...field} id="username" placeholder="Usuario" />
+                    <Input {...field} id="username" placeholder="Usuario" mb={3} />
                     <FormErrorMessage mb={3}>
                       {form.errors?.[field.name] ?? ""}
                     </FormErrorMessage>

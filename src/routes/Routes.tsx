@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { useSelector } from "react-redux";
 import {
   Navigate,
   Route,
@@ -8,14 +7,13 @@ import {
 
 import { Logup } from "../components/Logup";
 import { Lander } from "../components/Lander";
-import { HomeView } from "../components/Home";
 import { LoginForm } from "../components/Login";
 import { Donations } from "../components/Donations";
 import { RecoverSteps } from "../components/ForgotPassword";
-import { authSelector } from "../redux/reducers";
 import { CrearDonacion } from "../components/Donations/CrearDonacion";
 import { CrearApadrinamiento } from "../components/Apadrination/CrearApadrinamiento";
 import { VisualizarDonacion } from "../components/Donations/VisualizarDonacion";
+import { useCookies } from 'react-cookie';
 
 export const routes = {
   lander: "/lander",
@@ -29,46 +27,52 @@ export const routes = {
   verDonacion: "/verDonacion",
 };
 
-export const PrivateRoutes: FC<any> = ({ children }) => {
-  const { authToken } = useSelector(authSelector);
-  return authToken != null ? children : <Navigate to={routes.login} />;
+export const PrivateRoute: FC<any> = ({ children }) => {
+  const [{ userToken }] = useCookies(); // Para hacer: Implementar cookies + redux. Por ahora solo esto
+
+  return userToken ? children : <Navigate to={routes.login} replace={true} />;
 };
 
 export const Routes = () => {
   return (
     <RouterDomRoutes>
-      <Route path={routes.home} element={<HomeView />} />
+      <Route path={routes.home} element={
+          <PrivateRoute>
+            <Donations />
+          </PrivateRoute>
+        }
+      />
 
       <Route
         path={routes.donaciones}
         element={
-          <PrivateRoutes>
+          <PrivateRoute>
             <Donations />
-          </PrivateRoutes>
+          </PrivateRoute>
         }
       />
       <Route
         path={routes.donar}
         element={
-          <PrivateRoutes>
+          <PrivateRoute>
             <CrearDonacion />
-          </PrivateRoutes>
+          </PrivateRoute>
         }
       />
       <Route
         path={routes.apadrinar}
         element={
-          <PrivateRoutes>
+          <PrivateRoute>
             <CrearApadrinamiento />
-          </PrivateRoutes>
+          </PrivateRoute>
         }
       />
       <Route
         path={routes.verDonacion}
         element={
-          <PrivateRoutes>
+          <PrivateRoute>
             <VisualizarDonacion />
-          </PrivateRoutes>
+          </PrivateRoute>
         }
       />
       <Route path={routes.lander} element={<Lander />} />
