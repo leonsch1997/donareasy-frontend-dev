@@ -60,7 +60,6 @@ export const CrearDonacion = () => {
       tipo: tipoDonacion,
       data: values,
     };
-
     // un poco de validación a lo bestia
     const isValid = Object.keys(values).every((k) => values[k]);
     setValidForm(isValid);
@@ -93,7 +92,7 @@ export const CrearDonacion = () => {
       } else if (d.tipo == "monetaria") {
         axios.post(
           endpoints.donacionMonetaria,
-          { institucion: d.institucionId, monto: Number(d.monto) },
+          { institucion: d.institucionId, monto: Number(d.data.monto) },
           {
             withCredentials: true,
             headers: {

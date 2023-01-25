@@ -18,7 +18,16 @@ export const PageWrapper: FC = ({ children }) => {
   const handleSessionButton = async () => {
     if (authToken) {
       dispatch(removeUserToken());
-      await axios.post(endpoints.logout, {}, { withCredentials: true });
+      await axios.post(
+        endpoints.logout,
+        {},
+        {
+          withCredentials: true,
+          headers: {
+            "X-CSRFToken": document.cookie.split("csrftoken=")[1],
+          },
+        }
+      );
     }
     navigate(routes.login);
   };
