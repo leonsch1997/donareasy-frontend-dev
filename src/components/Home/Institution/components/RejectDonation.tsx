@@ -1,4 +1,4 @@
-import { Button, Heading } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { initialValues, rejectDonationFields } from '../constants';
 import { createField, formatRejectDonationFormData, getCookie, validateRejectDonationFields } from '../utils';
@@ -7,15 +7,6 @@ import axios from 'axios';
 import { endpoints } from "../../../../api";
 
 export const RejectDonation = ({idDonacion}: {idDonacion: number}) => {
-  // try {
-  //   const formattedData = formatLogupFormData('institucion', formValues);
-  //   const res = await axios.post(`${endpoints['logup']}institucion/`, formattedData).then((res) => res.data);
-  //   console.log('Registro existoso' , res)
-  //   console.log(formattedData);
-  // } catch (e) {
-  //   console.log(e)
-  // }
-
   const fields = [...rejectDonationFields];
 
   const handleSubmit = async (formValues: RejectDonationFields, actions: FormikHelpers<RejectDonationFields>) => {

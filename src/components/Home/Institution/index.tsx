@@ -14,12 +14,15 @@ import {
   Stack,
   Button,
   useDisclosure,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { endpoints } from "../../../api";
 import { DonationModal, DonationSelector, RejectDonation } from './components';
 import { bodyTypes } from './constants';
+import { getCookie } from "./utils";
 
 // const ComponenteNormal: FC = ({ children }) => <div>Mis children son: {children}</div>
 
@@ -56,6 +59,23 @@ const DonacionesBienesPendientes = () => {
     if (modalBody === bodyTypes.select) return <DonationSelector idDonacion={idDonacion}/>
     if (modalBody === bodyTypes.reject) return <RejectDonation idDonacion={idDonacion}/>
   }
+
+  const handleAceptDonation = async (idDonacion: number) => {
+    try {
+      const res = await axios.put(
+        endpoints.donacionesPendientes+idDonacion.toString()+'/aceptar/',
+        {},
+        {
+          withCredentials: true, headers:{
+          'Content-type': 'application/json',
+          'X-CSRFToken': getCookie("csrftoken"), // added the csrf cookie header
+      }}).then((res) => res.data);
+      console.log(res);
+    } catch (e) {
+      console.log(e)
+    }
+    alert('Donación Aceptada:'+idDonacion.toString());
+  };
 
   return (
     <Flex flexDir={"column"} justifyContent={"center"} w="100%">
@@ -110,7 +130,7 @@ const DonacionesBienesPendientes = () => {
                         <Button colorScheme='blue' size='sm' onClick={() => openDonationDetails(donacion['id'])}>Ver Más</Button>
                       </Box>
                       <Box>
-                        <Button colorScheme='green' size='sm'>Aceptar</Button>
+                        <Button colorScheme='green' size='sm' onClick={() => handleAceptDonation(donacion['id'])}>Aceptar</Button>
                       </Box>
                       <Box>
                         <Button colorScheme='red' size='sm' onClick={() => openDonationReject(donacion['id'])}>Rechazar</Button>

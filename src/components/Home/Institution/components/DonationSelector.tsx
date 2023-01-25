@@ -20,8 +20,8 @@ export const DonationSelector = ({idDonacion}: {idDonacion: number}) => {
   
   return (
     <div>
-      {/* <p>{donacion.id}</p>
-      <p>{donacion.cod_estado}</p>
+      <p>{idDonacion}</p>
+      {/*<p>{donacion.cod_estado}</p>
       {console.log(donacion.bienes)} */}
     </div>
   );
