@@ -44,6 +44,8 @@ export const LoginForm = () => {
       const response = await axios.post(endpoints["login"], formValues, {
         withCredentials: true,
       });
+
+      console.log(response)
       setSubmitting(false);
       dispatch(setUserToken(response.data));
       navigate(routes.home);

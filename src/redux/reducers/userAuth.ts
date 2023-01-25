@@ -12,16 +12,19 @@ export const userAuth = createSlice({
     username: "",
   },
   reducers: {
+    setUserData: (state, { payload }) => {},
     setUserToken: (state, { payload }) => {
+      console.log(payload);
+
       state.authToken = payload.username;
-      state.id = payload.id;
-      state.nombre = payload.nombre;
-      state.username = payload.username;
-      state.group = payload.group;
+      // state.id = payload.id;
+      // state.nombre = payload.nombre;
+      // state.username = payload.username;
+      // state.group = payload.group;
     },
     removeUserToken: (state) => {
       state.authToken = '';
-      state.username = "";
+      // state.username = "";
     },
   },
 });

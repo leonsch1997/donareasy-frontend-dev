@@ -1,7 +1,7 @@
+import { FC } from 'react';
 import { useSelector } from "react-redux";
 import {
   Navigate,
-  Outlet,
   Route,
   Routes as RouterDomRoutes,
 } from "react-router-dom";
@@ -9,7 +9,7 @@ import {
 import { Logup } from "../components/Logup";
 import { Lander } from "../components/Lander";
 import { HomeView } from "../components/Home";
-import { LoginForm } from "../components/LoginFormCopy";
+import { LoginForm } from "../components/Login";
 import { Donations } from "../components/Donations";
 import { RecoverSteps } from "../components/ForgotPassword";
 import { authSelector } from "../redux/reducers";
@@ -29,9 +29,8 @@ export const routes = {
   verDonacion: "/verDonacion",
 };
 
-export const PrivateRoutes = ({ children }) => {
+export const PrivateRoutes: FC<any> = ({ children }) => {
   const { authToken } = useSelector(authSelector);
-
   return authToken != null ? children : <Navigate to={routes.login} />;
 };
 
