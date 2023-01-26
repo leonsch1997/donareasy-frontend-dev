@@ -18,37 +18,31 @@ import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 
 import { routes } from "../../../routes";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { endpoints } from "../../../api";
 
 const LatestDonations = () => {
-  const mockDonations: string[] = [
-    "Calzado",
-    "Ropa",
-    "Dinero",
-    "Calzado",
-    "Ropa",
-    "Dinero",
-    "Calzado",
-    "Ropa",
-    "Dinero",
-    "Calzado",
-    "Ropa",
-    "Dinero",
-    "Calzado",
-    "Ropa",
-    "Dinero",
-    "Calzado",
-    "Ropa",
-    "Dinero",
-    "Calzado",
-    "Ropa",
-    "Dinero",
-    "Calzado",
-    "Ropa",
-    "Dinero",
-    "Calzado",
-    "Ropa",
-    "Dinero",
-  ];
+  const [donations, setDonations] = useState([]);
+
+  const fetchDonations = async () => {
+    const response = await axios.get(endpoints.listadoDonaciones, {
+      withCredentials: true,
+    });
+    let data = [...response.data.results];
+    data = Object.keys(data).map((key) => {
+      return {
+        ...data[key],
+        fecha_creacion: new Date(data[key].fecha_creacion).toLocaleDateString(),
+      };
+    });
+    setDonations(data);
+    console.log(data);
+  };
+
+  useEffect(() => {
+    fetchDonations();
+  }, []);
 
   return (
     <Container
@@ -64,7 +58,7 @@ const LatestDonations = () => {
           <Text fontSize={"4xl"} fontWeight={"bold"} align={"left"}>
             Últimas Donaciones
           </Text>
-          {mockDonations.length > 0 && (
+          {donations.length > 0 && (
             <Stack
               divider={<StackDivider borderColor="gray.200" />}
               spacing={4}
@@ -72,9 +66,9 @@ const LatestDonations = () => {
               h={{ md: "90%" }}
               overflowY={"auto"}
             >
-              {mockDonations.map((donation) => (
+              {donations.map((donation) => (
                 <Box
-                  key={Math.random()}
+                  key={donation.id}
                   maxW="lg"
                   w="auto"
                   h="45px"
@@ -87,15 +81,15 @@ const LatestDonations = () => {
                   pl={2}
                 >
                   <Text fontSize={"xl"}>
-                    <b>Has donado: </b>
-                    {donation}
+                    <b>{donation.fecha_creacion} - </b>
+                    donación realizada a <i>{donation.institucion.nombre}</i>
                   </Text>
                 </Box>
               ))}
             </Stack>
           )}
 
-          {mockDonations.length == 0 && (
+          {donations.length == 0 && (
             <>
               <Text fontWeight={"bold"}>
                 Sin donaciones en el último período
@@ -134,7 +128,7 @@ const LatestDonations = () => {
 };
 
 const News = () => {
-  const mockNoticias: string[] = [
+  const mockNoticias = [
     "Jorge López es ahora el nuevo director de la institución @nombreInstitucion. Conoce el equipo completo.",
     "Jorge López es ahora el nuevo director de la institución @nombreInstitucion. Conoce el equipo completo.",
     "Jorge López es ahora el nuevo director de la institución @nombreInstitucion. Conoce el equipo completo.",
