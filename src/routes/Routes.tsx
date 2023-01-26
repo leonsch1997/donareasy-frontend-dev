@@ -14,6 +14,7 @@ import { CrearDonacion } from "../components/Donations/CrearDonacion";
 import { CrearApadrinamiento } from "../components/Apadrination/CrearApadrinamiento";
 import { VisualizarDonacion } from "../components/Donations/VisualizarDonacion";
 import { useCookies } from 'react-cookie';
+import { HomeView } from "../components/Home";
 
 export const routes = {
   lander: "/lander",

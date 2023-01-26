@@ -12,21 +12,25 @@ import {
   Grid,
   GridItem,
   Stack,
-  Button,
-  useDisclosure,
-  Alert,
-  AlertIcon,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { endpoints } from "../../../api";
-import { DonationModal, DonationSelector, RejectDonation } from './components';
-import { bodyTypes } from './constants';
-import { getCookie } from "./utils";
+
+import { 
+  DonacionesBienesPendientes,
+  DonacionesMonetarias,
+ } from '../../Donations/Institution';
 
 // const ComponenteNormal: FC = ({ children }) => <div>Mis children son: {children}</div>
 
-const DonacionesBienesPendientes = () => {
+//[LUCAS] Todo lo comentado que sigue a continuación en realidad son componentes que fueron
+// llevados a archivos separados: pendingGoodsDonations y pendingTransactionDonations. Los
+// demás componentes que quedaron acá (Recoleccion, Apadrinamiento y Noticias) no llegué a
+// migrarlos 
+/*
+//const DonacionesBienesPendientes = () => {
+const DonacionesBienesPendientesOLD = () => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const [donacionesPendientes, setDonacionesPendientes] = useState([]);
   const [modalBody, setModalBody] = useState(bodyTypes.select);
@@ -147,7 +151,7 @@ const DonacionesBienesPendientes = () => {
   );
 };
 
-const DonacionesMonetarias = () => {
+const DonacionesMonetariasOLD = () => {
   const [transferenciasPendientes, setTransferenciasPendientes] = useState([]);
 
   const fetchTransferenciasPendientes = async () => {
@@ -200,10 +204,10 @@ const DonacionesMonetarias = () => {
                     {transferencia['donante']['apellido'] + ', ' + transferencia['donante']['nombre'] }
                   </Text>
                   <Text>Estado de donación: {transferencia['cod_estado']}</Text>
-                  {/* <Text>{donacion['bienes'] !== undefined ? 'Verdadero' : 'Falso'}</Text>
+                   <Text>{donacion['bienes'] !== undefined ? 'Verdadero' : 'Falso'}</Text>
                   <Text>{donacion['bienes'] !== null ? 'Verdadero' : 'Falso'}</Text>
-                  <Text>{typeof(donacion['bienes'])}</Text> */}
-                  {/* <Text>Monto: {transferencia['monto']}</Text> */}
+                  <Text>{typeof(donacion['bienes'])}</Text> 
+                 <Text>Monto: {transferencia['monto']}</Text> 
                   <Text>Acá podría ir el nombre del banco</Text>
                 </Box>
               ))}
@@ -215,6 +219,7 @@ const DonacionesMonetarias = () => {
     </Container>
   );
 }
+*/
 
 const Recolecciones = () => {
   return (
@@ -276,7 +281,6 @@ const Apadrinamiento = () => {
                   </Text>
                   <Text>
                     Acá tendría que ir el usuario que pidió la solicitud de apadrinamiento
-                    {/* {solicitud['donante']['apellido'] + ', ' + solicitud['donante']['nombre'] } */}
                   </Text>
                   <Text>{solicitud['visita'] ? 'Pidió una visita para el día '+solicitud['fecha_visita'] : 'No solicitó visita'}</Text>
                   <Text>Chico: {solicitud['chico_apadrinado']['apellido']+', '+solicitud['chico_apadrinado']['nombre']}</Text>
@@ -317,7 +321,6 @@ const Apadrinamiento = () => {
                   </Text>
                   <Text>
                     Acá tendría que ir el usuario que pidió la solicitud de apadrinamiento
-                    {/* {solicitud['donante']['apellido'] + ', ' + solicitud['donante']['nombre'] } */}
                   </Text>
                   <Text>{solicitud['visita'] ? 'Pidió una visita para el día '+solicitud['fecha_visita'] : 'No solicitó visita'}</Text>
                   <Text>Chico: {solicitud['chico_apadrinado']['apellido']+', '+solicitud['chico_apadrinado']['nombre']}</Text>
