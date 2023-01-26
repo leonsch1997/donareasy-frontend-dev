@@ -39,6 +39,13 @@ export const CrearDonacion = () => {
   const [institucionesCBU, setInstitucionesCBU] = useState([]);
   const [instituciones, setInstituciones] = useState([]);
 
+  /*const crearDon = async () => {
+    //console.log('Crear donacion llamado')
+    const responseDonacion = await axios.post(endpoints.crearDonacion, {
+      withCredentials: true,
+    })
+  }*/
+
   const fetchInstituciones = async () => {
     const responseCBU = await axios.get(endpoints.institucionesCBU, {
       withCredentials: true,
@@ -310,7 +317,7 @@ export const CrearDonacion = () => {
         </Box>
       </Flex>
       <Flex margin={10}>
-        <Button colorScheme={"linkedin"}>Enviar Donación</Button>
+        <Button /* falla la funcion onClick={crearDon}*/ colorScheme={"linkedin"}>Enviar Donación</Button>
       </Flex>
     </Flex>
   );

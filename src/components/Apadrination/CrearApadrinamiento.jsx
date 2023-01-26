@@ -35,7 +35,7 @@ import {
   export const CrearApadrinamiento = () => {
     const { username, authToken } = useSelector(authSelector);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [value, setValue] = useState("bienes");
+    const [visita, setVisita] = useState(1);
     const [validForm, setValidForm] = useState(false);
     const [institucion, setInstitucion] = useState("");
     const [chicos, setChicos] = useState([]); 
@@ -105,7 +105,7 @@ import {
                         {({ field, form }) => (
                           <FormControl>
                             <FormLabel htmlFor="dni_frente">DNI Frente</FormLabel>
-                            <Input {...field} id="motdni_frenteivo" placeholder="Frente" />
+                            <Input {...field} type='file' id="motdni_frenteivo" placeholder="Frente" />
                           </FormControl>
                         )}
                       </Field>
@@ -114,7 +114,7 @@ import {
                         {({ field, form }) => (
                           <FormControl>
                             <FormLabel htmlFor="dni_dorso">DNI Dorso</FormLabel>
-                            <Input {...field} id="dni_dorso" placeholder="Dorso" />
+                            <Input {...field} type='file' id="dni_dorso" placeholder="Dorso" />
                           </FormControl>
                         )}
                       </Field>
@@ -123,7 +123,7 @@ import {
                         {({ field, form }) => (
                           <FormControl>
                             <FormLabel htmlFor="recibo_sueldo">Recibo de Sueldo</FormLabel>
-                            <Input {...field} id="recibo_sueldo" placeholder="Cargar Recibo" />
+                            <Input {...field} type='file' id="recibo_sueldo" placeholder="Cargar Recibo" />
                           </FormControl>
                         )}
                       </Field>
@@ -132,7 +132,7 @@ import {
                         {({ field, form }) => (
                           <FormControl>
                             <FormLabel htmlFor="acta_matrimonio">Acta de matrimonio</FormLabel>
-                            <Input {...field} id="acta_matrimonio" placeholder="Cargar Acta" />
+                            <Input {...field} type='file' id="acta_matrimonio" placeholder="Cargar Acta" />
                           </FormControl>
                         )}
                       </Field>
@@ -153,7 +153,7 @@ import {
                         {({ field, form }) => (
                           <FormControl>
                             <FormLabel htmlFor="fecha_visita">Fecha de la visita</FormLabel>
-                            <Input {...field} id="fecha_visita" placeholder="Fecha" />
+                            <Input type='date' {...field} id="fecha_visita" placeholder="Fecha" />
                           </FormControl>
                         )}
                       </Field>
