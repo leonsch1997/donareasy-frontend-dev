@@ -1,13 +1,15 @@
 import { Route, Routes as RouterDomRoutes } from "react-router-dom";
-import { Logup } from "../components/Logup";
-import { Lander } from "../components/Lander";
-import { LoginForm } from "../components/Login";
-import { Donations } from "../components/Donations";
-import { RecoverSteps } from "../components/ForgotPassword";
-import { CrearDonacion } from "../components/Donations/CrearDonacion";
-import { CrearApadrinamiento } from "../components/Apadrination/CrearApadrinamiento";
-import { VisualizarDonacion } from "../components/Donations/VisualizarDonacion";
-import { HomeView as Home } from '../components/Home';
+import {
+  RecoverSteps,
+  Logup,
+  Lander,
+  LoginForm,
+  Donations,
+  Apadrinamiento,
+  HomeView as Home,
+  CrearDonacion,
+  VisualizarDonacion
+} from '../components';
 import { PrivateRoute } from './PrivateRoute';
 import { routes } from "./constants";
 
@@ -40,7 +42,7 @@ export const Routes = () => {
         path={routes.apadrinar}
         element={
           <PrivateRoute>
-            <CrearApadrinamiento />
+            <Apadrinamiento />
           </PrivateRoute>
         }
       />
