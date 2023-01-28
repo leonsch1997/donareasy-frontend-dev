@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { endpoints } from "../../../api";
 
-import { routes } from '../../../routes/Routes';
+import { routes } from '../../../routes';
 
 const LatestDonations = () => {
   const mockDonations: string[] = [

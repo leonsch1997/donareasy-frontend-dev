@@ -7,11 +7,10 @@ import { Heading, Divider, Flex } from '@chakra-ui/react';
 export const Donations = () => {
   const donaciones = generateDonations(10);
   // const { username } = useSelector(userSelector); // Implementar
-  const username = 'Jorge Prez';
 
   return (
     <Flex flexDir='column' alignItems='center' w={'100%'}>
-      <Heading m={10}>Donaciones - {username}</Heading>
+      <Heading m={10}>Donaciones</Heading>
       <Divider />
       <DonationsList list={donaciones} />
     </Flex>
