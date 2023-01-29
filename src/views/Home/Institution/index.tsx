@@ -20,7 +20,7 @@ import { endpoints } from "../../../api";
 import { 
   DonacionesBienesPendientes,
   DonacionesMonetarias,
- } from '../../Donations/Institution';
+ } from '../../../components/Donations/Institution';
 
 // const ComponenteNormal: FC = ({ children }) => <div>Mis children son: {children}</div>
 

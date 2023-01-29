@@ -6,54 +6,23 @@ import {
   LoginForm,
   Donations,
   Apadrinamiento,
-  HomeView as Home,
   CrearDonacion,
   VisualizarDonacion
 } from '../components';
 import { PrivateRoute } from './PrivateRoute';
 import { routes } from "./constants";
+import { HomeView as Home } from '../views';
+
+const makePrivate = (Component: React.FC) => <PrivateRoute><Component /></PrivateRoute>
 
 export const Routes = () => {
   return (
     <RouterDomRoutes>
-      <Route path={routes.home} element={
-          <PrivateRoute>
-            <Home />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path={routes.donaciones}
-        element={
-          <PrivateRoute>
-            <Donations />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path={routes.donar}
-        element={
-          <PrivateRoute>
-            <CrearDonacion />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path={routes.apadrinar}
-        element={
-          <PrivateRoute>
-            <Apadrinamiento />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path={routes.verDonacion}
-        element={
-          <PrivateRoute>
-            <VisualizarDonacion />
-          </PrivateRoute>
-        }
-      />
+      <Route path={routes.home} element={makePrivate(Home)} />
+      <Route path={routes.donaciones} element={makePrivate(Donations)}/> 
+      <Route path={routes.donar} element={makePrivate(CrearDonacion)}/>
+      <Route path={routes.apadrinar} element={makePrivate(Apadrinamiento)}/>
+      <Route path={routes.verDonacion} element={makePrivate(VisualizarDonacion)}/>
       <Route path={routes.lander} element={<Lander />} />
       <Route path={routes.login} element={<LoginForm />} />
       <Route path={routes.forgotPassword} element={<RecoverSteps />} />

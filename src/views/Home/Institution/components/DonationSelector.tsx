@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { endpoints } from "../../../../api";
-import { Donacion } from "../../../Donations/types";
+import { Donacion } from "../../../../components/Donations/types";
 
 export const DonationSelector = ({idDonacion}: {idDonacion: number}) => {
   const [donacion, setDonacion] = useState({});
