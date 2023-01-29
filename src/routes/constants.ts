@@ -1,5 +1,5 @@
 export const routes = {
-  lander: "/lander",
+  lander: "",
   home: "/home",
   login: "/login",
   logup: "/logup",
