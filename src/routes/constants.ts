@@ -7,5 +7,5 @@ export const routes = {
   donar: "/donate",
   apadrinar: "/apadrinamiento",
   forgotPassword: "/forgot-password",
-  verDonacion: "/verDonacion",
+  donationDetail: "/donation-detail",
 };

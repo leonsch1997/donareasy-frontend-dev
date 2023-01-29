@@ -18,9 +18,9 @@ import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { endpoints } from "../../../api";
+import { endpoints } from "../../api";
 
-import { routes } from '../../../routes';
+import { routes } from '../../routes';
 
 const LatestDonations = () => {
   const mockDonations: string[] = [
@@ -226,7 +226,7 @@ const News = () => {
   );
 };
 
-export const DonorHomeView = () => {
+export const DonorMain = () => {
   return (
     <Flex
       borderRadius="lg"

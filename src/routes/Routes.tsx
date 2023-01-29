@@ -1,29 +1,29 @@
 import { Route, Routes as RouterDomRoutes } from "react-router-dom";
-import {
-  RecoverSteps,
-  Logup,
-  Lander,
-  LoginForm,
-  Donations,
-  Apadrinamiento,
-  CrearDonacion,
-  VisualizarDonacion
-} from '../components';
 import { routes } from "./constants";
 import { makePrivate } from './PrivateRoute';
-import { HomeView as Home } from '../views';
+import {
+  Home,
+  Lander,
+  Login,
+  Logup,
+  Donations,
+  SponsorChild,
+  CreateDonation,
+  View as ViewDonation,
+  Recover as RecoverPassword
+} from '../views';
 
 export const Routes = () => {
   return (
     <RouterDomRoutes>
       <Route path={routes.home} element={makePrivate(Home)} />
       <Route path={routes.donaciones} element={makePrivate(Donations)}/> 
-      <Route path={routes.donar} element={makePrivate(CrearDonacion)}/>
-      <Route path={routes.apadrinar} element={makePrivate(Apadrinamiento)}/>
-      <Route path={routes.verDonacion} element={makePrivate(VisualizarDonacion)}/>
+      <Route path={routes.donar} element={makePrivate(CreateDonation)}/>
+      <Route path={routes.apadrinar} element={makePrivate(SponsorChild)}/>
+      <Route path={routes.donationDetail} element={makePrivate(ViewDonation)}/>
       <Route path={routes.lander} element={<Lander />} />
-      <Route path={routes.login} element={<LoginForm />} />
-      <Route path={routes.forgotPassword} element={<RecoverSteps />} />
+      <Route path={routes.login} element={<Login />} />
+      <Route path={routes.forgotPassword} element={<RecoverPassword />} />
       <Route path={routes.logup} element={<Logup />} />
     </RouterDomRoutes>
   );
