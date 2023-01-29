@@ -5,3 +5,4 @@ export * from './Lander';
 export * from './Login';
 export * from './Logup';
 export * from './ForgotPassword';
+export * from './Institution';

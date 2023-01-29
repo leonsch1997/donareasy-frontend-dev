@@ -1,0 +1,1 @@
+export const DonationPendings = () => <div>DonationPendings</div>

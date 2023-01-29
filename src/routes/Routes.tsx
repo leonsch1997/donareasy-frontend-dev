@@ -9,11 +9,9 @@ import {
   CrearDonacion,
   VisualizarDonacion
 } from '../components';
-import { PrivateRoute } from './PrivateRoute';
 import { routes } from "./constants";
+import { makePrivate } from './PrivateRoute';
 import { HomeView as Home } from '../views';
-
-const makePrivate = (Component: React.FC) => <PrivateRoute><Component /></PrivateRoute>
 
 export const Routes = () => {
   return (
