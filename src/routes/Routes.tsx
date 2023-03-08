@@ -1,4 +1,4 @@
-import { Route, Routes as RouterDomRoutes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes as RouterDomRoutes } from "react-router-dom";
 import { routes } from "./constants";
 import { makePrivate } from './PrivateRoute';
 import {

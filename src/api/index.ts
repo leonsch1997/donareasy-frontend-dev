@@ -13,5 +13,5 @@ export const endpoints = {
   donacionesPendientes: `${baseURL}/donaciones/donacionesPendientes/`,
   transferenciasPendientes: `${baseURL}/donaciones/transferenciasPendientes/`,
   solicitudApadrinamientoPendientes: `${baseURL}/apadrinamiento/solicitudes/`,
-  
+  donacionesDonante: `${baseURL}/donaciones/listadoDonaciones/`,
 }

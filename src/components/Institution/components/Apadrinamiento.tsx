@@ -15,7 +15,7 @@ export const Apadrinamiento: FC = () => {
   };
 
   useEffect(() => {
-    fetchSolicitudesPendientes();
+    // fetchSolicitudesPendientes();
   }, []);
   
   return (

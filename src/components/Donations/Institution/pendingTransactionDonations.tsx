@@ -115,7 +115,7 @@ export const DonacionesMonetarias = () => {
                           <Text>Acá van los datos de la transferencia</Text>
                         </Box>
                         <Box>
-                        <Button colorScheme='blue' size='sm' onClick={() => openDonationDetails(transferencia['id'])}>Ver Más</Button>
+                        <Button colorScheme='teal' size='sm' onClick={() => openDonationDetails(transferencia['id'])}>Ver Más</Button>
                         </Box>
                         <Box>
                         <Button colorScheme='green' size='sm' onClick={() => handleAceptDonation(transferencia['id'])}>Aceptar</Button>

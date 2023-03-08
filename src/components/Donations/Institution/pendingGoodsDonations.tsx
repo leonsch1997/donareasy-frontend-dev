@@ -118,7 +118,7 @@ export const DonacionesBienesPendientes = () => {
                           <Text>Cantidad de bienes: (Acá va la cantidad de bienes)</Text>
                         </Box>
                         <Box>
-                          <Button colorScheme='blue' size='sm' onClick={() => openDonationDetails(donacion['id'])}>Ver Más</Button>
+                          <Button colorScheme='teal' size='sm' onClick={() => openDonationDetails(donacion['id'])}>Ver Más</Button>
                         </Box>
                         <Box>
                           <Button colorScheme='green' size='sm' onClick={() => handleAceptDonation(donacion['id'])}>Aceptar</Button>

@@ -12,7 +12,7 @@ export const InstitutionMain: FC = () => {
       justifyContent="center"
       alignItems="flex-start"
     >
-      <Tabs minHeight="600px" height={"100%"} width="100%">
+      <Tabs minHeight="600px" height={"100%"} width="100%" pb={10}>
         <TabList>
           <Tab>Donaciones Bienes</Tab>
           <Tab>Donaciones Monetarias</Tab>
@@ -21,7 +21,7 @@ export const InstitutionMain: FC = () => {
           <Tab>Ultimas noticias</Tab>
         </TabList>
 
-        <TabPanels height="100%" bg={"red"}>
+        <TabPanels height="100%" maxHeight={'70vh'} overflow={'auto'}>
           <TabPanel>
             <DonationPendings />
           </TabPanel>

@@ -1,8 +1,7 @@
-// import axios from "axios";
+import axios from "axios";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Formik, Field, Form, FormikHelpers } from "formik";
 import {
@@ -20,11 +19,10 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-import { wrongCredentialsError, tokenCookieKey } from "../constants";
-// import { endpoints } from "../../api";
 import { routes } from "../../routes";
+import { endpoints } from "../../api";
 import { LoginFormValues } from "./types";
-import { setUserToken, removeUserToken } from "../../redux/reducers";
+import { wrongCredentialsError, userTokenKey } from "../constants";
 
 const initialValues: LoginFormValues = {
   username: "",
@@ -32,33 +30,22 @@ const initialValues: LoginFormValues = {
 };
 
 export const LoginForm: React.FC = () => {
-  const [, setCookie, removeCookie] = useCookies();
-  const dispatch = useDispatch();
+  const [,, removeCookie] = useCookies();
   const navigate = useNavigate();
   const [reqError, setReqError] = useState("");
-
-  const handleSubmit = async (
-    formValues: LoginFormValues,
-    { setSubmitting }: FormikHelpers<LoginFormValues>
-  ) => {
+  const handleSubmit = async (formValues: LoginFormValues, { setSubmitting }: FormikHelpers<LoginFormValues>) => {
     try {
       setSubmitting(true);
-      // const response = await axios.post(endpoints["login"], formValues, {
-      //   withCredentials: true,
-      // });
-  
-      const response = { data: { authToken: 'someAuthToken' } };
-      const { authToken } = response.data;
-  
+      const response = await axios.post(endpoints["login"], formValues, { // Esto está horrible
+        withCredentials: true,
+      }) || {};
+
       setSubmitting(false);
-      dispatch(setUserToken(authToken));
-      setCookie(tokenCookieKey, authToken) // Pasar un valor seguro
       navigate(routes.home);
     } catch {
       setSubmitting(false);
       setReqError(wrongCredentialsError);
-      dispatch(removeUserToken());
-      removeCookie(tokenCookieKey)
+      removeCookie(userTokenKey)
     }
   };
 

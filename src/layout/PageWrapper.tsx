@@ -4,19 +4,20 @@ import { Flex, Box, Spacer, Button } from "@chakra-ui/react";
 
 import { routes } from "../routes";
 import { useCookies } from "react-cookie";
-import { tokenCookieKey } from "../components/constants";
+import { userTokenKey } from "../components/constants";
 import { Logo } from './components';
 
 export const PageWrapper: FC = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [{ userToken },,removeCookie] = useCookies();
+  const [cookies,,removeCookie] = useCookies();
 
   const handleSessionButton = async () => {
-    if (userToken) removeCookie(tokenCookieKey);
+    if (cookies['sessionid']) removeCookie(userTokenKey);
     navigate(routes.login);
   };
 
+  console.log(cookies)
   return (
     <>
       <Flex p={2} bg={"teal.300"}>
@@ -25,7 +26,7 @@ export const PageWrapper: FC = ({ children }) => {
         <Box>
           {location.pathname !== routes.login && (
             <Button onClick={handleSessionButton} colorScheme="pink" mr="4">
-              {userToken ? "Cerrar sesión" : "Iniciar sesión"}
+              {cookies['sessionid'] ? "Cerrar sesión" : "Iniciar sesión"}
             </Button>
           )}
         </Box>
