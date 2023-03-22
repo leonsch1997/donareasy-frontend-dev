@@ -1,3 +1,4 @@
+import { Donante } from '../Donations/types';
 export interface DonationModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -20,7 +21,15 @@ export interface RejectDonationFormValues {
   motivo_cancelacion: string;
 }
 
+
 export interface Donation {
+  id: string;
+  donante: Donante;
+  cod_estado: number;
+  bienes: Bien[];
+}
+
+export interface Bien {
   fecha_creacion: string;
   fecha_aceptacion?: string;
   fecha_entrega_real?: string;
@@ -32,4 +41,10 @@ export interface Donation {
   nombre: string;
   descripcion: string;
   cantidad: number;
+}
+
+export enum DonationStates {
+  Cancelada = 0,
+  Pendiente,
+  Aceptada,
 }

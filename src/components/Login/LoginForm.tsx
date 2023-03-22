@@ -22,7 +22,7 @@ import {
 import { routes } from "../../routes";
 import { endpoints } from "../../api";
 import { LoginFormValues } from "./types";
-import { wrongCredentialsError, userTokenKey } from "../constants";
+import { wrongCredentialsError, csrftoken } from "../constants";
 
 const initialValues: LoginFormValues = {
   username: "",
@@ -45,7 +45,7 @@ export const LoginForm: React.FC = () => {
     } catch {
       setSubmitting(false);
       setReqError(wrongCredentialsError);
-      removeCookie(userTokenKey)
+      removeCookie(csrftoken)
     }
   };
 

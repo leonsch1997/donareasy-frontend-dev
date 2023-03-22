@@ -1,13 +1,36 @@
-import { Flex, Box, Button, Heading, List, ListItem, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Divider, Alert, ModalFooter, useDisclosure, Spinner } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Button,
+  Heading,
+  List,
+  ListItem,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Divider,
+  Alert,
+  ModalFooter,
+  useDisclosure,
+  Spinner,
+} from "@chakra-ui/react";
 import { CheckIcon, TimeIcon } from "@chakra-ui/icons";
-import { getDonations } from '../utils';
-import { Donation } from '../types';
-import { useState } from "react";
+import { Donation, Bien, DonationStates } from "../types";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { endpoints } from "../../../api";
+import { usePendingDonations } from "../../../hooks";
+import { LoadingSpinner } from "../../Common";
 
-const DonationModal = ({ item, isOpen, onClose }: {
-  item: Donation;
+const DonationModal = ({
+  item,
+  isOpen,
+  onClose,
+}: {
+  item: Bien;
   isOpen: boolean;
   onClose: () => void;
 }) => {
@@ -15,56 +38,66 @@ const DonationModal = ({ item, isOpen, onClose }: {
   const [acceptPending, setAcceptPending] = useState(false);
 
   const acceptDonation = () => {
-    console.log('Awaiting ...');
+    console.log("Awaiting ...");
     setAcceptPending(true);
     setTimeout(() => {
       setAcceptPending(false);
-      console.log('Accepted!');
-    }, 2000)
+      console.log("Accepted!");
+    }, 2000);
   };
 
   const rejectDonation = () => {
-    console.log('Awaiting ...');
+    console.log("Awaiting ...");
     setAcceptPending(true);
     setTimeout(() => {
       setAcceptPending(false);
-      console.log('Rejected!');
-    }, 2000)
+      console.log("Rejected!");
+    }, 2000);
   };
 
   const Footer = () => (
-    <Flex justifyContent='center' width='100%' flexWrap='wrap'>
+    <Flex justifyContent="center" width="100%" flexWrap="wrap">
       {!fecha_aceptacion && (
-          <>
-            <Box mb={2}>
-              <Alert width='100%' status='warning'>
-                Para poder enviar esta donación, debe ser aceptada
-              </Alert>
-            </Box>
-            <Flex width="100%" justifyContent='center' mb={2}>
-              <Button onClick={acceptDonation} colorScheme='teal' mr={2}>Aceptar</Button>
-              <Button onClick={rejectDonation} colorScheme='red' mr={2}>Rechazar</Button>
-            </Flex>
-          </>
+        <>
+          <Box mb={2}>
+            <Alert width="100%" status="warning">
+              Para poder enviar esta donación, debe ser aceptada
+            </Alert>
+          </Box>
+          <Flex width="100%" justifyContent="center" mb={2}>
+            <Button onClick={acceptDonation} colorScheme="teal" mr={2}>
+              Aceptar
+            </Button>
+            <Button onClick={rejectDonation} colorScheme="red" mr={2}>
+              Rechazar
+            </Button>
+          </Flex>
+        </>
       )}
-  </Flex>
+    </Flex>
   );
 
   const Body = () => (
     <>
       <Heading size="lg">{nombre}</Heading>
-      <Divider mt={2}/>
-      <Flex mt={5} mb={5}>{descripcion}</Flex>
+      <Divider mt={2} />
+      <Flex mt={5} mb={5}>
+        {descripcion}
+      </Flex>
       <Divider />
-      <Heading mt={5} size="sm">Cantidad: {cantidad}</Heading>
+      <Heading mt={5} size="sm">
+        Cantidad: {cantidad}
+      </Heading>
     </>
   );
 
-  const PendingHeader = () => <Heading size="lg">Aceptando donación ...</Heading>;
+  const PendingHeader = () => (
+    <Heading size="lg">Aceptando donación ...</Heading>
+  );
 
   const PendingBody = () => (
     <Flex height="250px" alignItems="center" justifyContent="center">
-      <Spinner size='xl' />
+      <Spinner size="xl" />
     </Flex>
   );
 
@@ -74,71 +107,91 @@ const DonationModal = ({ item, isOpen, onClose }: {
       <ModalContent>
         <ModalHeader>{acceptPending ? <PendingHeader /> : null}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody textAlign='center'>
+        <ModalBody textAlign="center">
           {acceptPending ? <PendingBody /> : <Body />}
         </ModalBody>
 
-        <ModalFooter mt={0}>
-          {acceptPending ? null : <Footer />}
-        </ModalFooter>
+        <ModalFooter mt={0}>{acceptPending ? null : <Footer />}</ModalFooter>
       </ModalContent>
     </Modal>
-  )
+  );
 };
 
 const DonationItem = (item: Donation) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const boxColor =  !item.fecha_entrega_real ? 'gray.100' : 'teal.100';
-  const icon = item.fecha_entrega_real ? <CheckIcon boxSize={'1.5rem'} mr={1}/> : <TimeIcon boxSize={'1.5rem'} mr={1} />;
-  const accepted = item.fecha_aceptacion;
-  const shipped = item.fecha_entrega_real;
-  
-  const state = !accepted ? 'Pendiente aceptación' : shipped ? 'Entregado' : 'Pendiente entrega';
-  const StateBlock = () => <><b>Estado: </b>{state}<br /></>;
+  const {
+    cod_estado,
+    donante: { nombre, apellido },
+  } = item;
+  const boxColor =
+    DonationStates.Pendiente === cod_estado || DonationStates.Cancelada
+      ? "gray.100"
+      : "teal.100";
+  const icon =
+    DonationStates.Aceptada === cod_estado ? (
+      <CheckIcon boxSize={"1.5rem"} mr={1} />
+    ) : (
+      <TimeIcon boxSize={"1.5rem"} mr={1} />
+    );
+
+  const StateBlock = () => (
+    <>
+      <b>Estado: </b>
+      {DonationStates[cod_estado]}
+      <br />
+    </>
+  );
 
   return (
-    <Flex alignItems="center" minHeight={'50px'} bg={boxColor} padding={2} borderRadius={'0.5rem'}>
+    <Flex
+      alignItems="center"
+      minHeight={"50px"}
+      bg={boxColor}
+      padding={2}
+      borderRadius={"0.5rem"}
+    >
       {icon}
-      <ListItem ml={2} borderLeft={'1px solid gray'} pl={2}>
-        <b>Nombre:</b> {item.nombre} <br />
+      <ListItem key={item.id} ml={2} borderLeft={"1px solid gray"} pl={2}>
+        <b>Donante:</b> {nombre}, {apellido}
+        <br />
         <StateBlock />
-        <Button onClick={onOpen} colorScheme={'pink'} mt={'10px'} size={'sm'}>Ver detalle</Button>
+        <Button onClick={onOpen} colorScheme={"pink"} mt={"10px"} size={"sm"}>
+          Ver detalle
+        </Button>
       </ListItem>
-      <DonationModal item={item} onClose={onClose} isOpen={isOpen} />    
+      {/* <DonationModal item={item.bienes[0]} onClose={onClose} isOpen={isOpen} /> */}
     </Flex>
-  )
-}
+  );
+};
 
 export const DonationPendings = () => {
-  const [data, setDonations] = useState([]);
-  const donations = getDonations();
+  const { fetchPendingDonations, donations, loading, error } =
+    usePendingDonations();
 
-  const response = async () => {
-    try {
-      console.log('Fetching')
-      const response = await axios.get(`${endpoints['donacionesPendientes']}1/`, {
-        withCredentials: true,
-        headers: {
-          'X-CSRFToken': 'W5iUDN1shqSx4QoevShLHBiuBinq9dw6LQWLSErJbfb8rxSsI9u99YvxCZgekWWc',
-        }
-      }
-      );
-  
-      setDonations(response.data.results);
-    } catch {
-      console.log('Error')
-    }
-  };
+  useEffect(() => {
+    fetchPendingDonations();
+  }, []);
 
   return (
     <Flex flexWrap="wrap">
-      <button onClick={response}>Buscar</button>
-      <Heading >Ultimas donaciones</Heading>
-      <Box width={'100%'} mt="10">
-        <List spacing={4}>
-          {donations.map((donation, idx) => <DonationItem key={idx} {...donation} />)}
-        </List>      
+      <Heading>Ultimas donaciones</Heading>
+      <Box width={"100%"} mt="10">
+        {loading && <LoadingSpinner />}
+        {error && (
+          <Flex>
+            <p>
+              Oops! Algo no ha salido como se esperaba, no se han podido cargar
+              las donaciones.
+            </p>
+          </Flex>
+        )}
+        {!error && !loading && (
+          <List spacing={4}>
+            {donations.length > 0 &&
+              donations.map((item) => <DonationItem {...item} />)}
+          </List>
+        )}
       </Box>
     </Flex>
-  )
-}
+  );
+};
