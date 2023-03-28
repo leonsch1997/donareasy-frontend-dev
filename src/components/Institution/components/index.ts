@@ -6,3 +6,4 @@ export * from './DonationPendings';
 export * from './MoneyDonations';
 export * from './News';
 export * from './Recolecciones';
+export * from './DonationsList';

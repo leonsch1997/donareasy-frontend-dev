@@ -1,5 +1,6 @@
 import { Donante } from '../Donations/types';
 export interface DonationModalProps {
+  item: Donation;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -47,4 +48,12 @@ export enum DonationStates {
   Cancelada = 0,
   Pendiente,
   Aceptada,
+  Agendada = 5,
+  Entregada
+}
+
+export enum MoneyDonationStates {
+  Cancelada = 0,
+  Pendiente = 3,
+  Aceptada = 4,
 }
