@@ -39,9 +39,10 @@ export const DonationModal: FC<DonationModalProps> = ({
   const acceptDonation = async () => {
     try {
       setAcceptPending(true);
-      const response = await axios.put(`${endpoints.aceptarDonacion(id)}`, {
-        withCredentials: true,
-      });
+      const response = await axios(endpoints.aceptarDonacion(id), {
+        method: 'PUT',
+        withCredentials: true
+      })
       console.log(response);
     } catch {
       throw new Error('No se pudo aceptar la donación')
