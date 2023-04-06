@@ -1,9 +1,5 @@
-import axios from "axios";
-import { useState } from "react";
-import { useCookies } from "react-cookie";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
-import { Formik, Field, Form, FormikHelpers } from "formik";
+import { Formik, Field, Form } from "formik";
 import {
   FormControl,
   FormLabel,
@@ -19,10 +15,8 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-import { routes } from "../../routes";
-import { endpoints } from "../../api";
 import { LoginFormValues } from "./types";
-import { wrongCredentialsError, csrftoken } from "../constants";
+import { useLogin } from "../../hooks/useLogin";
 
 const initialValues: LoginFormValues = {
   username: "",
@@ -30,24 +24,8 @@ const initialValues: LoginFormValues = {
 };
 
 export const LoginForm: React.FC = () => {
-  const [,, removeCookie] = useCookies();
-  const navigate = useNavigate();
-  const [reqError, setReqError] = useState("");
-  const handleSubmit = async (formValues: LoginFormValues, { setSubmitting }: FormikHelpers<LoginFormValues>) => {
-    try {
-      setSubmitting(true);
-      const response = await axios.post(endpoints["login"], formValues, { // Esto está horrible
-        withCredentials: true,
-      }) || {};
-
-      setSubmitting(false);
-      navigate(routes.home);
-    } catch {
-      setSubmitting(false);
-      setReqError(wrongCredentialsError);
-      removeCookie(csrftoken)
-    }
-  };
+  const { logUser, error } = useLogin();
+  const handleSubmit = (formValues: LoginFormValues) => logUser(formValues);
 
   return (
     <Container mt={50}>
@@ -63,9 +41,16 @@ export const LoginForm: React.FC = () => {
             <Form>
               <Field name="username">
                 {({ field, form }: any) => (
-                  <FormControl isInvalid={form.errors.username && form.touched.username}>
+                  <FormControl
+                    isInvalid={form.errors.username && form.touched.username}
+                  >
                     <FormLabel htmlFor="username">Usuario</FormLabel>
-                    <Input {...field} id="username" placeholder="Usuario" mb={3} />
+                    <Input
+                      {...field}
+                      id="username"
+                      placeholder="Usuario"
+                      mb={3}
+                    />
                     <FormErrorMessage mb={3}>
                       {form.errors?.[field.name] ?? ""}
                     </FormErrorMessage>
@@ -84,7 +69,7 @@ export const LoginForm: React.FC = () => {
                       {...field}
                       id="password"
                       placeholder="password"
-                      mb={reqError ? 3 : 0}
+                      mb={error ? 3 : 0}
                     />
                     <FormErrorMessage mb={3}>
                       {form.errors?.[field.name] ?? ""}
@@ -93,10 +78,10 @@ export const LoginForm: React.FC = () => {
                 )}
               </Field>
 
-              {reqError && (
+              {error && (
                 <Alert status="error">
                   <AlertIcon />
-                  {reqError}
+                  {error}
                 </Alert>
               )}
 

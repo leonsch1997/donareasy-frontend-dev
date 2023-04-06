@@ -1,3 +1,4 @@
+import axios from "axios";
 import { FC, useState } from "react";
 import {
   Alert,
@@ -18,8 +19,10 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { Bien, DonationModalProps } from "../types";
+import { endpoints } from "../../../api";
 
 const PendingHeader: FC = () => <Heading size="lg">Aceptando donación ...</Heading>;
+
 const PendingBody: FC = () => (
   <Flex height="250px" alignItems="center" justifyContent="center">
     <Spinner size="xl" />
@@ -32,14 +35,19 @@ export const DonationModal: FC<DonationModalProps> = ({
   onClose,
 }) => {
   const [acceptPending, setAcceptPending] = useState(false);
-  const { bienes } = item;
-  const acceptDonation = () => {
-    console.log("Awaiting ...");
-    setAcceptPending(true);
-    setTimeout(() => {
+  const { bienes, id } = item;
+  const acceptDonation = async () => {
+    try {
+      setAcceptPending(true);
+      const response = await axios.put(`${endpoints.aceptarDonacion(id)}`, {
+        withCredentials: true,
+      });
+      console.log(response);
+    } catch {
+      throw new Error('No se pudo aceptar la donación')
+    } finally {
       setAcceptPending(false);
-      console.log("Accepted!");
-    }, 2000);
+    }
   };
 
   const rejectDonation = () => {

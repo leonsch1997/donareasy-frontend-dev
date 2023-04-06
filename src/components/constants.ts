@@ -1,7 +1,7 @@
 import { FieldData, UserType } from './Logup/types';
 
 export const wrongCredentialsError = 'Usuario o contraseña incorrectos, por favor revise las credenciales';
-export const csrftoken = 'csrftoken';
+export const clientSession = 'clientSession';
 
 // Form field names:
 export const usuario = 'usuario';

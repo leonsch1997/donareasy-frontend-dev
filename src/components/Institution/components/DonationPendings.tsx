@@ -11,7 +11,6 @@ import { DonationsList } from "./DonationsList";
 export const DonationPendings = () => {
   const { fetchPendingDonations, donations, loading, error } =
     usePendingDonations();
-
   useEffect(() => {
     fetchPendingDonations();
   }, [fetchPendingDonations]);
