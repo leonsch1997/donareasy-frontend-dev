@@ -21,6 +21,7 @@ export const Routes = () => {
       <Route path={routes.donar} element={makePrivate(CreateDonation)}/>
       <Route path={routes.apadrinar} element={makePrivate(SponsorChild)}/>
       <Route path={routes.donationDetail} element={makePrivate(ViewDonation)}/>
+      {/* <Route path={routes.donationDetail} element={makePrivate(RejectDonation)}/> */}
       <Route path={routes.lander} element={<Lander />} />
       <Route path={routes.login} element={<Login />} />
       <Route path={routes.forgotPassword} element={<RecoverPassword />} />

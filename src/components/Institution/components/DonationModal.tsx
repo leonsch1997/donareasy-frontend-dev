@@ -1,5 +1,4 @@
-import axios from "axios";
-import { FC, useState } from "react";
+import { FC } from "react";
 import {
   Alert,
   Box,
@@ -18,71 +17,98 @@ import {
   ModalOverlay,
   Spinner,
 } from "@chakra-ui/react";
-import { Bien, DonationModalProps } from "../types";
-import { endpoints } from "../../../api";
+import { Bien, DonationModalProps, DonationStates } from "../types";
+import { useAcceptDonation } from "../../../hooks";
+import { useHref, useNavigate } from "react-router-dom";
 
-const PendingHeader: FC = () => <Heading size="lg">Aceptando donación ...</Heading>;
-
-const PendingBody: FC = () => (
-  <Flex height="250px" alignItems="center" justifyContent="center">
-    <Spinner size="xl" />
-  </Flex>
+const PendingHeader: FC = () => (
+  <Heading size="lg">Aceptando donación ...</Heading>
 );
 
 export const DonationModal: FC<DonationModalProps> = ({
   item,
   isOpen,
-  onClose,
+  onClose: closeModal,
 }) => {
-  const [acceptPending, setAcceptPending] = useState(false);
-  const { bienes, id } = item;
-  const acceptDonation = async () => {
-    try {
-      setAcceptPending(true);
-      const response = await axios(endpoints.aceptarDonacion(id), {
-        method: 'PUT',
-        withCredentials: true
-      })
-      console.log(response);
-    } catch {
-      throw new Error('No se pudo aceptar la donación')
-    } finally {
-      setAcceptPending(false);
-    }
-  };
+  const {
+    acceptDonation,
+    accepted,
+    pending: acceptPending,
+    error: acceptError,
+  } = useAcceptDonation();
+  // const {
+  //   rejectDonation,
+  //   rejected,
+  //   pending: rejectPending,
+  //   error: rejectError,
+  // } = useRejectDonation();
 
-  const rejectDonation = () => {
-    console.log("Awaiting ...");
-    setAcceptPending(true);
-    setTimeout(() => {
-      setAcceptPending(false);
-      console.log("Rejected!");
-    }, 2000);
+  const onClose = () => {
+    closeModal();
+    if (accepted || acceptError) window.location.reload(); //Arreglar esto
+  }
+
+  const { bienes, id } = item;
+  const accept = () => acceptDonation(id);
+  // const reject = () => rejectDonation(id);
+
+  // console.log({ rejected, rejectPending, rejectError });
+  const redirectToRejectView = () => {
+    onClose();
+    console.log('Open reject prompt')
   };
 
   const Footer = () => (
     <Flex justifyContent="center" width="100%" flexWrap="wrap">
-      {true && ( // !fecha_aceptacion
+      {item.cod_estado === DonationStates.Pendiente && !accepted && (
         <>
           <Box mb={2}>
-            <Alert width="100%" status="warning">
-              Para poder enviar esta donación, debe ser aceptada
+            <Alert textAlign="center" width="100%" status="warning">
+              Para poder enviar esta donación, debe ser aceptada.
+              <br />
+              {acceptError && "Intenta de nuevo más tarde."}
             </Alert>
           </Box>
-          <Flex width="100%" justifyContent="center" mb={2}>
-            <Button onClick={acceptDonation} colorScheme="teal" mr={2}>
-              Aceptar
-            </Button>
-            <Button onClick={rejectDonation} colorScheme="red" mr={2}>
-              Rechazar
-            </Button>
-          </Flex>
+          {!acceptError && (
+            <Flex width="100%" justifyContent="center" mb={2}>
+              <Button onClick={accept} colorScheme="teal" mr={2}>
+                Aceptar
+              </Button>
+              <Button onClick={redirectToRejectView} colorScheme="red" mr={2}>
+                Rechazar
+              </Button>
+            </Flex>
+          )}
         </>
       )}
     </Flex>
   );
 
   const Body = () => {
+    if (acceptPending)
+      return (
+        <Flex height="250px" alignItems="center" justifyContent="center">
+          <Spinner size="xl" />
+        </Flex>
+      );
+
+    if (accepted)
+      return (
+        <Flex height="250px" alignItems="center" justifyContent="center">
+          <Heading size="lg">
+            Donación aceptada. <br />
+            Muchas gracias!
+          </Heading>
+        </Flex>
+      );
+
+    if (acceptError)
+      return (
+        <Flex height="250px" alignItems="center" justifyContent="center">
+          <Heading size="lg">{(acceptError as any).message}</Heading>
+        </Flex>
+      );
+
     return (
       <>
         <Heading size="lg">Detalle donaciones</Heading>
@@ -137,9 +163,8 @@ export const DonationModal: FC<DonationModalProps> = ({
         <ModalHeader>{acceptPending ? <PendingHeader /> : null}</ModalHeader>
         <ModalCloseButton />
         <ModalBody textAlign="center">
-          {acceptPending ? <PendingBody /> : <Body />}
+          <Body />
         </ModalBody>
-
         <ModalFooter mt={0}>{acceptPending ? null : <Footer />}</ModalFooter>
       </ModalContent>
     </Modal>

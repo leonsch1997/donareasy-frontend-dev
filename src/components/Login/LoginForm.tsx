@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 
 import { LoginFormValues } from "./types";
-import { useLogin } from "../../hooks/useLogin";
+import { useLogin } from "../../hooks";
 
 const initialValues: LoginFormValues = {
   username: "",
