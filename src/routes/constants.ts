@@ -8,4 +8,5 @@ export const routes = {
   apadrinar: "/apadrinamiento",
   forgotPassword: "/forgot-password",
   donationDetail: "/donation-detail",
+  rejectDonation: "/reject-donation",
 };

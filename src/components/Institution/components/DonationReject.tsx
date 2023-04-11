@@ -1,61 +1,74 @@
-import { Button } from '@chakra-ui/react';
-import { Formik, Form, FormikHelpers } from 'formik';
-import { initialValues, rejectDonationFields } from '../constants';
-import { createField, formatRejectDonationFormData, validateRejectDonationFields } from '../utils';
-import { RejectDonationFields } from '../types';
-import axios from 'axios';
-import { endpoints } from "../../../api";
-import { useCookies } from 'react-cookie';
+import { Button, Flex, Heading, Container } from "@chakra-ui/react";
+import { Textarea } from "@chakra-ui/react";
+import { Donation } from "../types";
+import { useRejectDonation } from "../../../hooks";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ChangeEventHandler, useState } from "react";
+import { routes } from "../../../routes";
 
-export const RejectDonation = ({idDonacion}: {idDonacion: number}) => {
-  const [cookies] = useCookies();
-  const fields = [...rejectDonationFields];
+export const RejectDonation = () => {
+  const { state } = useLocation(); // Recibe donacion via navigate
+  const navigate = useNavigate();
+  const { rejectDonation, rejected, pending } = useRejectDonation();
+  const [motivo, setMotivo] = useState("");
 
-  const handleSubmit = async (formValues: RejectDonationFields, actions: FormikHelpers<RejectDonationFields>) => {
-    const erroredFields = validateRejectDonationFields(formValues);
-    if (erroredFields.length <= 0) {
-      try {
-        const formattedData = formatRejectDonationFormData(formValues);
-        const res = await axios.put(
-          endpoints.donacionesPendientes+idDonacion.toString()+'/rechazar/',
-          formattedData,
-          {
-            withCredentials: true, headers:{
-            'Content-type': 'application/json',
-            'X-CSRFToken': cookies["csrftoken"] ?? 'ERROR CRF TOKEN', // added the csrf cookie header
-          },}).then((res) => res.data);
-        console.log(res);
-        console.log(formattedData);
-      } catch (e) {
-        console.log(e)
-      }
-    } else {
-      erroredFields.forEach(({ name }) => {
-        actions.setFieldError(name, `${name}-has an error`)
-      }) 
-    }
-  };
-  
+  const handleChange: ChangeEventHandler<HTMLTextAreaElement> = (e) =>
+    setMotivo(e.target.value);
+
+  const handleReject = () => rejectDonation((state as Donation).id);
+
+  console.log(state);
+  if (!state) return null;
+
+  const RedirectButton = () => (
+    <Flex mt={10}>
+      <Button colorScheme="pink" onClick={() => navigate(routes.home)}>Ir al dashboard</Button>
+    </Flex>
+  );
+
+  const RejectedBody = () => (
+    <>
+      <Heading textAlign="center">
+        Gracias por darnos el detalle. Hemos rechazado ésta donación.
+      </Heading>
+      <RedirectButton />
+    </>
+  );
+
+  const ErrorBody = () => (
+    <>
+      <Heading  textAlign="center">
+        Ha ocurrido un error al cargar la página. Intenta nuevamente
+        seleccionando la donación a rechazar desde la lista
+      </Heading>
+      <RedirectButton />
+    </>
+  );
+
   return (
-    <div>
-      <p>Componente de rechazo de donacion</p>
-      <p>Ingrese Motivo de Rechazo: </p>
-      <p>{idDonacion}</p>
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-      {({ isSubmitting }) => (
-        <Form>
-          {fields.map((fieldData, idx) => createField({...fieldData, idx }))}
+    <Container centerContent={true} pt={10}>
+      {!state && <ErrorBody />}
+      {rejected && <RejectedBody />}
+      {!rejected && state && (
+        <>
+          <Heading>Cuéntanos por que ésta donación no puede realizarse</Heading>
+          <Textarea
+            marginTop={10}
+            value={motivo}
+            onChange={handleChange}
+            placeholder="Los bienes se encuentran en un estado demasiado deteriorado."
+            size="lg"
+          />
           <Button
             mt={4}
-            colorScheme='pink'
-            type='submit'
-            isLoading={isSubmitting}
+            colorScheme="pink"
+            isLoading={pending}
+            onClick={handleReject}
           >
-            Rechazar
+            Enviar
           </Button>
-        </Form>
+        </>
       )}
-    </Formik>
-    </div>
+    </Container>
   );
-}
+};

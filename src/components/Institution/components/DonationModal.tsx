@@ -18,8 +18,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { Bien, DonationModalProps, DonationStates } from "../types";
-import { useAcceptDonation } from "../../../hooks";
-import { useHref, useNavigate } from "react-router-dom";
+import { useAcceptDonation, useRejectDonation } from "../../../hooks";
 
 const PendingHeader: FC = () => (
   <Heading size="lg">Aceptando donación ...</Heading>
@@ -36,26 +35,20 @@ export const DonationModal: FC<DonationModalProps> = ({
     pending: acceptPending,
     error: acceptError,
   } = useAcceptDonation();
-  // const {
-  //   rejectDonation,
-  //   rejected,
-  //   pending: rejectPending,
-  //   error: rejectError,
-  // } = useRejectDonation();
+  const { goToReject } = useRejectDonation();
 
   const onClose = () => {
     closeModal();
     if (accepted || acceptError) window.location.reload(); //Arreglar esto
-  }
+  };
 
   const { bienes, id } = item;
   const accept = () => acceptDonation(id);
-  // const reject = () => rejectDonation(id);
 
-  // console.log({ rejected, rejectPending, rejectError });
   const redirectToRejectView = () => {
     onClose();
-    console.log('Open reject prompt')
+    goToReject(item);
+    console.log("Open reject prompt");
   };
 
   const Footer = () => (
