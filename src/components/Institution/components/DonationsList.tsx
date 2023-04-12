@@ -21,7 +21,7 @@ export const DonationItem = (item: Donation) => {
   } = item;
   const boxColor =
     DonationStates.Pendiente === cod_estado || DonationStates.Cancelada
-      ? "gray.100"
+      ? "gray.50"
       : "teal.100";
   const icon =
     DonationStates.Aceptada === cod_estado ? (

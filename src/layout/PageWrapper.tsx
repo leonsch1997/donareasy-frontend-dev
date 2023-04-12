@@ -19,12 +19,12 @@ export const PageWrapper: FC = ({ children }) => {
 
   return (
     <>
-      <Flex p={2} bg={"teal.300"}>
+      <Flex p={3} bg={"teal.300"}>
         <Logo />
         <Spacer />
         <Box>
           {location.pathname !== routes.login && (
-            <Button onClick={handleSessionButton} colorScheme="pink" mr="4">
+            <Button onClick={handleSessionButton} colorScheme="pink" size="lg">
               {cookies[clientSession] ? "Cerrar sesión" : "Iniciar sesión"}
             </Button>
           )}

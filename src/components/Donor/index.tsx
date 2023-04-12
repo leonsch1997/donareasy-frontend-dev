@@ -230,7 +230,7 @@ export const DonorMain = () => {
   return (
     <Flex
       borderRadius="lg"
-      boxShadow="xl"
+      boxShadow="lg"
       m="20px auto 0"
       w="80%"
       justifyContent="center"

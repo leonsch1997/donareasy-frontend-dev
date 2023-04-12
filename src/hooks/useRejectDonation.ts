@@ -16,12 +16,11 @@ export const useRejectDonation = () => {
   const rejectDonation = useCallback(async (donationId: string, reason?: string) => {
     setLoading(true);
     try {
-      await axios(endpoints.rechazarDonacion(donationId), {
-        method: 'PUT',
+      await axios.patch(endpoints.rechazarDonacion(donationId), { motivo_cancelacion: reason || 'No se ha detallado el motivo.' }, {
         withCredentials: true,
-        data: { motivo_cancelacion: reason }
       });
-      setRejected(true)
+      setRejected(true);
+      window.history.replaceState(null, donationId);
     } catch {
       setError(new Error('Ha ocurrido un error al aceptar la donación.'));
       setRejected(false);

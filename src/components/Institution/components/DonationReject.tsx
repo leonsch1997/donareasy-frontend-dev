@@ -7,22 +7,24 @@ import { ChangeEventHandler, useState } from "react";
 import { routes } from "../../../routes";
 
 export const RejectDonation = () => {
+  const [motivo, setMotivo] = useState("");
   const { state } = useLocation(); // Recibe donacion via navigate
   const navigate = useNavigate();
+
   const { rejectDonation, rejected, pending } = useRejectDonation();
-  const [motivo, setMotivo] = useState("");
 
   const handleChange: ChangeEventHandler<HTMLTextAreaElement> = (e) =>
     setMotivo(e.target.value);
 
-  const handleReject = () => rejectDonation((state as Donation).id);
+  const handleReject = () => rejectDonation((state as Donation).id, motivo);
 
-  console.log(state);
   if (!state) return null;
 
   const RedirectButton = () => (
     <Flex mt={10}>
-      <Button colorScheme="pink" onClick={() => navigate(routes.home)}>Ir al dashboard</Button>
+      <Button colorScheme="pink" onClick={() => navigate(routes.home)}>
+        Ir al dashboard
+      </Button>
     </Flex>
   );
 
@@ -37,7 +39,7 @@ export const RejectDonation = () => {
 
   const ErrorBody = () => (
     <>
-      <Heading  textAlign="center">
+      <Heading textAlign="center">
         Ha ocurrido un error al cargar la página. Intenta nuevamente
         seleccionando la donación a rechazar desde la lista
       </Heading>
@@ -46,12 +48,12 @@ export const RejectDonation = () => {
   );
 
   return (
-    <Container centerContent={true} pt={10}>
+    <Container centerContent={true} pt={10} boxShadow="lg" mt={5} p={5}>
       {!state && <ErrorBody />}
       {rejected && <RejectedBody />}
       {!rejected && state && (
         <>
-          <Heading>Cuéntanos por que ésta donación no puede realizarse</Heading>
+          <Heading>Cuéntanos por qué esta donación no puede realizarse</Heading>
           <Textarea
             marginTop={10}
             value={motivo}
@@ -59,14 +61,26 @@ export const RejectDonation = () => {
             placeholder="Los bienes se encuentran en un estado demasiado deteriorado."
             size="lg"
           />
-          <Button
-            mt={4}
-            colorScheme="pink"
-            isLoading={pending}
-            onClick={handleReject}
-          >
-            Enviar
-          </Button>
+          <Flex justifyContent='space-between' width="50%">
+            <Button
+              mt={4}
+              size="lg"
+              colorScheme="gray"
+              isLoading={pending}
+              onClick={() => navigate(-1)}
+            >
+              Volver
+            </Button>
+            <Button
+              size="lg"
+              mt={4}
+              colorScheme="pink"
+              isLoading={pending}
+              onClick={handleReject}
+            >
+              Confirmar
+            </Button>
+          </Flex>
         </>
       )}
     </Container>
