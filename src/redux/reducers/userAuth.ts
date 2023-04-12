@@ -1,27 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
+import { initialState } from './constants';
 
 // Reducers
 export const userAuth = createSlice({
   name: "authUser",
-  initialState: {
-    authToken: document.cookie || '', // solo probando
-    group: "",
-    id: 1,
-    nombre: "",
-    username: "",
-  },
+  initialState: initialState,
   reducers: {
+    setUserData: (state, { payload }) => {},
     setUserToken: (state, { payload }) => {
-      state.authToken = payload.username;
-      state.id = payload.id;
-      state.nombre = payload.nombre;
-      state.username = payload.username;
-      state.group = payload.group;
+      state.authToken = payload.authToken;
+
     },
     removeUserToken: (state) => {
-      state.authToken = '';
-      state.username = "";
+      state.authToken = initialState.authToken;
     },
   },
 });

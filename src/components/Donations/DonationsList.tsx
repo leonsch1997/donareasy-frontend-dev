@@ -30,7 +30,6 @@ import { DonationItemProps, DonationsListProps } from './types';
 
 const ItemContent = ({ item }: DonationItemProps) => {
   const [showDetails, setShowDetails] = useState(false);
-  console.log(item, showDetails);
 
   const handleModal = () => setShowDetails(!showDetails);
 

@@ -16,7 +16,7 @@ export const InstitucionForm = () => {
     if (erroredFields.length <= 0) {
       try {
         const formattedData = formatLogupFormData('institucion', formValues);
-        const res = await axios.post(`${endpoints['logup']}/institucion/`, formattedData).then((res) => res.data);
+        const res = await axios.post(`${endpoints['logup']}institucion/`, formattedData).then((res) => res.data);
         console.log('Registro existoso' , res)
         console.log(formattedData);
       } catch (e) {
