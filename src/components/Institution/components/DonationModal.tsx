@@ -48,7 +48,6 @@ export const DonationModal: FC<DonationModalProps> = ({
   const redirectToRejectView = () => {
     onClose();
     goToReject(item);
-    console.log("Open reject prompt");
   };
 
   const Footer = () => (
@@ -104,7 +103,7 @@ export const DonationModal: FC<DonationModalProps> = ({
 
     return (
       <>
-        <Heading size="lg">Detalle donaciones</Heading>
+        <Heading size="lg">{item.monto ? 'Detalle de la transferencia' : 'Detalle donaciones'}</Heading>
         <Divider mt={2} />
         <Flex
           mt={5}
@@ -121,29 +120,33 @@ export const DonationModal: FC<DonationModalProps> = ({
             },
           }}
         >
-          <List>
-            {bienes.map(({ descripcion, cantidad, nombre, id }: Bien) => {
-              return (
-                <ListItem textAlign={"start"} key={id} mb={4}>
-                  <span>
-                    <b>Nombre: </b>
-                    {nombre}
-                  </span>
-                  <br />
-                  <span>
-                    <b>Detalle: </b>
-                    {descripcion}
-                  </span>
-                  <br />
-                  <span>
-                    <b>Cantidad: </b>
-                    {cantidad}
-                  </span>
-                  <Divider />
-                </ListItem>
-              );
-            })}
-          </List>
+          {item.monto ? (
+            <div>Monto transferido: {item.monto}</div>
+          ) : (
+            <List>
+              {bienes.map(({ descripcion, cantidad, nombre, id }: Bien) => {
+                return (
+                  <ListItem textAlign={"start"} key={id} mb={4}>
+                    <span>
+                      <b>Nombre: </b>
+                      {nombre}
+                    </span>
+                    <br />
+                    <span>
+                      <b>Detalle: </b>
+                      {descripcion}
+                    </span>
+                    <br />
+                    <span>
+                      <b>Cantidad: </b>
+                      {cantidad}
+                    </span>
+                    <Divider />
+                  </ListItem>
+                );
+              })}
+            </List>
+          )}
         </Flex>
       </>
     );
