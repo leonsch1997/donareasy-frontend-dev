@@ -1,11 +1,7 @@
-import axios from 'axios';
 import { Formik, Field, Form, FormikHelpers } from 'formik';
-import { FormControl, FormLabel, FormErrorMessage, Button, Input, Box, Container, Center, Link } from '@chakra-ui/react';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { FormControl, FormLabel, FormErrorMessage, Button, Input, Box, Container, Center } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { endpoints } from '../../api';
-import { routes } from '../../routes'
 import { setCurrentStep } from '../../redux/reducers';
 
 
@@ -15,7 +11,6 @@ export interface ForgotPasswordForm { password: string; repeatPassowrd: string; 
 
 export const UsernameForm = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const initialValues: ForgotPasswordUser = {
     username: '',
   }

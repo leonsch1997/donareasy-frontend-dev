@@ -16,8 +16,11 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { endpoints } from "../../api";
 
-import { routes } from "../../../routes";
+import { routes } from '../../routes';
 
 const LatestDonations = () => {
   const mockDonations: string[] = [
@@ -142,6 +145,19 @@ const News = () => {
     "Jorge López es ahora el nuevo director de la institución @nombreInstitucion. Conoce el equipo completo.",
   ];
 
+  const [noticias, setNoticias] = useState([]);
+
+  const fetchNoticias = async () => {
+    const response = await axios.get(endpoints.noticias, {
+      withCredentials: true,
+    });
+    setNoticias(response.data.results);
+  };
+
+  useEffect(() => {
+    fetchNoticias();
+  }, []);
+
   return (
     <Container
       ml={0}
@@ -156,7 +172,7 @@ const News = () => {
           <Text fontSize={"4xl"} fontWeight={"bold"} align={"left"}>
             Últimas Noticias
           </Text>
-          {mockNoticias.length > 0 && (
+          {noticias.length > 0 && (
             <Stack
               divider={<StackDivider borderColor="gray.200" />}
               spacing={4}
@@ -164,9 +180,9 @@ const News = () => {
               h={{ md: "90%" }}
               overflowY={"auto"}
             >
-              {mockNoticias.map((noticia) => (
+              {noticias.map((noticia) => (
                 <Box
-                  key={Math.random()}
+                  key={noticia['id']}
                   maxW="lg"
                   w="auto"
                   bg="white"
@@ -177,7 +193,11 @@ const News = () => {
                   pb={2}
                   pl={2}
                 >
-                  <Text>{noticia}</Text>
+                  <Text>{noticia['titulo']}</Text>
+                  <Text>{noticia['descripcion']}</Text>
+                  <Text>{noticia['fecha_publicacion']}</Text>
+                  <Text>{noticia['autores']}</Text>
+                  <Text>{noticia['institucion']}</Text>
                 </Box>
               ))}
             </Stack>
@@ -206,11 +226,11 @@ const News = () => {
   );
 };
 
-export const DonorHomeView = () => {
+export const DonorMain = () => {
   return (
     <Flex
       borderRadius="lg"
-      boxShadow="xl"
+      boxShadow="lg"
       m="20px auto 0"
       w="80%"
       justifyContent="center"

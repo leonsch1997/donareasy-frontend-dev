@@ -10,4 +10,12 @@ export const endpoints = {
   instituciones: `${baseURL}/donaciones/eligeInstitucion/`,
   chicos: `${baseURL}/apadrinamiento/solicitud/chicos/`,
   crearDonacion: `${baseURL}/donaciones/eligeInstitucion/donarBienes/`,
+  noticias: `${baseURL}/noticias/`,
+  donacionesPendientes: `${baseURL}/donaciones/donacionesPendientes/`,
+  transferenciasPendientes: `${baseURL}/donaciones/transferenciasPendientes/`,
+  solicitudApadrinamientoPendientes: `${baseURL}/apadrinamiento/solicitudes/`,
+  listadoDonaciones: `${baseURL}/donaciones/listadoDonaciones/`,
+  aceptarDonacion: (id: string) => `${baseURL}/donaciones/donacionesPendientes/${id}/aceptar/`,
+  rechazarDonacion: (id: string) => `${baseURL}/donaciones/donacionesPendientes/${id}/rechazar/`
+  
 }

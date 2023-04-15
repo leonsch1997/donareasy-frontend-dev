@@ -277,7 +277,6 @@ export const CrearDonacion = () => {
             onClick={onOpen}
             colorScheme={"linkedin"}
             variant={"ghost"}
-            disabled={!institucion}
           >
             Agregar
           </Button>
