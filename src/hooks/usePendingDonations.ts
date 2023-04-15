@@ -22,5 +22,6 @@ export const usePendingDonations = () => {
     }
   }, []);
 
+  console.log(donations)
   return { fetchPendingDonations, donations, loading, error };
 };
