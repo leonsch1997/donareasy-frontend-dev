@@ -11,7 +11,7 @@ export const usePendingDonations = () => {
   const fetchPendingDonations = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${endpoints.donacionesPendientes}`, {
+      const response = await axios.get(`${endpoints.listadoDonaciones}`, {
         withCredentials: true,
       });
       setDonations(response.data.results);
