@@ -2,12 +2,12 @@ import { Flex, Box, Heading, Select } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { usePendingMoneyDonations } from "../../../hooks";
 import { LoadingSpinner } from "../../Common";
-import { Donation, DonationStates } from "../types";
+import { Donation, MoneyDonationStates } from "../types";
 import { DonationsList } from "./DonationsList";
 
 const allDonations = "Todas";
 const filterOptions = [allDonations].concat(
-  Object.values(DonationStates).filter(
+  Object.values(MoneyDonationStates).filter(
     (val) => typeof val !== "number"
   ) as string[]
 );
@@ -28,7 +28,7 @@ export const MoneyDonations = () => {
 
   const sortDonations = useCallback(() => {
     const selectedOption = document.getElementById(
-      "donationsFilter"
+      "moneyDonationsFilter"
     ) as HTMLSelectElement;
 
     selectedOption?.value === "Todas"
@@ -36,7 +36,7 @@ export const MoneyDonations = () => {
       : setDonations(
           donations.filter(
             (don: Donation) =>
-              DonationStates[don.cod_estado] === selectedOption?.value
+              MoneyDonationStates[don.cod_estado] === selectedOption?.value
           )
         );
   }, [donations]);
@@ -47,7 +47,7 @@ export const MoneyDonations = () => {
     <Flex flexWrap="wrap">
       <Heading>
         Donaciones
-        <Select onChange={sortDonations} id="donationsFilter">
+        <Select onChange={sortDonations} id="moneyDonationsFilter">
           {filterOptions.map((option, idx) => (
             <option key={`${option}-${idx}`}>{option}</option>
           ))}

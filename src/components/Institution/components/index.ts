@@ -7,3 +7,4 @@ export * from './MoneyDonations';
 export * from './News';
 export * from './Recolecciones';
 export * from './DonationsList';
+export * from './StateBasedIcon';
