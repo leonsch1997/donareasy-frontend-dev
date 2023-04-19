@@ -1,10 +1,27 @@
-import { FC } from 'react';
-import { CheckIcon, TimeIcon } from "@chakra-ui/icons";
-import { Button, Flex, ListItem, useDisclosure, List } from "@chakra-ui/react";
+import { FC } from "react";
+import {
+  TimeIcon,
+  CheckCircleIcon,
+  CalendarIcon,
+  CheckIcon,
+  CloseIcon,
+} from "@chakra-ui/icons";
+import {
+  Button,
+  Flex,
+  ListItem,
+  useDisclosure,
+  List,
+  ChakraProps,
+  useTheme,
+} from "@chakra-ui/react";
 import { Donation, DonationStates } from "../types";
 import { DonationModal } from "./DonationModal";
 
 export const DonationsList: FC<{ donations: Donation[] }> = ({ donations }) => {
+  const theme = useTheme();
+
+  console.log(theme.colors)
   return (
     <List spacing={4}>
       {donations.length > 0 &&
@@ -19,16 +36,37 @@ export const DonationItem = (item: Donation) => {
     cod_estado,
     donante: { nombre, apellido },
   } = item;
-  const boxColor =
-    DonationStates.Pendiente === cod_estado || DonationStates.Cancelada
-      ? "gray.50"
-      : "teal.100";
-  const icon =
-    DonationStates.Aceptada === cod_estado ? (
-      <CheckIcon boxSize={"1.0rem"} mr={1} />
-    ) : (
-      <TimeIcon boxSize={"1.0rem"} mr={1} />
-    );
+
+  const getBoxColor = () => {
+    switch (cod_estado) {
+      case DonationStates.Aceptada:
+        return "teal.50";
+      case DonationStates.Cancelada:
+        return "pink.50";
+      case DonationStates.Agendada:
+        return "gray.50";
+      case DonationStates.Pendiente:
+        return "yellow.50";
+      case DonationStates.Entregada:
+        return "green.50";
+    }
+  };
+
+  const renderIcon = () => {
+    const iconStyle = { boxSize: cod_estado === DonationStates.Cancelada ? "0.8rem" : "1.0rem", mr: 1 } as ChakraProps;
+    switch (cod_estado) {
+      case DonationStates.Aceptada:
+        return <CheckIcon {...iconStyle} />;
+      case DonationStates.Cancelada:
+        return <CloseIcon {...iconStyle} />;
+      case DonationStates.Agendada:
+        return <CalendarIcon {...iconStyle} />;
+      case DonationStates.Pendiente:
+        return <TimeIcon {...iconStyle} />;
+      case DonationStates.Entregada:
+        return <CheckCircleIcon {...iconStyle} />;
+    }
+  };
 
   const StateBlock = () => (
     <>
@@ -42,11 +80,11 @@ export const DonationItem = (item: Donation) => {
     <Flex
       alignItems="center"
       minHeight={"50px"}
-      bg={boxColor}
+      bg={getBoxColor()}
       padding={2}
       borderRadius={"0.5rem"}
     >
-      {icon}
+      {renderIcon()}
       <ListItem key={item.id} ml={2} borderLeft={"1px solid gray"} pl={2}>
         <b>Donante:</b> {nombre} {apellido}
         <br />

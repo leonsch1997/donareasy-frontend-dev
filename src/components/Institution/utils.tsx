@@ -1,6 +1,5 @@
 import { FormControl, FormLabel, FormErrorMessage, Input, VStack } from '@chakra-ui/react';
 import { Field } from 'formik';
-import { Donation } from './types';
 import { FieldData, RejectDonationFields, RejectDonationFormValues } from './types';
 
 export const createField = ({ name, label, placeholder, dataType, isRequired, idx }: FieldData & { isRequired?: boolean }) => {
