@@ -19,7 +19,15 @@ import { FaHeart } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { endpoints } from "../../api";
+
+<<<<<<< HEAD:src/components/Donor/index.tsx
 import { routes } from '../../routes';
+=======
+import { routes } from "../../../routes";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { endpoints } from "../../../api";
+>>>>>>> 0bbd2e1dc5b260f7851e97bf7c11008423a07ca6:src/components/Donor/index.jsx
 
 const LatestDonations = () => {
   const [donations, setDonations] = useState([]);
