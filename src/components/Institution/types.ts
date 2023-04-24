@@ -27,7 +27,8 @@ export interface Donation {
   donante: Donante;
   cod_estado: number;
   bienes: Bien[];
-  monto?: any;
+  monto?: number | string;
+  fecha_transferencia: string;
 }
 
 export interface Bien {
