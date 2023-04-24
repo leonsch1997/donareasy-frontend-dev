@@ -1,14 +1,22 @@
-import { FC } from 'react';
-import { CheckIcon, TimeIcon } from "@chakra-ui/icons";
-import { Button, Flex, ListItem, useDisclosure, List } from "@chakra-ui/react";
-import { Donation, DonationStates } from "../types";
+import { FC } from "react";
+
+import {
+  Button,
+  Flex,
+  ListItem,
+  useDisclosure,
+  List,
+} from "@chakra-ui/react";
+import { getBoxColor } from '../utils';
+import { Donation, DonationStates, MoneyDonationStates } from "../types";
 import { DonationModal } from "./DonationModal";
+import { StateBasedIcon } from "./StateBasedIcon";
 
 export const DonationsList: FC<{ donations: Donation[] }> = ({ donations }) => {
   return (
     <List spacing={4}>
       {donations.length > 0 &&
-        donations.map((item, idx) => <DonationItem key={idx} {...item} />)}
+        donations.map((item, idx) => <DonationItem {...item} key={idx} />)}
     </List>
   );
 };
@@ -19,21 +27,14 @@ export const DonationItem = (item: Donation) => {
     cod_estado,
     donante: { nombre, apellido },
   } = item;
-  const boxColor =
-    DonationStates.Pendiente === cod_estado || DonationStates.Cancelada
-      ? "gray.50"
-      : "teal.100";
-  const icon =
-    DonationStates.Aceptada === cod_estado ? (
-      <CheckIcon boxSize={"1.0rem"} mr={1} />
-    ) : (
-      <TimeIcon boxSize={"1.0rem"} mr={1} />
-    );
+  const isMoneyDonation = item.hasOwnProperty("monto");
 
   const StateBlock = () => (
     <>
       <b>Estado: </b>
-      {DonationStates[cod_estado]}
+      {isMoneyDonation
+        ? MoneyDonationStates[cod_estado]
+        : DonationStates[cod_estado]}
       <br />
     </>
   );
@@ -42,11 +43,11 @@ export const DonationItem = (item: Donation) => {
     <Flex
       alignItems="center"
       minHeight={"50px"}
-      bg={boxColor}
+      bg={getBoxColor(cod_estado, isMoneyDonation)}
       padding={2}
       borderRadius={"0.5rem"}
     >
-      {icon}
+      <StateBasedIcon stateCode={cod_estado} isMoneyDonation={isMoneyDonation} />
       <ListItem key={item.id} ml={2} borderLeft={"1px solid gray"} pl={2}>
         <b>Donante:</b> {nombre} {apellido}
         <br />

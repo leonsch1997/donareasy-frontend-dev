@@ -1,3 +1,4 @@
+export * from './usePendingMoneyDonations';
 export * from './usePendingDonations';
 export * from './useAcceptDonation';
 export * from './useRejectDonation';

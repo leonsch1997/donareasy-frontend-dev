@@ -22,12 +22,13 @@ export interface RejectDonationFormValues {
   motivo_cancelacion: string;
 }
 
-
 export interface Donation {
   id: string;
   donante: Donante;
   cod_estado: number;
   bienes: Bien[];
+  monto?: number | string;
+  fecha_transferencia: string;
 }
 
 export interface Bien {

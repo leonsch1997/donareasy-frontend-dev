@@ -7,7 +7,6 @@ import {
   Flex,
   Heading,
   List,
-  ListItem,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -16,6 +15,10 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
+  Stat,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
 } from "@chakra-ui/react";
 import { Bien, DonationModalProps, DonationStates } from "../types";
 import { useAcceptDonation, useRejectDonation } from "../../../hooks";
@@ -48,7 +51,6 @@ export const DonationModal: FC<DonationModalProps> = ({
   const redirectToRejectView = () => {
     onClose();
     goToReject(item);
-    console.log("Open reject prompt");
   };
 
   const Footer = () => (
@@ -104,7 +106,9 @@ export const DonationModal: FC<DonationModalProps> = ({
 
     return (
       <>
-        <Heading size="lg">Detalle donaciones</Heading>
+        <Heading size="lg">
+          {item.monto ? "Detalle de la transferencia" : "Detalle donaciones"}
+        </Heading>
         <Divider mt={2} />
         <Flex
           mt={5}
@@ -121,29 +125,39 @@ export const DonationModal: FC<DonationModalProps> = ({
             },
           }}
         >
-          <List>
-            {bienes.map(({ descripcion, cantidad, nombre, id }: Bien) => {
-              return (
-                <ListItem textAlign={"start"} key={id} mb={4}>
-                  <span>
-                    <b>Nombre: </b>
-                    {nombre}
-                  </span>
-                  <br />
-                  <span>
-                    <b>Detalle: </b>
-                    {descripcion}
-                  </span>
-                  <br />
-                  <span>
-                    <b>Cantidad: </b>
-                    {cantidad}
-                  </span>
-                  <Divider />
-                </ListItem>
-              );
-            })}
-          </List>
+          {item.monto ? (
+            <Stat>
+              <StatLabel>Nro. transaccion:</StatLabel>
+              <StatHelpText>{item.id}</StatHelpText>
+              <StatLabel>Fecha</StatLabel>
+              <StatHelpText>{item.fecha_transferencia}</StatHelpText>
+              <StatLabel>Monto</StatLabel>
+              <StatNumber>${item.monto}</StatNumber>
+              <Divider mb={2} mt={2} />
+              <StatLabel>Detalles de donante</StatLabel>
+              <StatHelpText>
+                Donante: {item.donante.nombre} {item.donante.apellido}
+              </StatHelpText>
+              <StatLabel>Telefono</StatLabel>
+              <StatHelpText>{item.donante.telefono}</StatHelpText>
+            </Stat>
+          ) : (
+            <List width={"100%"}>
+              {bienes.map(({ descripcion, cantidad, nombre, id }: Bien) => {
+                return (
+                  <Stat key={id}>
+                    <StatLabel>Nombre:</StatLabel>
+                    <StatHelpText>{nombre}</StatHelpText>
+                    <StatLabel>Detalle del bien:</StatLabel>
+                    <StatHelpText>{descripcion}</StatHelpText>
+                    <StatLabel>Cantidad</StatLabel>
+                    <StatNumber>{cantidad}</StatNumber>
+                    <Divider mb={2} mt={2} />
+                  </Stat>
+                );
+              })}
+            </List>
+          )}
         </Flex>
       </>
     );

@@ -3,15 +3,15 @@ import { useCallback, useState } from "react";
 import { Donation } from "../components/Institution/types";
 import { endpoints } from "../api";
 
-export const usePendingDonations = () => {
+export const usePendingMoneyDonations = () => {
   const [donations, setDonations] = useState<Donation[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean | Error>(false);
 
-  const fetchPendingDonations = useCallback(async () => {
+  const fetchPendingMoneyDonations = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${endpoints.listadoDonaciones}`, {
+      const response = await axios.get(`${endpoints.transferenciasPendientes}`, {
         withCredentials: true,
       });
       setDonations(response.data.results);
@@ -22,5 +22,5 @@ export const usePendingDonations = () => {
     }
   }, []);
 
-  return { fetchPendingDonations, donations, loading, error };
+  return { fetchPendingMoneyDonations, donations, loading, error };
 };
