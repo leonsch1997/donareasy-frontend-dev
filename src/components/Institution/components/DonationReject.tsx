@@ -16,7 +16,7 @@ export const RejectDonation = () => {
   const handleChange: ChangeEventHandler<HTMLTextAreaElement> = (e) =>
     setMotivo(e.target.value);
 
-  const handleReject = () => rejectDonation((state as Donation).id, motivo);
+  const handleReject = () => rejectDonation((state as Donation), motivo);
 
   if (!state) return null;
 

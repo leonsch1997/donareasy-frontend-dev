@@ -13,14 +13,19 @@ export const useRejectDonation = () => {
 
   const goToReject = (donation: Donation) => navigate(routes.rejectDonation, { state: donation });
 
-  const rejectDonation = useCallback(async (donationId: string, reason?: string) => {
+  const rejectDonation = useCallback(async (donation: Donation, reason?: string) => {
     setLoading(true);
     try {
-      await axios.patch(endpoints.rechazarDonacion(donationId), { motivo_cancelacion: reason || 'No se ha detallado el motivo.' }, {
-        withCredentials: true,
-      });
-      setRejected(true);
-      window.history.replaceState(null, donationId);
+      { donation.monto ? (
+        await axios.patch(endpoints.rechazarTransferencia(donation.id), { motivo_cancelacion: reason || 'No se ha detallado el motivo.' }, {
+          withCredentials: true,
+        })) : 
+        (await axios.patch(endpoints.rechazarDonacion(donation.id), { motivo_cancelacion: reason || 'No se ha detallado el motivo.' }, {
+          withCredentials: true,
+        }));
+        setRejected(true);
+        window.history.replaceState(null, donation.id);
+      }
     } catch {
       setError(new Error('Ha ocurrido un error al aceptar la donación.'));
       setRejected(false);

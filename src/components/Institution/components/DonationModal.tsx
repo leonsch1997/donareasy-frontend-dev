@@ -20,7 +20,7 @@ import {
   StatLabel,
   StatNumber,
 } from "@chakra-ui/react";
-import { Bien, DonationModalProps, DonationStates } from "../types";
+import { Bien, DonationModalProps, DonationStates, MoneyDonationStates} from "../types";
 import { useAcceptDonation, useRejectDonation } from "../../../hooks";
 
 const PendingHeader: FC = () => (
@@ -46,7 +46,7 @@ export const DonationModal: FC<DonationModalProps> = ({
   };
 
   const { bienes, id } = item;
-  const accept = () => acceptDonation(id);
+  const accept = () => acceptDonation(item);
 
   const redirectToRejectView = () => {
     onClose();
@@ -54,7 +54,32 @@ export const DonationModal: FC<DonationModalProps> = ({
   };
 
   const Footer = () => (
-    <Flex justifyContent="center" width="100%" flexWrap="wrap">
+    <Flex>
+      {item.monto ? (
+      <Flex justifyContent="center" width="100%" flexWrap="wrap">
+        {item.cod_estado === MoneyDonationStates.Pendiente && !accepted && (
+          <>
+            <Box mb={2}>
+              <Alert textAlign="center" width="100%" status="warning">
+                Para poder enviar esta donación, debe ser aceptada.
+                <br />
+                {acceptError && "Intenta de nuevo más tarde."}
+              </Alert>
+            </Box>
+            {!acceptError && (
+              <Flex width="100%" justifyContent="center" mb={2}>
+                <Button onClick={accept} colorScheme="teal" mr={2}>
+                  Aceptar
+                </Button>
+                <Button onClick={redirectToRejectView} colorScheme="red" mr={2}>
+                  Rechazar
+                </Button>
+              </Flex>
+            )}
+          </>
+        )}
+      </Flex>)
+      : (<Flex justifyContent="center" width="100%" flexWrap="wrap">
       {item.cod_estado === DonationStates.Pendiente && !accepted && (
         <>
           <Box mb={2}>
@@ -76,6 +101,7 @@ export const DonationModal: FC<DonationModalProps> = ({
           )}
         </>
       )}
+    </Flex>)}
     </Flex>
   );
 

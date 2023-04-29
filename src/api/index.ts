@@ -15,5 +15,7 @@ export const endpoints = {
   solicitudApadrinamientoPendientes: `${baseURL}/apadrinamiento/solicitudes/`,
   listadoDonaciones: `${baseURL}/donaciones/listadoDonaciones/`,
   aceptarDonacion: (id: string) => `${baseURL}/donaciones/donacionesPendientes/${id}/aceptar/`,
-  rechazarDonacion: (id: string) => `${baseURL}/donaciones/donacionesPendientes/${id}/rechazar/`
+  rechazarDonacion: (id: string) => `${baseURL}/donaciones/donacionesPendientes/${id}/rechazar/`,
+  aceptarTransferencia: (id: string) => `${baseURL}/donaciones/transferenciasPendientes/${id}/aceptar/`,
+  rechazarTransferencia: (id: string) => `${baseURL}/donaciones/transferenciasPendientes/${id}/rechazar/`
 }

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
+import { Donation } from "../components/Institution/types";
 import { endpoints } from "../api";
 
 export const useAcceptDonation = () => {
@@ -7,13 +8,20 @@ export const useAcceptDonation = () => {
   const [accepted, setAccepted] = useState<boolean>(false);
   const [error, setError] = useState<boolean | Error>(false);
 
-  const acceptDonation = useCallback(async (donationId: string) => {
+  const acceptDonation = useCallback(async (donation: Donation) => {
     setLoading(true);
     try {
-      await axios(endpoints.aceptarDonacion(donationId), {
+      {donation.monto ? (
+      await axios(endpoints.aceptarTransferencia(donation.id), {
         method: 'PUT',
         withCredentials: true,
-      });
+      })
+    )
+    : (await axios(endpoints.aceptarDonacion(donation.id), {
+      method: 'PUT',
+      withCredentials: true,
+    }))
+    } ;
       setAccepted(true)
     } catch {
       setError(new Error('Ha ocurrido un error al aceptar la donación.'));
