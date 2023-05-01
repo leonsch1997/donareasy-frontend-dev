@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Flex, TabList, Tabs, Tab, TabPanel, TabPanels } from "@chakra-ui/react";
 //import { Apadrinamiento, News, Recolecciones, DonationPendings, MoneyDonations } from "./components";
-import { DonationListCreate } from "./components";
+import { DonationListCreate, MoneyDonationsList } from "./components";
 
 export const DonorMain: FC = () => {
   return (
@@ -28,7 +28,7 @@ export const DonorMain: FC = () => {
           </TabPanel>
 
           <TabPanel>
-            <p>Panel2</p>
+            <p><MoneyDonationsList /></p>
           </TabPanel>
           
           <TabPanel>

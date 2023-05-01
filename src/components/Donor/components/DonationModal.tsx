@@ -20,7 +20,7 @@ import {
   StatLabel,
   StatNumber,
 } from "@chakra-ui/react";
-import { Bien, DonationModalProps, DonationStates } from "../types";
+import { Bien, DonationModalProps, DonationStates, MoneyDonationStates } from "../types";
 //import { useAcceptDonation, useRejectDonation } from "../../../hooks";
 import { useCancelDonation } from "../../../hooks";
 
@@ -73,7 +73,9 @@ export const DonationModal: FC<DonationModalProps> = ({
 
   const Footer = () => (
     <Flex justifyContent="center" width="100%" flexWrap="wrap">
-      {item.cod_estado === DonationStates.Pendiente && !cancelled && (
+      {((item.cod_estado === DonationStates.Pendiente && !item.monto)
+      || (item.cod_estado === MoneyDonationStates.Pendiente && item.monto))
+      && !cancelled && (
         <>
           <Box mb={2}>
             <Alert textAlign="center" width="100%" status="warning">

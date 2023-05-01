@@ -1,4 +1,4 @@
-import { Donante } from '../Donations/types';
+import { Donante, Institucion } from '../Donations/types';
 export interface DonationModalProps {
   item: Donation;
   isOpen: boolean;
@@ -25,6 +25,7 @@ export interface RejectDonationFormValues {
 export interface Donation {
   id: string;
   donante: Donante;
+  institucion: Institucion;
   cod_estado: number;
   bienes: Bien[];
   monto?: number | string;
