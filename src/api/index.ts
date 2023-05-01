@@ -18,4 +18,5 @@ export const endpoints = {
   rechazarDonacion: (id: string) => `${baseURL}/donaciones/donacionesPendientes/${id}/rechazar/`,
   donacionBien: `${baseURL}/donaciones/eligeInstitucion/donarBienes/`,
   donacionMonetaria: `${baseURL}/donaciones/donarDinero/`,
+  cancelarDonacion: (id: string) => `${baseURL}/donaciones/${id}/cancelar/`
 }

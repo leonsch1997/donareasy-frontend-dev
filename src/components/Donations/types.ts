@@ -43,6 +43,18 @@ export interface Donante {
   usuario: number;
 }
 
+export interface Institucion {
+  id: number;
+  nombre: string;
+  director: string;
+  domicilio: string;
+  localidad: string;
+  telefono: string;
+  cant_empleados: number;
+  descripcion: string;
+  cbu: string;
+} 
+
 export interface DonationsListProps {
   list: Donacion[];
 }
