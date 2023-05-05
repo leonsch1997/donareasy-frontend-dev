@@ -21,7 +21,6 @@ import {
   StatNumber,
 } from "@chakra-ui/react";
 import { Bien, DonationModalProps, DonationStates, MoneyDonationStates } from "../types";
-//import { useAcceptDonation, useRejectDonation } from "../../../hooks";
 import { useCancelDonation } from "../../../hooks";
 
 const PendingHeader: FC = () => (
@@ -39,7 +38,7 @@ export const DonationModal: FC<DonationModalProps> = ({
   // const {
   //   acceptDonation,
   //   accepted,
-  //   pending: acceptPending,
+  //   pending: cancelPending,
   //   error: cancelError,
   // } = useAcceptDonation();
 
@@ -65,7 +64,7 @@ export const DonationModal: FC<DonationModalProps> = ({
   const { 
     cancelDonation,
     cancelled,
-    pending: acceptPending,
+    pending: cancelPending,
     error: cancelError,
    } = useCancelDonation();
 
@@ -97,7 +96,7 @@ export const DonationModal: FC<DonationModalProps> = ({
   );
 
   const Body = () => {
-    if (acceptPending)
+    if (cancelPending)
       return (
         <Flex height="250px" alignItems="center" justifyContent="center">
           <Spinner size="xl" />
@@ -108,7 +107,7 @@ export const DonationModal: FC<DonationModalProps> = ({
       return (
         <Flex height="250px" alignItems="center" justifyContent="center">
           <Heading size="lg">
-            Donación aceptada. <br />
+            Donación cancelada. <br />
             Muchas gracias!
           </Heading>
         </Flex>
@@ -184,12 +183,12 @@ export const DonationModal: FC<DonationModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{acceptPending ? <PendingHeader /> : null}</ModalHeader>
+        <ModalHeader>{cancelPending ? <PendingHeader /> : null}</ModalHeader>
         <ModalCloseButton />
         <ModalBody textAlign="center">
           <Body />
         </ModalBody>
-        <ModalFooter mt={0}>{acceptPending ? null : <Footer />}</ModalFooter>
+        <ModalFooter mt={0}>{cancelPending ? null : <Footer />}</ModalFooter>
       </ModalContent>
     </Modal>
   );
