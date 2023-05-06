@@ -29,6 +29,7 @@ import {
 import axios from "axios";
 import { endpoints } from "../../api";
 import Donation from "./Donation";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const CrearDonacion = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,6 +39,7 @@ export const CrearDonacion = () => {
   const [donaciones, setDonaciones] = useState([]);
   const [institucionesCBU, setInstitucionesCBU] = useState([]);
   const [instituciones, setInstituciones] = useState([]);
+  const navigate = useNavigate();
 
   const fetchInstituciones = async () => {
     const responseCBU = await axios.get(endpoints.institucionesCBU, {
@@ -127,9 +129,10 @@ export const CrearDonacion = () => {
                 <Form>
                   <Field name="tipo">
                     {({ field, form }) => (
-                      <FormControl>
+                      <FormControl isRequired>
                         <FormLabel htmlFor="tipo">Tipo</FormLabel>
-                        <Select {...field} id="tipo" placeholder="tipo">
+                        <Select {...field} id="tipo">
+                          <option selected hidden disabled value="">Seleccione el tipo del Bien</option>
                           <option value={1}>Alimento</option>
                           <option value={2}>Útil escolar</option>
                           <option value={3}>Prendas</option>
@@ -140,7 +143,7 @@ export const CrearDonacion = () => {
                   </Field>
                   <Field name="nombre">
                     {({ field, form }) => (
-                      <FormControl>
+                      <FormControl isRequired>
                         <FormLabel htmlFor="nombre">Nombre</FormLabel>
                         <Input {...field} id="nombre" placeholder="nombre" />
                       </FormControl>
@@ -148,7 +151,7 @@ export const CrearDonacion = () => {
                   </Field>
                   <Field name="descripcion">
                     {({ field, form }) => (
-                      <FormControl>
+                      <FormControl isRequired>
                         <FormLabel htmlFor="descripcion">Descripción</FormLabel>
                         <Input
                           {...field}
@@ -160,25 +163,18 @@ export const CrearDonacion = () => {
                   </Field>
                   <Field name="cantidad">
                     {({ field, form }) => (
-                      <FormControl>
+                      <FormControl isRequired>
                         <FormLabel htmlFor="cantidad">Cantidad</FormLabel>
                         <Input
                           {...field}
                           type={"number"}
-                          min={0}
+                          min={1}
                           id="cantidad"
                           placeholder="cantidad"
                         />
                       </FormControl>
                     )}
                   </Field>
-
-                  {!validForm && (
-                    <Text color={"red"} fontSize={"sm"}>
-                      complete todos los campos
-                    </Text>
-                  )}
-
                   <Center>
                     <Button mt={4} colorScheme="pink" type="submit">
                       Confirmar
@@ -197,18 +193,12 @@ export const CrearDonacion = () => {
                 <Form>
                   <Field name="monto">
                     {({ field, form }) => (
-                      <FormControl>
+                      <FormControl isRequired>
                         <FormLabel htmlFor="monto">Monto</FormLabel>
                         <Input {...field} id="monto" placeholder="monto" />
                       </FormControl>
                     )}
                   </Field>
-
-                  {!validForm && (
-                    <Text color={"red"} fontSize={"sm"}>
-                      complete todos los campos
-                    </Text>
-                  )}
                   <Center>
                     <Button mt={4} colorScheme="pink" type="submit">
                       Confirmar
@@ -256,9 +246,9 @@ export const CrearDonacion = () => {
           <Text p={"20px"}>Elige la institución que recibirá la donación</Text>
           <Select
             p={"10px"}
-            placeholder="Elige institución"
             onChange={elegirInstitucion}
           >
+            <option selected hidden disabled value="">Seleccione la Institución</option>
             {instituciones.length > 0 &&
               tipoDonacion == "bienes" &&
               instituciones.map((i) => (
@@ -330,8 +320,17 @@ export const CrearDonacion = () => {
           )}
         </Box>
       </Flex>
-      <Flex margin={10}>
-        <Button colorScheme={"linkedin"} onClick={submitDonations}>
+      <Flex justifyContent='space-between' width="25%">
+        <Button
+          colorScheme="gray"
+          onClick={() => navigate(-1)}
+        >
+          Volver
+        </Button>
+        <Button 
+          colorScheme={"linkedin"} 
+          onClick={submitDonations}
+        >
           Enviar Donación
         </Button>
       </Flex>
