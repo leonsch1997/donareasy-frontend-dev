@@ -1,4 +1,3 @@
-import { Donante, Institucion } from '../Donations/types';
 export interface DonationModalProps {
   item: Donation;
   isOpen: boolean;
@@ -59,3 +58,32 @@ export enum MoneyDonationStates {
   Pendiente = 3,
   Aceptada = 4,
 }
+
+export interface Donante {
+  id:	number;
+  nombre:	string
+  apellido:	string
+  fecha_nacimiento?:	string; // NN
+  dni: string;
+  domicilio: string;
+  localidad: string;
+  provincia: string;
+  pais:	string;
+  telefono:	string;
+  estado_civil?: string; // NN
+  genero:	string;
+  ocupacion?: string; // NN
+  usuario: number;
+}
+
+export interface Institucion {
+  id: number;
+  nombre: string;
+  director: string;
+  domicilio: string;
+  localidad: string;
+  telefono: string;
+  cant_empleados: number;
+  descripcion: string;
+  cbu: string;
+} 

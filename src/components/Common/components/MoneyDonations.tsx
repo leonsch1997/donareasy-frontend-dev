@@ -1,7 +1,7 @@
 import { Flex, Box, Heading, Select } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { usePendingMoneyDonations } from "../../../hooks";
-import { LoadingSpinner } from "../../Common";
+import { LoadingSpinner } from ".";
 import { Donation, MoneyDonationStates } from "../types";
 import { DonationsList } from "./DonationsList";
 

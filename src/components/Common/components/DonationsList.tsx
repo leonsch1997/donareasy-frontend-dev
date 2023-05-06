@@ -1,22 +1,31 @@
 import { FC } from "react";
-
 import {
   Button,
   Flex,
   ListItem,
   useDisclosure,
   List,
+  Text,
 } from "@chakra-ui/react";
-import { getBoxColor } from '../utils';
-import { Donation, DonationStates, MoneyDonationStates } from "../types";
+import { getBoxColor } from "../../../utils";
+import { StateBasedIcon } from ".";
 import { DonationModal } from "./DonationModal";
-import { StateBasedIcon } from "./StateBasedIcon";
+import { Donation, DonationStates, MoneyDonationStates } from "../types";
 
 export const DonationsList: FC<{ donations: Donation[] }> = ({ donations }) => {
   return (
-    <List spacing={4}>
-      {donations.length > 0 &&
-        donations.map((item, idx) => <DonationItem {...item} key={idx} />)}
+    <List width="100%" spacing={4}>
+      {donations.length > 0 ? (
+        donations.map((item, idx) => <DonationItem {...item} key={idx} />)
+      ) : (
+        <>
+          <Text fontWeight="bold">Sin donaciones en el último período</Text>
+          <Text>
+            Parece que no has realizado donaciones últimamente. Puedes realizar
+            una nueva presionando en el botón "Realizar Donación"
+          </Text>
+        </>
+      )}
     </List>
   );
 };
@@ -42,17 +51,20 @@ export const DonationItem = (item: Donation) => {
   return (
     <Flex
       alignItems="center"
-      minHeight={"50px"}
+      minHeight={50}
       bg={getBoxColor(cod_estado, isMoneyDonation)}
-      padding={2}
+      padding={4}
       borderRadius={"0.5rem"}
     >
-      <StateBasedIcon stateCode={cod_estado} isMoneyDonation={isMoneyDonation} />
-      <ListItem key={item.id} ml={2} borderLeft={"1px solid gray"} pl={2}>
+      <StateBasedIcon
+        stateCode={cod_estado}
+        isMoneyDonation={isMoneyDonation}
+      />
+      <ListItem key={item.id} pl={4}>
         <b>Donante:</b> {nombre} {apellido}
         <br />
         <StateBlock />
-        <Button onClick={onOpen} colorScheme={"pink"} mt={"10px"} size={"sm"}>
+        <Button onClick={onOpen} colorScheme={"pink"} mt={2} size={"sm"}>
           Ver detalle
         </Button>
       </ListItem>

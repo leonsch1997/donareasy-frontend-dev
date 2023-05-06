@@ -1,6 +1,14 @@
 import { FC } from "react";
-import { Flex, TabList, Tabs, Tab, TabPanel, TabPanels } from "@chakra-ui/react";
-import { Apadrinamiento, News, Recolecciones, DonationPendings, MoneyDonations } from "./components";
+import {
+  Flex,
+  TabList,
+  Tabs,
+  Tab,
+  TabPanel,
+  TabPanels,
+} from "@chakra-ui/react";
+import { Apadrinamiento, Recolecciones } from "./components";
+import { News, DonationPendings, MoneyDonations } from "../Common";
 
 export const InstitutionMain: FC = () => {
   return (
@@ -21,7 +29,7 @@ export const InstitutionMain: FC = () => {
           <Tab>Ultimas noticias</Tab>
         </TabList>
 
-        <TabPanels height="100%" maxHeight={'70vh'} overflow={'auto'}>
+        <TabPanels height="100%" maxHeight={"70vh"} overflow={"auto"}>
           <TabPanel>
             <DonationPendings />
           </TabPanel>
@@ -29,7 +37,7 @@ export const InstitutionMain: FC = () => {
           <TabPanel>
             <MoneyDonations />
           </TabPanel>
-          
+
           <TabPanel>
             <Recolecciones />
           </TabPanel>

@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, FormErrorMessage, Input, VStack } from '@chakra-ui/react';
 import { Field } from 'formik';
-import { DonationStates, FieldData, MoneyDonationStates, RejectDonationFields, RejectDonationFormValues } from './types';
+import { DonationStates, FieldData, MoneyDonationStates, RejectDonationFields, RejectDonationFormValues } from '../components/Common/types';
 
 export const createField = ({ name, label, placeholder, dataType, isRequired, idx }: FieldData & { isRequired?: boolean }) => {
   return (
@@ -37,28 +37,28 @@ export const getBoxColor = (
   stateCode: DonationStates | MoneyDonationStates,
   isMoneyDonation: boolean
 ) => {
-  // Se podría reutilizar si tuviese todo el mismo codigo pero no es el caso.
+  // Elegir una buena paleta de colores
   if (isMoneyDonation) {
     switch (stateCode) {
       case MoneyDonationStates.Pendiente:
-        return "yellow.50";
+        return "gray.50"
       case MoneyDonationStates.Aceptada:
-        return "teal.50";
+        return "gray.50"
       case MoneyDonationStates.Cancelada:
-        return "pink.50";
+        return "gray.50"
     }
   } else {
     switch (stateCode) {
       case DonationStates.Aceptada:
-        return "teal.50";
+        return "gray.50"
       case DonationStates.Cancelada:
-        return "pink.50";
+        return "gray.50"
       case DonationStates.Agendada:
-        return "gray.50";
+        return "gray.50"
       case DonationStates.Pendiente:
-        return "yellow.50";
+        return "gray.50"
       case DonationStates.Entregada:
-        return "green.50";
+        return "gray.50"
     }
   }
 };

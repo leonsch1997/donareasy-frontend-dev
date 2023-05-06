@@ -2,7 +2,7 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { endpoints } from "../api";
-import { Donation } from "../components/Institution/types";
+import { Donation } from "../components/Common/types";
 import { routes } from "../routes";
 
 export const useRejectDonation = () => {
