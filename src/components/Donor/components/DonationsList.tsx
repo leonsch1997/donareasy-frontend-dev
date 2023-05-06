@@ -66,7 +66,6 @@ export const DonationItem = (item: Donation) => {
       <StateBasedIcon stateCode={cod_estado} isMoneyDonation={isMoneyDonation} />
       <ListItem key={item.id} ml={2} borderLeft={"1px solid gray"} pl={2}>
         <b>Institución:</b> {nombre}
-        {console.log(item)}
         <br />
         <StateBlock />
         <Button onClick={onOpen} colorScheme={"pink"} mt={"10px"} size={"sm"}>
