@@ -3,6 +3,7 @@ import { Flex, TabList, Tabs, Tab, TabPanel, TabPanels } from "@chakra-ui/react"
 //import { Apadrinamiento, News, Recolecciones, DonationPendings, MoneyDonations } from "./components";
 import { DonationListCreate, MoneyDonationsList } from "./components";
 
+
 export const DonorMain: FC = () => {
   return (
     <Flex
@@ -36,7 +37,7 @@ export const DonorMain: FC = () => {
           </TabPanel>
 
           <TabPanel>
-            <p>Panel4</p>
+            <p>Panel4 Aca iría el botón para apadriar</p>
           </TabPanel>
 
           <TabPanel>

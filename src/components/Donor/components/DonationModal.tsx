@@ -76,17 +76,11 @@ export const DonationModal: FC<DonationModalProps> = ({
       || (item.cod_estado === MoneyDonationStates.Pendiente && item.monto))
       && !cancelled && (
         <>
-          <Box mb={2}>
-            <Alert textAlign="center" width="100%" status="warning">
-              Para poder enviar esta donación, debe ser aceptada.
-              <br />
-              {cancelError && "Intenta de nuevo más tarde."}
-            </Alert>
-          </Box>
+          
           {!cancelError && (
             <Flex width="100%" justifyContent="center" mb={2}>
               <Button onClick={cancel} colorScheme="red" mr={2}>
-                Cancelar
+                Cancelar Donación
               </Button>
             </Flex>
           )}

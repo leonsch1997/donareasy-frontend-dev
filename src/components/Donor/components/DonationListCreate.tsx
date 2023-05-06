@@ -43,7 +43,7 @@ export const DonationListCreate = () => {
   const navigate = useNavigate();
 
   const goToCreateDonation = () => navigate(routes.donar);
-  const goToApadrinamiento = () => navigate(routes.apadrinar);
+  // const goToApadrinamiento = () => navigate(routes.apadrinar);
   // const goToCreateDonation = () => {alert('mensaje')};
   // const goToApadrinamiento = () => {alert('mensaje')};
 
@@ -59,9 +59,9 @@ export const DonationListCreate = () => {
         <Button onClick={goToCreateDonation} colorScheme="blue" mr={2}>
           Realizar Donación
         </Button>
-        <Button onClick={goToApadrinamiento} colorScheme="pink" mr={2}>
-          Apadrinar
-        </Button>
+        {/* <Button onClick={goToApadrinamiento} colorScheme="pink" mr={2}>
+              Apadrinar
+            </Button>  */}
       </Heading>
       <Box width={"100%"} mt="10">
         {loading && <LoadingSpinner />}
