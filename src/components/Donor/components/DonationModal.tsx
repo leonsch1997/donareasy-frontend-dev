@@ -21,7 +21,7 @@ import {
   StatNumber,
 } from "@chakra-ui/react";
 import { Bien, DonationModalProps, DonationStates, MoneyDonationStates } from "../types";
-import { useCancelDonation } from "../../../hooks";
+import { UseCancelTransfer, useCancelDonation } from "../../../hooks";
 
 const PendingHeader: FC = () => (
   <Heading size="lg">
@@ -68,12 +68,19 @@ export const DonationModal: FC<DonationModalProps> = ({
     error: cancelError,
    } = useCancelDonation();
 
+   const { 
+    cancelTransfer,
+    cancelledTr,
+    pending: cancelPendingTr,
+    error: cancelErrorTr,
+   } = UseCancelTransfer();
+
   const cancel = () => cancelDonation(id);
+  const cancelTr = () => cancelTransfer(id);
 
   const Footer = () => (
     <Flex justifyContent="center" width="100%" flexWrap="wrap">
-      {((item.cod_estado === DonationStates.Pendiente && !item.monto)
-      || (item.cod_estado === MoneyDonationStates.Pendiente && item.monto))
+      {((item.cod_estado === DonationStates.Pendiente && !item.monto))
       && !cancelled && (
         <>
           
@@ -85,6 +92,18 @@ export const DonationModal: FC<DonationModalProps> = ({
             </Flex>
           )}
         </>
+      )}
+      {
+        (item.cod_estado === MoneyDonationStates.Pendiente && item.monto) && !cancelledTr && (
+          <>
+            {!cancelErrorTr && (
+              <Flex width="100%" justifyContent="center" mb={2}>
+                <Button onClick={cancelTr} colorScheme="red" mr={2}>
+                  Cancelar Transferencia
+                </Button>
+              </Flex>
+            )}
+          </>
       )}
     </Flex>
   );
@@ -113,7 +132,29 @@ export const DonationModal: FC<DonationModalProps> = ({
           <Heading size="lg">{(cancelError as any).message}</Heading>
         </Flex>
       );
+      if (cancelPendingTr)
+      return (
+        <Flex height="250px" alignItems="center" justifyContent="center">
+          <Spinner size="xl" />
+        </Flex>
+      );
 
+    if (cancelledTr)
+      return (
+        <Flex height="250px" alignItems="center" justifyContent="center">
+          <Heading size="lg">
+            Transferencia cancelada. <br />
+            Muchas gracias!
+          </Heading>
+        </Flex>
+      );
+
+    if (cancelErrorTr)
+      return (
+        <Flex height="250px" alignItems="center" justifyContent="center">
+          <Heading size="lg">{(cancelErrorTr as any).message}</Heading>
+        </Flex>
+      );
     return (
       <>
         <Heading size="lg">

@@ -16,7 +16,7 @@ export const useCancelDonation = () => {
       });
       setCancel(true)
     } catch {
-      setError(new Error('Ha ocurrido un error al aceptar la donación.'));
+      setError(new Error('Ha ocurrido un error al cancelar la donación.'));
       setCancel(false);
     } finally {
       setLoading(false);
@@ -24,4 +24,28 @@ export const useCancelDonation = () => {
   }, []);
 
   return { cancelDonation, pending, cancelled, error };
+};
+
+export const UseCancelTransfer = () => {
+  const [pending, setLoading] = useState<boolean>(false);
+  const [cancelledTr, setCancel] = useState<boolean>(false);
+  const [error, setError] = useState<boolean | Error>(false);
+
+  const cancelTransfer = useCallback(async (donationId: string) => {
+    setLoading(true);
+    try {
+      await axios(endpoints.cancelarTransferencia(donationId), {
+        method: 'PUT',
+        withCredentials: true,
+      });
+      setCancel(true)
+    } catch {
+      setError(new Error('Ha ocurrido un error al cancelar la donación.'));
+      setCancel(false);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return { cancelTransfer, pending, cancelledTr, error };
 };
