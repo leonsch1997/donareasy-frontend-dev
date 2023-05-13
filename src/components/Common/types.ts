@@ -1,3 +1,4 @@
+import { HTMLInputTypeAttribute } from "react";
 export interface DonationModalProps {
   item: Donation;
   isOpen: boolean;
@@ -8,7 +9,7 @@ export interface FieldData {
   name: string;
   label: string;
   placeholder?: string;
-  dataType?: string;
+  dataType?: HTMLInputTypeAttribute;
   isRequired?: boolean;
   idx?: string | number;
 }

@@ -1,9 +1,7 @@
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import { BsTrash } from "react-icons/bs";
 
-const Donation = ({ ...props }) => {
-  const handleDeletion = () => props.remover((i) => i.splice(props.index, 1));
-
+const Donation = (props: any) => {
   return (
     <Box
       w="300px"
@@ -20,11 +18,11 @@ const Donation = ({ ...props }) => {
             </Text>
             <BsTrash
               color="white"
-              onClick={handleDeletion}
+              onClick={() => props.remove()}
               style={{ cursor: "pointer" }}
             />
           </Flex>
-          {props.tipo == "bienes" && (
+          {props.tipo === "bienes" && (
             <Box color={"white"}>
               <Text fontWeight="light" fontSize={"sm"}>
                 Nombre: {props.data.nombre}
@@ -37,7 +35,7 @@ const Donation = ({ ...props }) => {
               </Text>
             </Box>
           )}
-          {props.tipo == "monetaria" && (
+          {props.tipo === "monetaria" && (
             <Text fontWeight="light" color={"white"} fontSize={"sm"}>
               Monto: ${props.data.monto}
             </Text>

@@ -10,6 +10,14 @@ import { PageWrapper } from "./layout";
 import { ReduxProvider } from "./redux";
 import { CookiesProvider } from "react-cookie";
 
+// const theme = {
+//   colors: {
+//     primary: "#f8e16cff",
+//     secondary: "#156064ff",
+//     complement: '#00c49aff',
+//   },
+// };
+
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>

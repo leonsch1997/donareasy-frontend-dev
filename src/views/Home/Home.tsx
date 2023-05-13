@@ -19,7 +19,8 @@ export const Home: React.FC = (props: HomeViewProps) => {
     cadete: <CadetMain {...props} />,
     donantes: <DonorMain {...props} />,
     Instituciones: <InstitutionMain {...props} />,
+    fallback: <div>Error al cargar user group</div>
   };
 
-  return views[group as UserType];
+  return views[group as UserType] ?? views.fallback;
 };

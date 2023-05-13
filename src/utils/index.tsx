@@ -12,7 +12,7 @@ export const createField = ({ name, label, placeholder, dataType, isRequired, id
               <FormLabel htmlFor={name}>{label}{isRequired && <span style={{ color: 'red' }}>{' *'}</span>}</FormLabel>
 
               <Input isRequired={isRequired} type={dataType} {...field} id={name} placeholder={placeholder} />
-
+ 
               <FormErrorMessage>{form.errors[`${name}`]}</FormErrorMessage>
             </FormControl>
           )}
@@ -62,3 +62,5 @@ export const getBoxColor = (
     }
   }
 };
+
+export const generateID = (length = 6) => Math.random().toString(36).substring(2, length+2);
