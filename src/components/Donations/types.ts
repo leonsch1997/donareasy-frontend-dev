@@ -4,14 +4,14 @@ interface Base {
   sortId: string;
 }
 
-export interface DonacionBienItem extends Base {
+export interface BienItem extends Base {
   tipoBien: number;
   nombre: string;
   descripcion: string;
   cantidad: number;
 }
 
-export interface DonacionMontoItem extends Base {
+export interface MontoItem extends Base {
   amount: string;
 }
 

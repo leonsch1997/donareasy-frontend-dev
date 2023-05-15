@@ -1,49 +1,88 @@
-import { Box, Flex, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  FlexProps,
+  List,
+  ListItem,
+  Text,
+} from "@chakra-ui/react";
 import { BsTrash } from "react-icons/bs";
+import { BienItem, MontoItem } from "./types";
+import { FC } from "react";
 
-const Donation = (props: any) => {
+interface ItemListProps {
+  donations: (MontoItem | BienItem)[];
+  onRemove: (sortId: string) => void;
+}
+
+export const ItemsList: FC<ItemListProps> = ({ donations, onRemove }) => {
   return (
-    <Box
-      w="300px"
-      backgroundColor={"pink.500"}
-      rounded="20px"
-      margin={6}
-      shadow={"dark-lg"}
-    >
-      <Box p={5}>
-        <Stack align="left">
-          <Flex justifyContent={"space-between"} alignItems={"center"} grow="1">
-            <Text as="h2" fontWeight="normal" color={"white"} my={2}>
-              Tipo: <b>{props.tipo}</b>
-            </Text>
-            <BsTrash
-              color="white"
-              onClick={() => props.remove()}
-              style={{ cursor: "pointer" }}
+    <List width="100%" spacing={4}>
+      {donations.length &&
+        donations.map(({ tipoDonacion, sortId, ...data }) =>
+          tipoDonacion === "monetaria" ? (
+            <Monto
+              {...(data as MontoItem)}
+              key={sortId}
+              onRemove={() => onRemove(sortId)}
             />
-          </Flex>
-          {props.tipo === "bienes" && (
-            <Box color={"white"}>
-              <Text fontWeight="light" fontSize={"sm"}>
-                Nombre: {props.data.nombre}
-              </Text>
-              <Text fontWeight="light" fontSize={"sm"}>
-                Descripción: {props.data.descripcion}
-              </Text>
-              <Text fontWeight="light" fontSize={"sm"}>
-                Cantidad: {props.data.cantidad}
-              </Text>
-            </Box>
-          )}
-          {props.tipo === "monetaria" && (
-            <Text fontWeight="light" color={"white"} fontSize={"sm"}>
-              Monto: ${props.data.monto}
-            </Text>
-          )}
-        </Stack>
-      </Box>
-    </Box>
+          ) : (
+            <Bien
+              {...(data as BienItem)}
+              key={sortId}
+              onRemove={() => onRemove(sortId)}
+            />
+          )
+        )}
+    </List>
   );
 };
 
-export default Donation;
+const itemStyles = {
+  alignItems: "center",
+  justifyContent: "space-between",
+  bg: "white",
+  padding: 4,
+  borderRadius: "0.5rem",
+  boxShadow: "md",
+} as FlexProps;
+
+export const Monto = ({
+  amount,
+  onRemove,
+}: MontoItem & { onRemove: () => void }) => {
+  return (
+    <Flex {...itemStyles}>
+      <ListItem pl={4}>
+        <b>Tipo:</b> Monetaria
+        <Text fontSize={"sm"}>Monto: $&nbsp;{amount}</Text>
+      </ListItem>
+      <Button onClick={onRemove}>
+        <BsTrash fontSize={25} />
+      </Button>
+    </Flex>
+  );
+};
+
+export const Bien = ({
+  onRemove,
+  ...data
+}: BienItem & { onRemove: () => void }) => {
+  return (
+    <Flex {...itemStyles}>
+      <ListItem pl={4}>
+        <b>Tipo:</b> Bienes
+        <br />
+        <Box>
+          <Text fontSize="sm">Nombre: {data.nombre}</Text>
+          <Text fontSize="sm">Descripción: {data.descripcion}</Text>
+          <Text fontSize="sm">Cantidad: {data.cantidad}</Text>
+        </Box>
+      </ListItem>
+      <Button onClick={onRemove}>
+        <BsTrash fontSize={25} />
+      </Button>
+    </Flex>
+  );
+};

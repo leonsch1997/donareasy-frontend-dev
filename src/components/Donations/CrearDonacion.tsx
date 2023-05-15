@@ -26,9 +26,9 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import Donation from "./Donation";
+import { ItemsList } from ".";
 import { endpoints } from "../../api";
-import { DonacionBienItem, DonacionMontoItem, TiposBien } from "./types";
+import { BienItem, MontoItem, TiposBien } from "./types";
 import { generateID } from "../../utils";
 
 export const CrearDonacion = () => {
@@ -37,11 +37,13 @@ export const CrearDonacion = () => {
   const [tipoDonacion, setTipoDonacion] = useState("bienes");
   const [idInstitucion, setIdInstitucion] = useState("");
 
-  const [donaciones, setDonaciones] = useState<DonacionBienItem[]>([]);
-  const [donacionesMonetarias, setDonacionesMonetarias] = useState<
-    DonacionMontoItem[]
-  >([]);
-  const [allDonations, setAllDonations] = useState<(DonacionBienItem | DonacionMontoItem)[]>([]);
+  const [donaciones, setDonaciones] = useState<BienItem[]>([]);
+  const [donacionesMonetarias, setDonacionesMonetarias] = useState<MontoItem[]>(
+    []
+  );
+  const [allDonations, setAllDonations] = useState<(BienItem | MontoItem)[]>(
+    []
+  );
 
   const [institucionesCBU, setInstitucionesCBU] = useState([]);
   const [instituciones, setInstituciones] = useState([]);
@@ -95,14 +97,16 @@ export const CrearDonacion = () => {
     });
   };
 
-  useEffect(() => setAllDonations([...donaciones, ...donacionesMonetarias]), [
-    donaciones,
-    donacionesMonetarias
-  ])
+  useEffect(
+    () => setAllDonations([...donaciones, ...donacionesMonetarias]),
+    [donaciones, donacionesMonetarias]
+  );
 
-  const removeDonation = ({ sortId }: DonacionBienItem | DonacionMontoItem) => {
+  const removeDonation = (sortId: string) => {
     setDonaciones([...donaciones].filter((don) => don.sortId !== sortId));
-    setDonacionesMonetarias([...donacionesMonetarias].filter((don) => don.sortId !== sortId));
+    setDonacionesMonetarias(
+      [...donacionesMonetarias].filter((don) => don.sortId !== sortId)
+    );
   };
 
   const MonetariaFormBody = () => {
@@ -110,7 +114,7 @@ export const CrearDonacion = () => {
     // Agregar validacions
     const validAmount = useMemo(() => !!amount, [amount]);
 
-    const bien: DonacionMontoItem = {
+    const bien: MontoItem = {
       amount,
       idInstitucion,
       tipoDonacion,
@@ -173,7 +177,7 @@ export const CrearDonacion = () => {
     );
 
     const agregarBien = () => {
-      const bien: DonacionBienItem = {
+      const bien: BienItem = {
         tipoBien,
         nombre,
         descripcion,
@@ -249,7 +253,7 @@ export const CrearDonacion = () => {
   };
 
   return (
-    <Flex flexDir={"column"} justifyContent={"center"} w="75%">
+    <Flex flexDir="column" justifyContent="center" w="75%">
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -266,28 +270,26 @@ export const CrearDonacion = () => {
         </ModalContent>
       </Modal>
 
-      <Heading m={10}>Crear Donación</Heading>
+      <Heading textAlign="center" m={10}>
+        Crear Donación
+      </Heading>
 
-      <Flex
-        flexDir="row"
-        justifyContent={"center"}
-        alignItems="center"
-        w={"100%"}
-      >
-        <Box paddingRight={"10"}>
+      <Flex justifyContent="space-beteen" alignItems="center">
+        <Flex
+          justifyContent="space-between"
+          flexDirection="column"
+          gap={4}
+          pr={10}
+        >
           <Text fontSize={"3xl"}>Paso 1</Text>
-          <Text p={"20px"}>Dinos qué tipo de donación se va a realizar.</Text>
-          <RadioGroup
-            p={"20px"}
-            onChange={setTipoDonacion}
-            value={tipoDonacion}
-          >
+          <Text>Dinos qué tipo de donación se va a realizar.</Text>
+          <RadioGroup onChange={setTipoDonacion} value={tipoDonacion}>
             <Stack direction="row">
               <Radio value="bienes">Bien</Radio>
               <Radio value="monetaria">Monetaria</Radio>
             </Stack>
           </RadioGroup>
-        </Box>
+        </Flex>
 
         <Divider
           variant={"dashed"}
@@ -296,11 +298,15 @@ export const CrearDonacion = () => {
           style={{ borderColor: "black" }}
         />
 
-        <Box paddingRight={"10"}>
+        <Flex
+          justifyContent="space-between"
+          flexDirection="column"
+          gap={4}
+          pr={10}
+        >
           <Text fontSize={"3xl"}>Paso 2</Text>
-          <Text p={"20px"}>Elige la institución que recibirá la donación</Text>
+          <Text>Elige la institución que recibirá la donación</Text>
           <Select
-            p={"10px"}
             onChange={elegirInstitucion}
             placeholder="Seleccionar institucion"
           >
@@ -319,7 +325,7 @@ export const CrearDonacion = () => {
                 </option>
               ))}
           </Select>
-        </Box>
+        </Flex>
 
         <Divider
           variant={"dashed"}
@@ -328,55 +334,61 @@ export const CrearDonacion = () => {
           style={{ borderColor: "black" }}
         />
 
-        <Box>
+        <Flex
+          justifyContent="space-between"
+          flexDirection="column"
+          gap={4}
+          pr={10}
+        >
           <Text fontSize="3xl">Paso 3</Text>
-          <Text p="20px">Danos el detalle de lo que vas a donar</Text>
+          <Text>Danos el detalle de lo que vas a donar</Text>
           <Button
+            width={120}
+            size="md"
             disabled={!idInstitucion}
             onClick={onOpen}
             colorScheme="linkedin"
           >
-            Agregar
+            Agregar ítem
           </Button>
-        </Box>
+        </Flex>
       </Flex>
 
-      <Flex direction="column" margin={10}>
-        <Text fontWeight="bold" as="h2" mb="4px">
+      <Flex direction="column" mt={10}>
+        <Text fontSize="3xl" mb={6}>
           Donaciones cargadas
         </Text>
-        <Box
-          w="100%"
-          height="300px"
-          style={{ overflowY: "auto" }}
-          borderWidth="3px"
-          borderColor="teal.300"
-          rounded="10px"
+        <Flex
+          flex={1}
+          minHeight="100px"
+          overflowY="auto"
+          borderRadius={12}
+          padding={4}
+          bg="gray.50"
+          boxShadow="md"
+          sx={{
+            "&::-webkit-scrollbar": {
+              width: "6px",
+              borderRadius: "8px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: `rgba(0, 0, 0, 0.05)`,
+            },
+          }}
         >
           {allDonations.length === 0 && (
-            <Text padding={10}>Ninguna donación cargada al momento</Text>
+            <Text pt={4} pl={4}>
+              Ninguna donación cargada hasta el momento
+            </Text>
           )}
           {allDonations.length > 0 && (
-            <Flex
-              direction={"row"}
-              flexWrap={"wrap"}
-              justifyContent="space-around"
-            >
-              {allDonations.map((item, index) => (
-                <Donation
-                  key={`donacion${index}`}
-                  remove={() => removeDonation(item)}
-                  index={index}
-                  {...item}
-                />
-              ))}
-            </Flex>
+            <ItemsList donations={allDonations} onRemove={removeDonation} />
           )}
-        </Box>
+        </Flex>
       </Flex>
 
-      <Flex margin={10}>
-        <Button colorScheme="linkedin" onClick={submitDonations}>
+      <Flex justifyContent="center" margin={10}>
+        <Button size="lg" colorScheme="linkedin" onClick={submitDonations}>
           Enviar Donación
         </Button>
       </Flex>
