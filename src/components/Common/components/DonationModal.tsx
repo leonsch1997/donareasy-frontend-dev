@@ -22,6 +22,8 @@ import {
 } from "@chakra-ui/react";
 import { Bien, DonationModalProps, DonationStates } from "../types";
 import { useAcceptDonation, useRejectDonation } from "../../../hooks";
+import { useCookies } from "react-cookie";
+import { UserType } from '../../Common/types'
 
 const PendingHeader: FC = () => (
   <Heading size="lg">Aceptando donación ...</Heading>
@@ -39,6 +41,11 @@ export const DonationModal: FC<DonationModalProps> = ({
     error: acceptError,
   } = useAcceptDonation();
   const { goToReject } = useRejectDonation();
+  const [
+    {
+      clientSession: { group },
+    },
+  ] = useCookies();
 
   const onClose = () => {
     closeModal();
@@ -64,15 +71,19 @@ export const DonationModal: FC<DonationModalProps> = ({
               {acceptError && "Intenta de nuevo más tarde."}
             </Alert>
           </Box>
-          {!acceptError && (
-            <Flex width="100%" justifyContent="center" mb={2}>
-              <Button onClick={accept} colorScheme="teal" mr={2}>
-                Aceptar
-              </Button>
-              <Button onClick={redirectToRejectView} colorScheme="red" mr={2}>
-                Rechazar
-              </Button>
-            </Flex>
+          {group === UserType.Instituciones && (
+            <>
+              {!acceptError && (
+                <Flex width="100%" justifyContent="center" mb={2}>
+                  <Button onClick={accept} colorScheme="teal" mr={2}>
+                    Aceptar
+                  </Button>
+                  <Button onClick={redirectToRejectView} colorScheme="red" mr={2}>
+                    Rechazar
+                  </Button>
+                </Flex>
+              )}
+            </>
           )}
         </>
       )}

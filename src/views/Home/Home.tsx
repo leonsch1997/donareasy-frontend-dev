@@ -1,12 +1,7 @@
 import { HomeViewProps } from "./types";
 import { InstitutionMain, DonorMain, CadetMain } from "../../components";
 import { useCookies } from "react-cookie";
-
-enum UserType {
-  cadete = "cadete",
-  donantes = "donantes",
-  Instituciones = "Instituciones",
-}
+import { UserType } from '../../components/Common/types';
 
 export const Home: React.FC = (props: HomeViewProps) => {
   const [

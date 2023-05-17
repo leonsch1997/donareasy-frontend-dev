@@ -88,3 +88,9 @@ export interface Institucion {
   descripcion: string;
   cbu: string;
 } 
+
+export enum UserType {
+  cadete = "cadete",
+  donantes = "donantes",
+  Instituciones = "Instituciones",
+}
