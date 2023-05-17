@@ -4,6 +4,8 @@ import { usePendingDonations } from "../../../hooks";
 import { LoadingSpinner, MakeDonationButton } from ".";
 import { Donation, DonationStates } from "../types";
 import { DonationsList } from "./DonationsList";
+import { useCookies } from "react-cookie";
+import { UserType } from "..";
 
 const allDonations = "Todas";
 const filterOptions = [allDonations].concat(
@@ -16,6 +18,11 @@ export const DonationPendings = () => {
   const { fetchPendingDonations, donations, loading, error } =
     usePendingDonations();
   const [sortedDonations, setDonations] = useState(donations);
+  const [
+    {
+      clientSession: { group },
+    },
+  ] = useCookies();
 
   const sortDonations = useCallback(() => {
     const selectedOption = document.getElementById(
@@ -38,6 +45,7 @@ export const DonationPendings = () => {
     fetchPendingDonations();
   }, [fetchPendingDonations]);
 
+  console.log(group);
   return (
     <Flex flexWrap="wrap">
       <Flex flexBasis="30%">
@@ -52,7 +60,9 @@ export const DonationPendings = () => {
             <option key={`${option}-${idx}`}>{option}</option>
           ))}
         </Select>
-        <MakeDonationButton />
+        {(group === UserType.donantes || group === UserType.cadete) && (
+          <MakeDonationButton />
+        )}
       </Flex>
 
       <Flex flexBasis={"100%"} mt={8}>
