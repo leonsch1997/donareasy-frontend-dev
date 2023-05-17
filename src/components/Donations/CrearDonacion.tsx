@@ -8,7 +8,6 @@ import {
   Radio,
   Text,
   Button,
-  Box,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -24,15 +23,23 @@ import {
   InputGroup,
   InputLeftAddon,
 } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { ItemsList } from ".";
 import { endpoints } from "../../api";
 import { BienItem, MontoItem, TiposBien } from "./types";
 import { generateID } from "../../utils";
+import { routes } from "../../routes";
+import { Link, useNavigate } from "react-router-dom";
 
 export const CrearDonacion = () => {
+  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const [tipoDonacion, setTipoDonacion] = useState("bienes");
   const [idInstitucion, setIdInstitucion] = useState("");
@@ -68,33 +75,37 @@ export const CrearDonacion = () => {
     setIdInstitucion(event.target.value);
   };
 
-  // Mover a USE submit donations
-  const submitDonations = async () => {
-    donaciones.map((d: any) => {
-      if (d.tipo === "bienes") {
-        axios.post(
-          endpoints.donacionBien,
-          { institucion: d.institucionId, bienes: [d.data] },
-          {
-            withCredentials: true,
-            headers: {
-              "X-CSRFToken": document.cookie.split("csrftoken=")[1], // esto es una negrada, quizas podemos usar una libreria como react-cookie
+  const submitDonation = async () => {
+    setIsSubmitting(true);
+    const don = allDonations[0];
+    const isMoneyDonation = don.tipoDonacion === "monetaria";
+    const payload = isMoneyDonation
+      ? { institucion: idInstitucion, monto: (don as MontoItem).amount }
+      : {
+          institucion: idInstitucion,
+          bienes: [
+            {
+              tipo: (don as BienItem).tipoBien,
+              nombre: (don as BienItem).nombre,
+              descripcion: (don as BienItem).descripcion,
+              cantidad: (don as BienItem).cantidad,
             },
-          }
-        );
-      } else if (d.tipo === "monetaria") {
-        axios.post(
-          endpoints.donacionMonetaria,
-          { institucion: d.institucionId, monto: Number(d.data.monto) },
-          {
-            withCredentials: true,
-            headers: {
-              "X-CSRFToken": document.cookie.split("csrftoken=")[1], // esto es una negrada, quizas podemos usar una libreria como react-cookie
-            },
-          }
-        );
-      }
-    });
+          ],
+        };
+
+    const endpoint = isMoneyDonation
+      ? endpoints.donacionMonetaria
+      : endpoints.donacionBien;
+
+    try {
+      await axios.post(endpoint, { ...payload }, { withCredentials: true });
+      setSubmitSuccess(true);
+    } catch {
+      setSubmitError(true);
+      throw new Error("Error al crear la donación");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(
@@ -252,6 +263,30 @@ export const CrearDonacion = () => {
     );
   };
 
+  if (submitSuccess) {
+    return (
+      <Flex gap={6} align="center" textAlign="center" flexDir="column" justifyContent="center" w="75%">
+        <Heading textAlign="center" m={10}>
+          Solicitud de donación enviada! Muchas gracias.
+        </Heading>
+        <Text fontSize="2xl">Te mantendremos informados de su estado estado</Text>
+        <Button width={120} colorScheme="linkedin" onClick={() => navigate(routes.home)}>Entendido</Button>
+      </Flex>
+    );
+  }
+
+  if (submitError) {
+    return (
+      <Flex gap={6} align="center" textAlign="center" flexDir="column" justifyContent="center" w="75%">
+        <Heading textAlign="center" m={10}>
+          No se ha podido procesar tu solicitud.
+        </Heading>
+        <Text fontSize="2xl">Inténtalo de nuevo más tarde</Text>
+        <Button width={120} colorScheme="linkedin" onClick={() => navigate(routes.home)}>Ir a inicio</Button>
+      </Flex>
+    );
+  }
+
   return (
     <Flex flexDir="column" justifyContent="center" w="75%">
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -270,6 +305,13 @@ export const CrearDonacion = () => {
         </ModalContent>
       </Modal>
 
+      <Link to={routes.home}>
+        <Text color="blue" fontSize="large" mt={4}>
+          <ArrowBackIcon mr={1} />
+          Volver
+        </Text>
+      </Link>
+
       <Heading textAlign="center" m={10}>
         Crear Donación
       </Heading>
@@ -283,7 +325,11 @@ export const CrearDonacion = () => {
         >
           <Text fontSize={"3xl"}>Paso 1</Text>
           <Text>Dinos qué tipo de donación se va a realizar.</Text>
-          <RadioGroup onChange={setTipoDonacion} value={tipoDonacion}>
+          <RadioGroup
+            isDisabled={!!allDonations.length}
+            onChange={setTipoDonacion}
+            value={tipoDonacion}
+          >
             <Stack direction="row">
               <Radio value="bienes">Bien</Radio>
               <Radio value="monetaria">Monetaria</Radio>
@@ -307,6 +353,7 @@ export const CrearDonacion = () => {
           <Text fontSize={"3xl"}>Paso 2</Text>
           <Text>Elige la institución que recibirá la donación</Text>
           <Select
+            isDisabled={!!allDonations.length}
             onChange={elegirInstitucion}
             placeholder="Seleccionar institucion"
           >
@@ -345,18 +392,18 @@ export const CrearDonacion = () => {
           <Button
             width={120}
             size="md"
-            disabled={!idInstitucion}
+            isDisabled={!!allDonations.length}
             onClick={onOpen}
             colorScheme="linkedin"
           >
-            Agregar ítem
+            Agregar
           </Button>
         </Flex>
       </Flex>
 
       <Flex direction="column" mt={10}>
         <Text fontSize="3xl" mb={6}>
-          Donaciones cargadas
+          Donacion cargada
         </Text>
         <Flex
           flex={1}
@@ -388,7 +435,12 @@ export const CrearDonacion = () => {
       </Flex>
 
       <Flex justifyContent="center" margin={10}>
-        <Button size="lg" colorScheme="linkedin" onClick={submitDonations}>
+        <Button
+          isLoading={isSubmitting}
+          size="lg"
+          colorScheme="linkedin"
+          onClick={submitDonation}
+        >
           Enviar Donación
         </Button>
       </Flex>
