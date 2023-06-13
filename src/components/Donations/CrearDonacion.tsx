@@ -26,15 +26,14 @@ import {
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { ItemsList } from ".";
+import { ItemsList, DonateSucceed, DonateError } from ".";
 import { endpoints } from "../../api";
 import { BienItem, MontoItem, TiposBien } from "./types";
 import { generateID } from "../../utils";
 import { routes } from "../../routes";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const CrearDonacion = () => {
-  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,6 +42,7 @@ export const CrearDonacion = () => {
 
   const [tipoDonacion, setTipoDonacion] = useState("bienes");
   const [idInstitucion, setIdInstitucion] = useState("");
+  const [institucion, setInstitucion] = useState<any>(null);
 
   const [donaciones, setDonaciones] = useState<BienItem[]>([]);
   const [donacionesMonetarias, setDonacionesMonetarias] = useState<MontoItem[]>(
@@ -68,6 +68,14 @@ export const CrearDonacion = () => {
   };
 
   useEffect(() => {
+    setInstitucion(
+      [...institucionesCBU, ...instituciones].find(
+        ({ id }) => String(id) === idInstitucion
+      ) || null
+    );
+  }, [idInstitucion, instituciones, institucionesCBU]);
+
+  useEffect(() => {
     fetchInstituciones();
   }, []);
 
@@ -75,6 +83,7 @@ export const CrearDonacion = () => {
     setIdInstitucion(event.target.value);
   };
 
+  console.log(institucion);
   const submitDonation = async () => {
     setIsSubmitting(true);
     const don = allDonations[0];
@@ -264,61 +273,13 @@ export const CrearDonacion = () => {
     );
   };
 
-  if (submitSuccess) {
-    return (
-      <Flex
-        gap={6}
-        align="center"
-        textAlign="center"
-        flexDir="column"
-        justifyContent="center"
-        w="75%"
-      >
-        <Heading textAlign="center" m={10}>
-          Solicitud de donación enviada! Muchas gracias.
-        </Heading>
-        <Text fontSize="2xl">
-          Te mantendremos informados de su estado estado
-        </Text>
-        <Button
-          width={120}
-          colorScheme="linkedin"
-          onClick={() => navigate(routes.home)}
-        >
-          Entendido
-        </Button>
-      </Flex>
-    );
-  }
+  if (submitSuccess) return <DonateSucceed />;
 
-  if (submitError) {
-    return (
-      <Flex
-        gap={6}
-        align="center"
-        textAlign="center"
-        flexDir="column"
-        justifyContent="center"
-        w="75%"
-      >
-        <Heading textAlign="center" m={10}>
-          No se ha podido procesar tu solicitud.
-        </Heading>
-        <Text fontSize="2xl">Inténtalo de nuevo más tarde</Text>
-        <Button
-          width={120}
-          colorScheme="linkedin"
-          onClick={() => navigate(routes.home)}
-        >
-          Ir a inicio
-        </Button>
-      </Flex>
-    );
-  }
+  if (submitError) return <DonateError />;
 
   console.log(instituciones, institucionesCBU);
   return (
-    <Flex flexDir="column" justifyContent="center" w="75%">
+    <Flex flexDir="column" justifyContent="center" w="725px">
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -431,11 +392,71 @@ export const CrearDonacion = () => {
         </Flex>
       </Flex>
 
-      <Flex direction="column" mt={10}>
+      {institucion && (
+        <Flex textAlign="start" direction="column" mt={10}>
+          <Text fontSize="3xl" mb={6}>
+            Detalle institución
+          </Text>
+          <Flex
+            flexWrap="wrap"
+            overflowY="auto"
+            borderRadius={12}
+            padding={4}
+            bg="gray.50"
+            boxShadow="md"
+            sx={{
+              "&::-webkit-scrollbar": {
+                width: "6px",
+                borderRadius: "8px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: `rgba(0, 0, 0, 0.05)`,
+              },
+            }}
+          >
+            <Text width="50%" mb={1}>
+              <b>Nombre: </b>
+              {institucion.nombre}
+            </Text>
+
+            <Text width="50%" mb={1}>
+              <b>Fundada: </b>
+              {institucion.fecha_fundacion}
+            </Text>
+            <Text width="50%" mb={1}>
+              <b>Domicilio: </b>
+              {institucion.domicilio}
+            </Text>
+            <Text width="50%" mb={1}>
+              <b>Director: </b>
+              {institucion.director}
+            </Text>
+            <Text width="50%" mb={1}>
+              <b>Telefono: </b>
+              {institucion.telefono}
+            </Text>
+            <Text width="50%" mb={1}>
+              <b>Pais de origen: </b>
+              {institucion.pais}
+            </Text>
+            <Text width="50%" mb={1}>
+              <b>Provincia: </b>
+              {institucion.provincia}
+            </Text>
+            <Text width="50%" mb={1}>
+              <b>Descripcion: </b>
+              {institucion.descripcion}
+            </Text>
+          </Flex>
+        </Flex>
+      )}
+
+      <Flex textAlign="center" direction="column" mt={10}>
         <Text fontSize="3xl" mb={6}>
           Donacion cargada
         </Text>
         <Flex
+          alignItems="center"
           flex={1}
           minHeight="100px"
           overflowY="auto"
@@ -454,9 +475,7 @@ export const CrearDonacion = () => {
           }}
         >
           {allDonations.length === 0 && (
-            <Text pt={4} pl={4}>
-              Ninguna donación cargada hasta el momento
-            </Text>
+            <Text>Ninguna donación cargada hasta el momento</Text>
           )}
           {allDonations.length > 0 && (
             <ItemsList donations={allDonations} onRemove={removeDonation} />
