@@ -8,7 +8,6 @@ export const endpoints = {
   cadetes: `${baseURL}/home/models/cadetes/`,
   institucionesCBU: `${baseURL}/donaciones/eligeInstitucionConCBU/`,
   instituciones: `${baseURL}/donaciones/eligeInstitucion/`,
-  noticias: `${baseURL}/noticias/`,
   donacionesPendientes: `${baseURL}/donaciones/donacionesPendientes/`,
   transferenciasPendientes: `${baseURL}/donaciones/transferenciasPendientes/`,
   listadoDonaciones: `${baseURL}/donaciones/listadoDonaciones/`,

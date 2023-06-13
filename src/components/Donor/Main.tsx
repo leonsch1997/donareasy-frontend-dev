@@ -7,7 +7,7 @@ import {
   TabPanel,
   TabPanels,
 } from "@chakra-ui/react";
-import { DonationPendings, MoneyDonations, News } from "../Common";
+import { DonationPendings, MoneyDonations } from "../Common";
 
 export const DonorMain: FC = () => {
   return (
@@ -23,7 +23,6 @@ export const DonorMain: FC = () => {
         <TabList>
           <Tab>Donaciones Bienes</Tab>
           <Tab>Donaciones Monetarias</Tab>
-          <Tab>Ultimas noticias</Tab>
         </TabList>
 
         <TabPanels height="100%" maxHeight={"70vh"} overflow={"auto"}>
@@ -33,10 +32,6 @@ export const DonorMain: FC = () => {
 
           <TabPanel>
             <MoneyDonations />
-          </TabPanel>
-
-          <TabPanel>
-            <News />
           </TabPanel>
         </TabPanels>
       </Tabs>

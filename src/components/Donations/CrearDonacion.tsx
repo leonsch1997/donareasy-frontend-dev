@@ -253,6 +253,7 @@ export const CrearDonacion = () => {
             mt={!validDonation ? undefined : 4}
             size="md"
             width="40%"
+            isDisabled={!validDonation}
             onClick={agregarBien}
             colorScheme="pink"
           >
@@ -265,28 +266,57 @@ export const CrearDonacion = () => {
 
   if (submitSuccess) {
     return (
-      <Flex gap={6} align="center" textAlign="center" flexDir="column" justifyContent="center" w="75%">
+      <Flex
+        gap={6}
+        align="center"
+        textAlign="center"
+        flexDir="column"
+        justifyContent="center"
+        w="75%"
+      >
         <Heading textAlign="center" m={10}>
           Solicitud de donación enviada! Muchas gracias.
         </Heading>
-        <Text fontSize="2xl">Te mantendremos informados de su estado estado</Text>
-        <Button width={120} colorScheme="linkedin" onClick={() => navigate(routes.home)}>Entendido</Button>
+        <Text fontSize="2xl">
+          Te mantendremos informados de su estado estado
+        </Text>
+        <Button
+          width={120}
+          colorScheme="linkedin"
+          onClick={() => navigate(routes.home)}
+        >
+          Entendido
+        </Button>
       </Flex>
     );
   }
 
   if (submitError) {
     return (
-      <Flex gap={6} align="center" textAlign="center" flexDir="column" justifyContent="center" w="75%">
+      <Flex
+        gap={6}
+        align="center"
+        textAlign="center"
+        flexDir="column"
+        justifyContent="center"
+        w="75%"
+      >
         <Heading textAlign="center" m={10}>
           No se ha podido procesar tu solicitud.
         </Heading>
         <Text fontSize="2xl">Inténtalo de nuevo más tarde</Text>
-        <Button width={120} colorScheme="linkedin" onClick={() => navigate(routes.home)}>Ir a inicio</Button>
+        <Button
+          width={120}
+          colorScheme="linkedin"
+          onClick={() => navigate(routes.home)}
+        >
+          Ir a inicio
+        </Button>
       </Flex>
     );
   }
 
+  console.log(instituciones, institucionesCBU);
   return (
     <Flex flexDir="column" justifyContent="center" w="75%">
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -392,7 +422,7 @@ export const CrearDonacion = () => {
           <Button
             width={120}
             size="md"
-            isDisabled={!!allDonations.length}
+            isDisabled={!idInstitucion}
             onClick={onOpen}
             colorScheme="linkedin"
           >
@@ -436,6 +466,7 @@ export const CrearDonacion = () => {
 
       <Flex justifyContent="center" margin={10}>
         <Button
+          isDisabled={!allDonations || !idInstitucion}
           isLoading={isSubmitting}
           size="lg"
           colorScheme="linkedin"
