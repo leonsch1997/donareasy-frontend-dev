@@ -1,2 +1,1 @@
-export * from './Apadrinamiento';
-export * from './Recolecciones';
+export * from "./Recolecciones";

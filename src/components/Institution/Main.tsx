@@ -1,4 +1,3 @@
-import { FC } from "react";
 import {
   Flex,
   TabList,
@@ -7,10 +6,10 @@ import {
   TabPanel,
   TabPanels,
 } from "@chakra-ui/react";
-import { Apadrinamiento, Recolecciones } from "./components";
+import { Recolecciones } from "./components";
 import { News, DonationPendings, MoneyDonations } from "../Common";
 
-export const InstitutionMain: FC = () => {
+export const InstitutionMain = () => {
   return (
     <Flex
       borderRadius="lg"
@@ -25,7 +24,6 @@ export const InstitutionMain: FC = () => {
           <Tab>Donaciones Bienes</Tab>
           <Tab>Donaciones Monetarias</Tab>
           <Tab>Recolecciones Pendientes</Tab>
-          <Tab>Apadrinamiento</Tab>
           <Tab>Ultimas noticias</Tab>
         </TabList>
 
@@ -40,10 +38,6 @@ export const InstitutionMain: FC = () => {
 
           <TabPanel>
             <Recolecciones />
-          </TabPanel>
-
-          <TabPanel>
-            <Apadrinamiento />
           </TabPanel>
 
           <TabPanel>

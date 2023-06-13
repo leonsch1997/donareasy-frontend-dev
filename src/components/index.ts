@@ -1,4 +1,3 @@
-export * from './Apadrinamiento';
 export * from './Donations';
 export * from './Institution';
 export * from './Donor';

@@ -6,7 +6,6 @@ import {
   Lander,
   Login,
   Logup,
-  SponsorChild,
   CreateDonation,
   RejectDonation,
   Recover as RecoverPassword,
@@ -17,8 +16,10 @@ export const Routes = () => {
     <RouterDomRoutes>
       <Route path={routes.home} element={makePrivate(Home)} />
       <Route path={routes.donar} element={makePrivate(CreateDonation)} />
-      <Route path={routes.apadrinar} element={makePrivate(SponsorChild)} />
-      <Route path={routes.rejectDonation} element={makePrivate(RejectDonation)} />
+      <Route
+        path={routes.rejectDonation}
+        element={makePrivate(RejectDonation)}
+      />
       <Route path={routes.lander} element={<Lander />} />
       <Route path={routes.login} element={<Login />} />
       <Route path={routes.forgotPassword} element={<RecoverPassword />} />
