@@ -1,4 +1,3 @@
-export * from "./DonationModal";
 export * from "./DonationPendings";
 export * from "./DonationReject";
 export * from "./DonationsList";

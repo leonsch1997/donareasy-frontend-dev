@@ -1,15 +1,12 @@
 import { FC } from "react";
 import {
-  Button,
   Flex,
   ListItem,
-  useDisclosure,
   List,
   Text,
+  FlexProps,
 } from "@chakra-ui/react";
-import { getBoxColor } from "../../../utils";
 import { StateBasedIcon } from ".";
-import { DonationModal } from "./DonationModal";
 import { Donation, DonationStates, MoneyDonationStates } from "../types";
 
 export const DonationsList: FC<{ donations: Donation[] }> = ({ donations }) => {
@@ -31,44 +28,105 @@ export const DonationsList: FC<{ donations: Donation[] }> = ({ donations }) => {
 };
 
 export const DonationItem = (item: Donation) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    cod_estado,
-    donante: { nombre, apellido },
-  } = item;
+  const { cod_estado } = item;
   const isMoneyDonation = item.hasOwnProperty("monto");
+  const bien = !isMoneyDonation ? item.bienes[0] : null;
 
-  const StateBlock = () => (
-    <>
-      <b>Estado: </b>
-      {isMoneyDonation
-        ? MoneyDonationStates[cod_estado]
-        : DonationStates[cod_estado]}
-      <br />
-    </>
-  );
+  const itemStyles = {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    bg: "white",
+    padding: 4,
+    borderRadius: "0.5rem",
+    boxShadow: "md",
+  } as FlexProps;
 
   return (
-    <Flex
-      alignItems="center"
-      minHeight={50}
-      bg={getBoxColor(cod_estado, isMoneyDonation)}
-      padding={4}
-      borderRadius={"0.5rem"}
-    >
-      <StateBasedIcon
-        stateCode={cod_estado}
-        isMoneyDonation={isMoneyDonation}
-      />
-      <ListItem key={item.id} pl={4}>
-        <b>Donante:</b> {nombre} {apellido}
-        <br />
-        <StateBlock />
-        <Button onClick={onOpen} colorScheme={"pink"} mt={2} size={"sm"}>
-          Ver detalle
-        </Button>
-      </ListItem>
-      <DonationModal item={item} onClose={onClose} isOpen={isOpen} />
-    </Flex>
+    <ListItem pl={4}>
+      <Flex {...itemStyles}>
+        {item.institucion && (
+          <Flex direction="column" width="100%">
+            <Text fontSize="md" color="#00A0DC">
+              <b>Institucion</b>
+            </Text>
+            <Text fontSize="sm">
+              <b>Nombre:</b> {item.institucion.nombre}
+            </Text>
+            <Text fontSize="sm">
+              <b>Telefono: </b> {item.institucion.telefono}
+            </Text>
+            <Text fontSize="sm">
+              <b>Dirección: </b> {item.institucion.domicilio}
+            </Text>
+            <Text fontSize="sm">
+              <b>Localidad:</b> {item.institucion.localidad}
+            </Text>
+            <Text fontSize="sm">
+              <b>Provincia: </b> {item.institucion.provincia}
+            </Text>
+          </Flex>
+        )}
+
+        {bien && (
+          <Flex justifyContent="flex-start" direction="column" width="100%">
+            <Text fontSize="md" color="#00A0DC">
+              <b>Bien</b>
+            </Text>
+            <Text fontSize="sm">
+              <b>Descripción:</b> {bien?.descripcion}
+            </Text>
+            <Text fontSize="sm">
+              <b>Nombre:</b> {bien?.nombre}
+            </Text>
+            <Text fontSize="sm">
+              <b>Cantidad:</b> {bien?.cantidad}
+            </Text>
+          </Flex>
+        )}
+
+        <Flex direction="column" width="100%">
+          <Text fontSize="md" color="#00A0DC">
+            <b>Donación: </b>
+          </Text>
+          <Text fontSize="sm">
+            <b>Estado</b>{" "}
+            <StateBasedIcon stateCode={cod_estado} isMoneyDonation={isMoneyDonation}/>
+            {isMoneyDonation
+              ? MoneyDonationStates[cod_estado]
+              : DonationStates[cod_estado]}
+          </Text>
+          <Text fontSize="sm">
+            <b>Fecha creación:</b> {item.fecha_creacion}
+          </Text>
+          {isMoneyDonation && (
+            <>
+              <Text fontSize="sm">
+                <b>Monto:</b> ${item.monto} - ARS
+              </Text>
+              <Text fontSize="sm">
+                <b>Fecha de transferencia:</b> {item.fecha_transferencia}
+              </Text>
+            </>
+          )}
+
+          {item.fecha_aceptacion && (
+            <Text fontSize="sm">
+              <b>Fecha aceptación:</b> {item.fecha_aceptacion}
+            </Text>
+          )}
+          {item.fecha_cancelacion && (
+            <>
+              <Text fontSize="sm">
+                <b>Fecha cancelación:</b> {item.fecha_aceptacion}
+              </Text>
+              <Text fontSize="sm">
+                <b>Motivo cancelación:</b> {item.motivo_cancelacion}
+              </Text>
+            </>
+          )}
+        </Flex>
+      </Flex>
+    </ListItem>
   );
 };

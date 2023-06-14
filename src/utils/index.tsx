@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, FormErrorMessage, Input, VStack } from '@chakra-ui/react';
 import { Field } from 'formik';
-import { DonationStates, FieldData, MoneyDonationStates, RejectDonationFields, RejectDonationFormValues } from '../components/Common/types';
+import { FieldData, RejectDonationFields, RejectDonationFormValues } from '../components/Common/types';
 
 export const createField = ({ name, label, placeholder, dataType, isRequired, idx }: FieldData & { isRequired?: boolean }) => {
   return (
@@ -31,36 +31,6 @@ export const formatRejectDonationFormData = (data: RejectDonationFormValues) => 
   const formattedValues: RejectDonationFields = { motivo_cancelacion };
 
   return formattedValues;
-};
-
-export const getBoxColor = (
-  stateCode: DonationStates | MoneyDonationStates,
-  isMoneyDonation: boolean
-) => {
-  // Elegir una buena paleta de colores
-  if (isMoneyDonation) {
-    switch (stateCode) {
-      case MoneyDonationStates.Pendiente:
-        return "gray.50"
-      case MoneyDonationStates.Aceptada:
-        return "gray.50"
-      case MoneyDonationStates.Cancelada:
-        return "gray.50"
-    }
-  } else {
-    switch (stateCode) {
-      case DonationStates.Aceptada:
-        return "gray.50"
-      case DonationStates.Cancelada:
-        return "gray.50"
-      case DonationStates.Agendada:
-        return "gray.50"
-      case DonationStates.Pendiente:
-        return "gray.50"
-      case DonationStates.Entregada:
-        return "gray.50"
-    }
-  }
 };
 
 export const generateID = (length = 6) => Math.random().toString(36).substring(2, length+2);

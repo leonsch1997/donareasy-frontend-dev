@@ -30,12 +30,14 @@ export interface Donation {
   bienes: Bien[];
   monto?: number | string;
   fecha_transferencia: string;
-}
-
-export interface Bien {
   fecha_creacion: string;
   fecha_aceptacion?: string;
   fecha_entrega_real?: string;
+  fecha_cancelacion?: string;
+  motivo_cancelacion?: string;
+}
+
+export interface Bien {
   cod_estado: number;
   donante_id: number;
   institucion_id: number;
@@ -51,7 +53,7 @@ export enum DonationStates {
   Pendiente,
   Aceptada,
   Agendada = 5,
-  Entregada
+  Entregada,
 }
 
 export enum MoneyDonationStates {
@@ -61,18 +63,18 @@ export enum MoneyDonationStates {
 }
 
 export interface Donante {
-  id:	number;
-  nombre:	string
-  apellido:	string
-  fecha_nacimiento?:	string; // NN
+  id: number;
+  nombre: string;
+  apellido: string;
+  fecha_nacimiento?: string; // NN
   dni: string;
   domicilio: string;
   localidad: string;
   provincia: string;
-  pais:	string;
-  telefono:	string;
+  pais: string;
+  telefono: string;
   estado_civil?: string; // NN
-  genero:	string;
+  genero: string;
   ocupacion?: string; // NN
   usuario: number;
 }
@@ -87,7 +89,8 @@ export interface Institucion {
   cant_empleados: number;
   descripcion: string;
   cbu: string;
-} 
+  provincia: string;
+}
 
 export enum UserType {
   cadete = "cadete",

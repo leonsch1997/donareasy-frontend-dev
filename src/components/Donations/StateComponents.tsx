@@ -17,7 +17,7 @@ export const DonateSucceed = () => {
       <Heading textAlign="center" m={10}>
         Solicitud de donación enviada! Muchas gracias.
       </Heading>
-      <Text fontSize="2xl">Te mantendremos informados de su estado estado</Text>
+      <Text fontSize="2xl">Te mantendremos informados de su estado</Text>
       <Button
         width={120}
         colorScheme="linkedin"

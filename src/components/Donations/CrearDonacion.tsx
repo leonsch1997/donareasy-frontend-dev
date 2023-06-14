@@ -277,7 +277,6 @@ export const CrearDonacion = () => {
 
   if (submitError) return <DonateError />;
 
-  console.log(instituciones, institucionesCBU);
   return (
     <Flex flexDir="column" justifyContent="center" w="725px">
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -393,11 +392,12 @@ export const CrearDonacion = () => {
       </Flex>
 
       {institucion && (
-        <Flex textAlign="start" direction="column" mt={10}>
+        <Flex alignItems="center" direction="column" mt={10}>
           <Text fontSize="3xl" mb={6}>
             Detalle institución
           </Text>
           <Flex
+            textAlign="start"
             flexWrap="wrap"
             overflowY="auto"
             borderRadius={12}
@@ -453,7 +453,7 @@ export const CrearDonacion = () => {
 
       <Flex textAlign="center" direction="column" mt={10}>
         <Text fontSize="3xl" mb={6}>
-          Donacion cargada
+          Donación cargada
         </Text>
         <Flex
           alignItems="center"

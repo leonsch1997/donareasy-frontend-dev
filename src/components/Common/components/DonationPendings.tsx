@@ -45,13 +45,10 @@ export const DonationPendings = () => {
     fetchPendingDonations();
   }, [fetchPendingDonations]);
 
-  console.log(group);
   return (
     <Flex flexWrap="wrap">
       <Flex flexBasis="30%">
-        <Heading>
-          Donaciones
-        </Heading>
+        <Heading>Donaciones</Heading>
       </Flex>
 
       <Flex pl={4} gap={8} flexBasis="70%" justifyContent="end">
@@ -69,8 +66,8 @@ export const DonationPendings = () => {
         {loading && <LoadingSpinner />}
         {error && (
           <Text fontWeight="bold">
-              Oops! Algo no ha salido como se esperaba, no se han podido cargar
-              las donaciones.
+            Oops! Algo no ha salido como se esperaba, no se han podido cargar
+            las donaciones.
           </Text>
         )}
         {!error && !loading && <DonationsList donations={sortedDonations} />}

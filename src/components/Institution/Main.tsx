@@ -6,7 +6,6 @@ import {
   TabPanel,
   TabPanels,
 } from "@chakra-ui/react";
-import { Recolecciones } from "./components";
 import { DonationPendings, MoneyDonations } from "../Common";
 
 export const InstitutionMain = () => {
@@ -33,10 +32,6 @@ export const InstitutionMain = () => {
 
           <TabPanel>
             <MoneyDonations />
-          </TabPanel>
-
-          <TabPanel>
-            <Recolecciones />
           </TabPanel>
         </TabPanels>
       </Tabs>
