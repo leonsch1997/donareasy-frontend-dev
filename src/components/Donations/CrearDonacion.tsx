@@ -161,7 +161,7 @@ export const CrearDonacion = () => {
         </InputGroup>
         {!validAmount && (
           <Alert my={4} width="100%" textAlign="center" status="warning">
-            Las transferencias deben ser mayores a $10 y menores a $100.000
+            Las transferencias deben ser mayores a $0
           </Alert>
         )}
         <Center>
