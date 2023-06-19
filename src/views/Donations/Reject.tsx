@@ -1,4 +1,4 @@
-import { RejectDonation as RejectDonationMain } from "../../components/Institution/components/DonationReject";
+import { RejectDonation as RejectDonationMain } from "../../components/Common";
 import { RejectDonationViewProps } from "./types";
 
 export const RejectDonation: React.FC = (props: RejectDonationViewProps) => (

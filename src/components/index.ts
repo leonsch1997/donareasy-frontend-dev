@@ -1,4 +1,3 @@
-export * from './Apadrinamiento';
 export * from './Donations';
 export * from './Institution';
 export * from './Donor';
@@ -7,4 +6,3 @@ export * from './Lander';
 export * from './Login';
 export * from './Logup';
 export * from './ForgotPassword';
-export * from './Institution';

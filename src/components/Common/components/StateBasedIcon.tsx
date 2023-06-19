@@ -14,7 +14,7 @@ export const StateBasedIcon: FC<{
   isMoneyDonation: boolean;
 }> = ({ stateCode, isMoneyDonation }) => {
   const iconStyle = {
-    boxSize: stateCode === DonationStates.Cancelada ? "0.8rem" : "1.0rem",
+    boxSize: stateCode === DonationStates.Cancelada ? "0.5rem" : "0.8rem",
     mr: 1,
   } as ChakraProps;
   if (isMoneyDonation) {

@@ -1,9 +1,11 @@
-import { Flex, Box, Heading, Select } from "@chakra-ui/react";
+import { Flex, Heading, Select, Text } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { usePendingDonations } from "../../../hooks";
-import { LoadingSpinner } from "../../Common";
+import { LoadingSpinner, MakeDonationButton } from ".";
 import { Donation, DonationStates } from "../types";
 import { DonationsList } from "./DonationsList";
+import { useCookies } from "react-cookie";
+import { UserType } from "..";
 
 const allDonations = "Todas";
 const filterOptions = [allDonations].concat(
@@ -16,6 +18,11 @@ export const DonationPendings = () => {
   const { fetchPendingDonations, donations, loading, error } =
     usePendingDonations();
   const [sortedDonations, setDonations] = useState(donations);
+  const [
+    {
+      clientSession: { group },
+    },
+  ] = useCookies();
 
   const sortDonations = useCallback(() => {
     const selectedOption = document.getElementById(
@@ -32,7 +39,7 @@ export const DonationPendings = () => {
         );
   }, [donations]);
 
-  useEffect(() => sortDonations(), [donations, sortDonations])
+  useEffect(() => sortDonations(), [donations, sortDonations]);
 
   useEffect(() => {
     fetchPendingDonations();
@@ -40,26 +47,31 @@ export const DonationPendings = () => {
 
   return (
     <Flex flexWrap="wrap">
-      <Heading>
-        Donaciones
-        <Select onChange={sortDonations} id="donationsFilter">
+      <Flex flexBasis="30%">
+        <Heading>Donaciones</Heading>
+      </Flex>
+
+      <Flex pl={4} gap={8} flexBasis="70%" justifyContent="end">
+        <Select maxW={200} onChange={sortDonations} id="donationsFilter">
           {filterOptions.map((option, idx) => (
             <option key={`${option}-${idx}`}>{option}</option>
           ))}
         </Select>
-      </Heading>
-      <Box width={"100%"} mt="10">
+        {(group === UserType.donantes || group === UserType.cadete) && (
+          <MakeDonationButton />
+        )}
+      </Flex>
+
+      <Flex flexBasis={"100%"} mt={8}>
         {loading && <LoadingSpinner />}
         {error && (
-          <Flex>
-            <p>
-              Oops! Algo no ha salido como se esperaba, no se han podido cargar
-              las donaciones.
-            </p>
-          </Flex>
+          <Text fontWeight="bold">
+            Oops! Algo no ha salido como se esperaba, no se han podido cargar
+            las donaciones.
+          </Text>
         )}
         {!error && !loading && <DonationsList donations={sortedDonations} />}
-      </Box>
+      </Flex>
     </Flex>
   );
 };

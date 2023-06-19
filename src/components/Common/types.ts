@@ -1,4 +1,4 @@
-import { Donante } from '../Donations/types';
+import { HTMLInputTypeAttribute } from "react";
 export interface DonationModalProps {
   item: Donation;
   isOpen: boolean;
@@ -9,7 +9,7 @@ export interface FieldData {
   name: string;
   label: string;
   placeholder?: string;
-  dataType?: string;
+  dataType?: HTMLInputTypeAttribute;
   isRequired?: boolean;
   idx?: string | number;
 }
@@ -25,16 +25,19 @@ export interface RejectDonationFormValues {
 export interface Donation {
   id: string;
   donante: Donante;
+  institucion: Institucion;
   cod_estado: number;
   bienes: Bien[];
   monto?: number | string;
   fecha_transferencia: string;
-}
-
-export interface Bien {
   fecha_creacion: string;
   fecha_aceptacion?: string;
   fecha_entrega_real?: string;
+  fecha_cancelacion?: string;
+  motivo_cancelacion?: string;
+}
+
+export interface Bien {
   cod_estado: number;
   donante_id: number;
   institucion_id: number;
@@ -50,11 +53,47 @@ export enum DonationStates {
   Pendiente,
   Aceptada,
   Agendada = 5,
-  Entregada
+  Entregada,
 }
 
 export enum MoneyDonationStates {
   Cancelada = 0,
   Pendiente = 3,
   Aceptada = 4,
+}
+
+export interface Donante {
+  id: number;
+  nombre: string;
+  apellido: string;
+  fecha_nacimiento?: string; // NN
+  dni: string;
+  domicilio: string;
+  localidad: string;
+  provincia: string;
+  pais: string;
+  telefono: string;
+  estado_civil?: string; // NN
+  genero: string;
+  ocupacion?: string; // NN
+  usuario: number;
+}
+
+export interface Institucion {
+  id: number;
+  nombre: string;
+  director: string;
+  domicilio: string;
+  localidad: string;
+  telefono: string;
+  cant_empleados: number;
+  descripcion: string;
+  cbu: string;
+  provincia: string;
+}
+
+export enum UserType {
+  cadete = "cadete",
+  donantes = "donantes",
+  Instituciones = "Instituciones",
 }

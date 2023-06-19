@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
-import { Donation } from "../components/Institution/types";
+import { Donation } from "../components/Common/types";
 import { endpoints } from "../api";
 
 export const usePendingDonations = () => {

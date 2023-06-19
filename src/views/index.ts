@@ -4,4 +4,3 @@ export * from './Login';
 export * from './Logup';
 export * from './Recover';
 export * from './Donations';
-export * from './SponsorChild';

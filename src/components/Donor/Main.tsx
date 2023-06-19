@@ -1,3 +1,4 @@
+import { FC } from "react";
 import {
   Flex,
   TabList,
@@ -8,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { DonationPendings, MoneyDonations } from "../Common";
 
-export const InstitutionMain = () => {
+export const DonorMain: FC = () => {
   return (
     <Flex
       borderRadius="lg"
@@ -18,11 +19,10 @@ export const InstitutionMain = () => {
       justifyContent="center"
       alignItems="flex-start"
     >
-      <Tabs minHeight="600px" height={"100%"} width="100%" pb={10}>
+      <Tabs minHeight="600px" height={"100%"} pb={10}>
         <TabList>
           <Tab>Donaciones Bienes</Tab>
           <Tab>Donaciones Monetarias</Tab>
-          <Tab>Recolecciones Pendientes</Tab>
         </TabList>
 
         <TabPanels height="100%" maxHeight={"70vh"} overflow={"auto"}>
