@@ -15,11 +15,11 @@ export const DonorMain: FC = () => {
       borderRadius="lg"
       boxShadow="lg"
       m="20px auto 0"
-      w="80%"
+      w="1024px"
       justifyContent="center"
       alignItems="flex-start"
     >
-      <Tabs minHeight="600px" height={"100%"} width="100%" pb={10}>
+      <Tabs minHeight="600px" height={"100%"} pb={10}>
         <TabList>
           <Tab>Donaciones Bienes</Tab>
           <Tab>Donaciones Monetarias</Tab>

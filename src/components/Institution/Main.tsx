@@ -14,7 +14,7 @@ export const InstitutionMain = () => {
       borderRadius="lg"
       boxShadow="lg"
       m="20px auto 0"
-      w="80%"
+      w="1024px"
       justifyContent="center"
       alignItems="flex-start"
     >

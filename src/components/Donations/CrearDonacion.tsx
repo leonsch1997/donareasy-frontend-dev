@@ -485,7 +485,7 @@ export const CrearDonacion = () => {
 
       <Flex justifyContent="center" margin={10}>
         <Button
-          isDisabled={!allDonations || !idInstitucion}
+          isDisabled={!allDonations.length || !idInstitucion}
           isLoading={isSubmitting}
           size="lg"
           colorScheme="linkedin"

@@ -97,7 +97,7 @@ export const DonationItem = (item: Donation) => {
               : DonationStates[cod_estado]}
           </Text>
           <Text fontSize="sm">
-            <b>Fecha creación:</b> {item.fecha_creacion}
+            <b>Fecha creación:</b> {new Date(item.fecha_creacion).toLocaleDateString()}
           </Text>
           {isMoneyDonation && (
             <>
@@ -105,20 +105,20 @@ export const DonationItem = (item: Donation) => {
                 <b>Monto:</b> ${item.monto} - ARS
               </Text>
               <Text fontSize="sm">
-                <b>Fecha de transferencia:</b> {item.fecha_transferencia}
+                <b>Fecha de transferencia:</b> {new Date(item.fecha_transferencia).toLocaleDateString()}
               </Text>
             </>
           )}
 
           {item.fecha_aceptacion && (
             <Text fontSize="sm">
-              <b>Fecha aceptación:</b> {item.fecha_aceptacion}
+              <b>Fecha aceptación:</b> {new Date(item.fecha_aceptacion).toLocaleDateString()}
             </Text>
           )}
           {item.fecha_cancelacion && (
             <>
               <Text fontSize="sm">
-                <b>Fecha cancelación:</b> {item.fecha_aceptacion}
+                <b>Fecha cancelación:</b> {new Date(item.fecha_cancelacion).toLocaleDateString()}
               </Text>
               <Text fontSize="sm">
                 <b>Motivo cancelación:</b> {item.motivo_cancelacion}
